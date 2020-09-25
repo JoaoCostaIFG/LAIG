@@ -1,10 +1,10 @@
 # LAIG 2020/2021
 
 ## Group T0xG0y
-| Name             | Number    | E-Mail             |
-| ---------------- | --------- | ------------------ |
-| John Doe         | 201801010 | ...                |
-| Jane Doe         | 201801011 | ...                |
+| Name                        | Number    | E-Mail               |
+| --------------------------- | --------- | -------------------- |
+| Ana Inês Oliveira de Barros | 201806593 | up201806593@fe.up.pt |
+| João de Jesus Costa         | 201806560 | up201806560@fe.up.pt |
 
 ----
 
