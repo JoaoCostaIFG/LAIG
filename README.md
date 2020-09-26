@@ -1,6 +1,6 @@
 # LAIG 2020/2021
 
-## Group T0xG0y
+## Group T03-G05
 | Name                        | Number    | E-Mail               |
 | --------------------------- | --------- | -------------------- |
 | Ana Inês Oliveira de Barros | 201806593 | up201806593@fe.up.pt |
