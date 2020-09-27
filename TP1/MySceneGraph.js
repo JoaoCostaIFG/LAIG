@@ -246,6 +246,9 @@ class MySceneGraph {
      */
     parseViews(viewsNode) {
         this.onXMLMinorError("To do: Parse views and create cameras.");
+
+        // this.log("Parsed views");
+
         return null;
     }
 
@@ -254,7 +257,6 @@ class MySceneGraph {
      * @param {illumination block element} illuminationsNode
      */
     parseIllumination(illuminationsNode) {
-
         var children = illuminationsNode.children;
 
         this.ambient = [];
@@ -370,9 +372,11 @@ class MySceneGraph {
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
-
         //For each texture in textures block, check ID and file URL
         this.onXMLMinorError("To do: Parse textures.");
+
+        // this.log("Parsed textures");
+
         return null;
     }
 
