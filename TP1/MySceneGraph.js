@@ -45,7 +45,7 @@ class MySceneGraph {
          */
         this.reader.open('scenes/' + filename, this);
 
-        this.obj = new MyCilinder(scene, 2, 1, 3, 10, 2);
+        this.obj = new MyCilinder(scene, 1, 1, 5, 20, 20);
     }
 
     /*

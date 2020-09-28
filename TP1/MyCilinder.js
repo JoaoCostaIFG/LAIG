@@ -39,7 +39,6 @@ class MyCilinder extends CGFobject {
 
     var heightStep = this.height / this.stacks;
     var currHeight = 0;
-    var i = 2;
 
     for (var stackN = 1; stackN <= this.stacks; ++stackN) {
       ang = 0;
@@ -71,7 +70,7 @@ class MyCilinder extends CGFobject {
       texCurr += texStep;
 
       // do until we reach the number of vertices in current slice
-      for (; i < (this.slices * 2 + 2) * stackN; i += 2) {
+      for (var i = (this.slices * 2 + 2) * (stackN - 1) + 2; i < (this.slices * 2 + 2) * stackN; i += 2) {
         // this is vertice 2
         this.vertices.push(r1 * Math.cos(ang), r1 * Math.sin(ang), currHeight);
         this.normals.push(r1 * Math.cos(ang), r1 * Math.sin(ang), 0);
@@ -92,6 +91,17 @@ class MyCilinder extends CGFobject {
       currHeight += heightStep;
     }
 
+    this.vertices.push(0, 0, 0);
+    this.normals.push(0, 0, -1);
+    var n = this.vertices.length / 3 - 1;
+    for (var j = 0; j < this.slices * 2 + 2; j+=2)
+      this.indices.push(j + 2, j, n);
+
+    this.vertices.push(0, 0, this.height);
+    this.normals.push(0, 0, 1);
+    n = this.vertices.length / 3 - 1;
+    for (var j = (this.slices * 2 + 2) * (this.stacks - 1) + 1; j < (this.slices * 2 + 2) * this.stacks; j+=2)
+      this.indices.push(j, j + 2, n);
 
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
