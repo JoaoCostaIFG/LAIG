@@ -85,22 +85,216 @@
                 <!-- 2D coordinates on the XY plane for left-top and right-bottom vertices. -->
             </descendants>
         </node>
-        <node id="x-wing">  <!-- defines one intermediate node; may be repeated as necessary -->
-            <!-- next two lines are mandatory -->
-            <material id="null" />  <!-- this superimposes the material received from parent node id="null" maintains material from parent node -->
-
-            <texture id="clear">  <!-- declared texture superimposes the texture received from parent node id="null" maintains texture from parent node id="clear" clears texture declaration received from parent node -->
-                <amplification afs="2.0" aft="2.0" /><!-- for primitives = dx/afs, dy/aft -->
+        <node id="x-wing">
+            <material id="null" />
+            <texture id="clear">
+                <!-- <amplification afs="2.0" aft="2.0" />[> for primitives = dx/afs, dy/aft <] -->
             </texture>
 
-            <!-- geom. transf. are optional and may be repeated, in any order, as necessary: -->
             <transformations>
             </transformations>
 
-            <!-- declaring descendants, at least one node or one leaf must be present
-             descendants may be mixed, nodes and leafs -->
             <descendants>
-                <noderef id="x-wing" />
+                <noderef id="body" />
+
+                <noderef id="turbine1" />
+                <noderef id="turbine2" />
+                <noderef id="turbine3" />
+                <noderef id="turbine4" />
+
+                <noderef id="wing1" />
+                <noderef id="wing2" />
+                <noderef id="wing3" />
+                <noderef id="wing4" />
+            </descendants>
+        </node>
+
+        <node id="body">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+            </transformations>
+
+            <descendants>
+                <noderef id="bodyBack" />
+                <noderef id="bodyFront" />
+            </descendants>
+        </node>
+        <node id="bodyBack">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <scale sx="0.6" sy="1" sz="1" />
+            </transformations>
+
+            <descendants>
+                <leaf type="cylinder" height="5.0" topRadius="5.0" bottomRadius="5.0" stacks="4" slices="6"/>
+            </descendants>
+        </node>
+        <node id="bodyFront">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <translation x="0.0" y="0.0" z="5.0" />
+                <scale sx="0.6" sy="1" sz="1" />
+            </transformations>
+
+            <descendants>
+                <noderef id="bodyNose" />
+                <noderef id="bodyCockpit" />
+            </descendants>
+        </node>
+        <node id="bodyNose">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+            </transformations>
+
+            <descendants>
+                <leaf type="cylinder" height="12.0" topRadius="2.0" bottomRadius="5.0" stacks="6" slices="6"/>
+            </descendants>
+        </node>
+        <node id="bodyCockpit">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <translation x="0.0" y="4.2" z="0.0" />
+            </transformations>
+
+            <descendants>
+                <noderef id="cockpitWindowCenter" />
+                <noderef id="cockpitWindowLeft" />
+                <noderef id="cockpitWindowRight" />
+            </descendants>
+        </node>
+        <node id="cockpitWindowCenter">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <rotation axis="xx" angle="-45" />
+            </transformations>
+
+            <descendants>
+                <leaf type="rectangle" x1="1.0" y1="1.0" x2="-1.0" y2="-1.0" />
+            </descendants>
+        </node>
+        <node id="cockpitWindowLeft">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <translation x="1.0" y="0.0" z="0.0" />
+                <rotation axis="yy" angle="45" />
+            </transformations>
+
+            <descendants>
+                <leaf type="triangle" x1="0" y1="0" x2="0" y2="1.41" x3="-1.41" y3="0" />
+            </descendants>
+        </node>
+        <node id="cockpitWindowRight">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <translation x="-1.0" y="0.0" z="0.0" />
+                <rotation axis="yy" angle="-45" />
+            </transformations>
+
+            <descendants>
+                <leaf type="triangle" x1="0" y1="0" x2="0" y2="1.41" x3="1.41" y3="0" />
+            </descendants>
+        </node>
+
+        <node id="turbine1">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <translation x="-5.0" y="3.0" z="0.0" />
+            </transformations>
+
+            <descendants>
+                <noderef id="turbine" />
+            </descendants>
+        </node>
+        <node id="turbine2">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <translation x="5.0" y="3.0" z="0.0" />
+            </transformations>
+
+            <descendants>
+                <noderef id="turbine" />
+            </descendants>
+        </node>
+        <node id="turbine3">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <translation x="5.0" y="-3.0" z="0.0" />
+            </transformations>
+
+            <descendants>
+                <noderef id="turbine" />
+            </descendants>
+        </node>
+        <node id="turbine4">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <translation x="-5.0" y="3.0" z="0.0" />
+            </transformations>
+
+            <descendants>
+                <noderef id="turbine" />
+            </descendants>
+        </node>
+        <node id="turbine">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+            </transformations>
+
+            <descendants>
+                <noderef id="turbineSmall" />
+                <leaf type="cylinder" height="4.0" topRadius="2.0" bottomRadius="2.0" stacks="4" slices="20"/>
+            </descendants>
+        </node>
+        <node id="turbineSmall">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <translation x="0.0" y="0.0" z="-4.0" />
+            </transformations>
+
+            <descendants>
+                <leaf type="cylinder" height="4.0" topRadius="1.0" bottomRadius="1.0" stacks="4" slices="20"/>
             </descendants>
         </node>
     </nodes>
