@@ -44,6 +44,8 @@ class MySceneGraph {
          * If any error occurs, the reader calls onXMLError on this object, with an error message
          */
         this.reader.open('scenes/' + filename, this);
+
+      this.triang = new MyTriangle(scene, [0, 0, 0], [1, 0, 0], [0, 1, 0]);
     }
 
     /*
@@ -569,7 +571,8 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        
+      this.triang.display();
+
         //To do: Create display loop for transversing the scene graph, calling the root node's display function
         
         //this.nodes[this.idRoot].display()
