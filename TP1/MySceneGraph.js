@@ -45,7 +45,7 @@ class MySceneGraph {
          */
         this.reader.open('scenes/' + filename, this);
 
-      this.triang = new MyTriangle(scene, [0, 0, 0], [1, 0, 0], [0, 1, 0]);
+        this.obj = new MyCilinder(scene, 2, 1, 3, 10, 2);
     }
 
     /*
@@ -571,7 +571,7 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-      this.triang.display();
+        this.obj.display();
 
         //To do: Create display loop for transversing the scene graph, calling the root node's display function
         
