@@ -93,17 +93,43 @@ class MyCilinder extends CGFobject {
       currHeight += heightStep;
     }
 
+    /* bottom cap */
+    ang = 0;
     this.vertices.push(0, 0, 0);
     this.normals.push(0, 0, -1);
-    var n = this.vertices.length / 3 - 1;
-    for (var j = 0; j < this.slices * 2 + 2; j+=2)
-      this.indices.push(j + 2, j, n);
+    var centerInd = this.vertices.length / 3 - 1;
 
+    this.vertices.push(this.bottomRadius * Math.cos(ang), this.bottomRadius * Math.sin(ang), 0);
+    this.normals.push(this.bottomRadius * Math.cos(ang), this.bottomRadius * Math.sin(ang), -1);
+    ang += alphaAng;
+
+    // do until we reach the number of vertices in current slice
+    for (var i = 2; i <= this.slices + 1; ++i) {
+      this.vertices.push(this.bottomRadius * Math.cos(ang), this.bottomRadius * Math.sin(ang), 0);
+      this.normals.push(this.bottomRadius * Math.cos(ang), this.bottomRadius * Math.sin(ang), -1);
+      ang += alphaAng;
+
+      this.indices.push(centerInd + i, centerInd + i - 1, centerInd);
+    }
+
+    /* top cap */
+    ang = 0;
     this.vertices.push(0, 0, this.height);
     this.normals.push(0, 0, 1);
-    n = this.vertices.length / 3 - 1;
-    for (var j = (this.slices * 2 + 2) * (this.stacks - 1) + 1; j < (this.slices * 2 + 2) * this.stacks; j+=2)
-      this.indices.push(j, j + 2, n);
+    centerInd = this.vertices.length / 3 - 1;
+
+    this.vertices.push(this.topRadius * Math.cos(ang), this.topRadius * Math.sin(ang), this.height);
+    this.normals.push(this.topRadius * Math.cos(ang), this.topRadius * Math.sin(ang), 1);
+    ang += alphaAng;
+
+    // do until we reach the number of vertices in current slice
+    for (var i = 2; i <= this.slices + 1; ++i) {
+      this.vertices.push(this.topRadius * Math.cos(ang), this.topRadius * Math.sin(ang), this.height);
+      this.normals.push(this.topRadius * Math.cos(ang), this.topRadius * Math.sin(ang), 1);
+      ang += alphaAng;
+
+      this.indices.push(centerInd + i - 1, centerInd + i, centerInd);
+    }
 
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
