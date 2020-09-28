@@ -22,8 +22,9 @@ class MyCilinder extends CGFobject {
     var alphaAng = (2 * Math.PI) / this.slices;
 
     this.texCoords = [];
-    var texCurr = 0;
+    var texCurr = 0, texYCurr = 0;
     var texStep = 1.0 / this.slices;
+    var texYStep = 1.0 / this.stacks;
 
     /* think about a prism made of rectangles. Each rectangle like so:
      * 1----3
@@ -61,11 +62,11 @@ class MyCilinder extends CGFobject {
       // this is vertice 0
       this.vertices.push(r1 * Math.cos(ang), r1 * Math.sin(ang), currHeight);
       this.normals.push(r1 * Math.cos(ang), r1 * Math.sin(ang), 0);
-      this.texCoords.push(texCurr, 1);
+      this.texCoords.push(texCurr, texYCurr + texYStep);
       // this is vertice 1
       this.vertices.push(r2 * Math.cos(ang), r2 * Math.sin(ang), currHeight + heightStep);
       this.normals.push(r2 * Math.cos(ang), r2 * Math.sin(ang), 0);
-      this.texCoords.push(texCurr, 0);
+      this.texCoords.push(texCurr, texYCurr);
       ang += alphaAng;
       texCurr += texStep;
 
@@ -74,12 +75,12 @@ class MyCilinder extends CGFobject {
         // this is vertice 2
         this.vertices.push(r1 * Math.cos(ang), r1 * Math.sin(ang), currHeight);
         this.normals.push(r1 * Math.cos(ang), r1 * Math.sin(ang), 0);
-        this.texCoords.push(texCurr, 1);
+        this.texCoords.push(texCurr, texYCurr + texYStep);
 
         // this is vertice 3
         this.vertices.push(r2 * Math.cos(ang), r2 * Math.sin(ang), currHeight + heightStep);
         this.normals.push(r2 * Math.cos(ang), r2 * Math.sin(ang), 0);
-        this.texCoords.push(texCurr, 0);
+        this.texCoords.push(texCurr, texYCurr);
 
         // these are the triangles: 0-1-2 and 1-3-2
         this.indices.push(i - 2, i, i - 1);
@@ -88,6 +89,7 @@ class MyCilinder extends CGFobject {
         texCurr += texStep;
       }
 
+      texYCurr += texYStep;
       currHeight += heightStep;
     }
 

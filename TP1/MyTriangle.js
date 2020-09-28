@@ -2,25 +2,29 @@
  * MyTriangle
  * @constructor
  * @param scene - Reference to MyScene object
- * @param v1 - vertice 1 coordinates
- * @param v2 - vertice 2 coordinates
- * @param v3 - vertice 3 coordinates
+ * @param x1 - x coordinate corner 1
+ * @param y1 - y coordinate corner 1
+ * @param x2 - x coordinate corner 2
+ * @param y2 - y coordinate corner 2
  */
 class MyTriangle extends CGFobject {
-	constructor(scene, v1, v2, v3) {
+	constructor(scene, x1, y1, x2, y2, x3, y3) {
 		super(scene);
-		this.v1 = v1;
-		this.v2 = v2;
-		this.v3 = v3;
+		this.x1 = x1;
+		this.y1 = y1;
+		this.x2 = x2;
+		this.y2 = y2;
+		this.x3 = x3;
+		this.y3 = y3;
 
 		this.initBuffers();
 	}
 	
 	initBuffers() {
 		this.vertices = [
-			this.v1[0], this.v1[1], this.v1[2],	// 0
-			this.v2[0], this.v2[1], this.v2[2],	// 1
-			this.v3[0], this.v3[1], this.v3[2],	// 2
+			this.x1, this.y1, 0,	// 0
+			this.x2, this.y2, 0,	// 1
+			this.x3, this.y3, 0,	// 2
 		];
 
 		//Counter-clockwise reference of vertices
@@ -28,7 +32,6 @@ class MyTriangle extends CGFobject {
 			0, 1, 2,
 		];
 
-    // TODO
 		//Facing Z positive
 		this.normals = [
 			0, 0, 1,
@@ -46,9 +49,9 @@ class MyTriangle extends CGFobject {
     t
     */
 
-    var a = Math.sqrt(Math.pow(this.v2[0] - this.v1[0], 2) + Math.pow(this.v2[1] - this.v1[1], 2) + Math.pow(this.v2[2] - this.v1[2], 2));
-    var b = Math.sqrt(Math.pow(this.v3[0] - this.v2[0], 2) + Math.pow(this.v3[1] - this.v2[1], 2) + Math.pow(this.v3[2] - this.v2[2], 2));
-    var c = Math.sqrt(Math.pow(this.v1[0] - this.v3[0], 2) + Math.pow(this.v1[1] - this.v3[1], 2) + Math.pow(this.v1[2] - this.v3[2], 2));
+    var a = Math.sqrt(Math.pow(this.x2 - this.x1, 2) + Math.pow(this.y2 - this.y1, 2));
+    var b = Math.sqrt(Math.pow(this.x3 - this.x2, 2) + Math.pow(this.y3 - this.y2, 2));
+    var c = Math.sqrt(Math.pow(this.x1 - this.x3, 2) + Math.pow(this.y1 - this.y3, 2));
 
     var cos = (a *a - b * b + c * c) / (2 * a * c);
     var sin = Math.sqrt(1 - cos * cos);
