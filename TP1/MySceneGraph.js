@@ -45,7 +45,7 @@ class MySceneGraph {
          */
         this.reader.open('scenes/' + filename, this);
 
-        this.obj = new MyCilinder(scene, 2, 2, 4, 4, 4);
+        this.obj = new MyCilinder(scene, 2, 2, 4, 20, 20);
     }
 
     /*
@@ -419,15 +419,11 @@ class MySceneGraph {
         return null;
     }
 
-    parseTransformation() {
-
-    }
-    
     /**
     * Parses a given node's transformations
-    * @param {node object} nodeObj
+    * @param {object that contains transformation's info} tgInfo
     */
-    parseNodeTransformations(nodeObj, tgInfo) {
+    parseNodeTransformations(tgInfo) {
         var tgMtr = [1, 0, 0, 0,
                      0, 1, 0, 0,
                      0, 0, 1, 0,
@@ -436,6 +432,7 @@ class MySceneGraph {
         var tg = tgInfo.nodeName;
 
         if (tg == "translation") {
+            console.log(this.reader.getString(tgInfo, 'x'));
             var x = tgInfo.attributes["x"];
             if (x == null) {
                 this.onXMLMinorError("x component in translation missing, assuming 0.");
@@ -570,7 +567,9 @@ class MySceneGraph {
             // Checks for repeated IDs.
             if (this.nodes[nodeID] != null)
                 return "ID must be unique for each node (conflict: ID = " + nodeID + ")";
-            this.nodes[nodeID] = true; // TODO ref para node
+            
+            var nodeObj = new MyNode(nodeID, null); // TODO ref para parent node
+            this.nodes[nodeID] = nodeObj;
 
             grandChildren = children[i].children;
 
@@ -590,22 +589,23 @@ class MySceneGraph {
             else {
                 grandgrandChildren = grandChildren[transformationsIndex].children;
                 for (var j = 0; j < grandgrandChildren.length; j++) {
-                    this.parseNodeTransformations(nodeObj, grandgrandChildren[j]);
-                    // nodeObj.addTgMatrix(mtrTg);
+                    this.parseNodeTransformations(grandgrandChildren[j]);
+                    nodeObj.addTgMatrix(this.parseNodeTransformations(grandgrandChildren[j]));
                 }
             }
-
 
             // Material
             if (materialIndex == -1) {
                 this.onXMLMinorError("tag <material> missing, assuming 'null' material.");
             }
             else {
+                /*
                 grandgrandChildren = grandChildren[transformationsIndex].children;
                 for (var j = 0; j < grandgrandChildren.length; j++) {
                     this.parseNodeTransformations(nodeObj, grandgrandChildren[j]);
                     // nodeObj.addTgMatrix(mtrTg);
                 }
+                */
             }
 
             // Texture
