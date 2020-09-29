@@ -22,7 +22,7 @@ class MyCilinder extends CGFobject {
     var alphaAng = (2 * Math.PI) / this.slices;
 
     this.texCoords = [];
-    var texCurr = 0, texYCurr = 0;
+    var texCurr = 0, texYCurr = 1;
     var texStep = 1.0 / this.slices;
     var texYStep = 1.0 / this.stacks;
 
@@ -62,11 +62,11 @@ class MyCilinder extends CGFobject {
       // this is vertice 0
       this.vertices.push(r1 * Math.cos(ang), r1 * Math.sin(ang), currHeight);
       this.normals.push(r1 * Math.cos(ang), r1 * Math.sin(ang), 0);
-      this.texCoords.push(texCurr, texYCurr + texYStep);
+      this.texCoords.push(texCurr, texYCurr);
       // this is vertice 1
       this.vertices.push(r2 * Math.cos(ang), r2 * Math.sin(ang), currHeight + heightStep);
       this.normals.push(r2 * Math.cos(ang), r2 * Math.sin(ang), 0);
-      this.texCoords.push(texCurr, texYCurr);
+      this.texCoords.push(texCurr, texYCurr - texYStep);
       ang += alphaAng;
       texCurr += texStep;
 
@@ -75,12 +75,12 @@ class MyCilinder extends CGFobject {
         // this is vertice 2
         this.vertices.push(r1 * Math.cos(ang), r1 * Math.sin(ang), currHeight);
         this.normals.push(r1 * Math.cos(ang), r1 * Math.sin(ang), 0);
-        this.texCoords.push(texCurr, texYCurr + texYStep);
+        this.texCoords.push(texCurr, texYCurr);
 
         // this is vertice 3
         this.vertices.push(r2 * Math.cos(ang), r2 * Math.sin(ang), currHeight + heightStep);
         this.normals.push(r2 * Math.cos(ang), r2 * Math.sin(ang), 0);
-        this.texCoords.push(texCurr, texYCurr);
+        this.texCoords.push(texCurr, texYCurr - texYStep);
 
         // these are the triangles: 0-1-2 and 1-3-2
         this.indices.push(i - 2, i, i - 1);
@@ -89,43 +89,51 @@ class MyCilinder extends CGFobject {
         texCurr += texStep;
       }
 
-      texYCurr += texYStep;
+      texYCurr -= texYStep;
       currHeight += heightStep;
     }
 
     /* bottom cap */
+    /* center */
     ang = 0;
     this.vertices.push(0, 0, 0);
     this.normals.push(0, 0, -1);
+    this.texCoords.push(0.5, 0.5);
     var centerInd = this.vertices.length / 3 - 1;
 
     this.vertices.push(this.bottomRadius * Math.cos(ang), this.bottomRadius * Math.sin(ang), 0);
     this.normals.push(this.bottomRadius * Math.cos(ang), this.bottomRadius * Math.sin(ang), -1);
+    this.texCoords.push(Math.cos(ang) * 0.5 + 0.5, Math.sin(ang) * 0.5 + 0.5);
     ang += alphaAng;
 
     // do until we reach the number of vertices in current slice
     for (var i = 2; i <= this.slices + 1; ++i) {
       this.vertices.push(this.bottomRadius * Math.cos(ang), this.bottomRadius * Math.sin(ang), 0);
       this.normals.push(this.bottomRadius * Math.cos(ang), this.bottomRadius * Math.sin(ang), -1);
+      this.texCoords.push(Math.cos(ang) * 0.5 + 0.5, Math.sin(ang) * 0.5 + 0.5);
       ang += alphaAng;
 
       this.indices.push(centerInd + i, centerInd + i - 1, centerInd);
     }
 
     /* top cap */
+    /* center */
     ang = 0;
     this.vertices.push(0, 0, this.height);
     this.normals.push(0, 0, 1);
+    this.texCoords.push(0.5, 0.5);
     centerInd = this.vertices.length / 3 - 1;
 
     this.vertices.push(this.topRadius * Math.cos(ang), this.topRadius * Math.sin(ang), this.height);
     this.normals.push(this.topRadius * Math.cos(ang), this.topRadius * Math.sin(ang), 1);
+    this.texCoords.push(Math.cos(ang) * 0.5 + 0.5, Math.sin(ang) * 0.5 + 0.5);
     ang += alphaAng;
 
     // do until we reach the number of vertices in current slice
     for (var i = 2; i <= this.slices + 1; ++i) {
       this.vertices.push(this.topRadius * Math.cos(ang), this.topRadius * Math.sin(ang), this.height);
       this.normals.push(this.topRadius * Math.cos(ang), this.topRadius * Math.sin(ang), 1);
+      this.texCoords.push(Math.cos(ang) * 0.5 + 0.5, Math.sin(ang) * 0.5 + 0.5);
       ang += alphaAng;
 
       this.indices.push(centerInd + i - 1, centerInd + i, centerInd);
