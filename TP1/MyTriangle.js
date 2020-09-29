@@ -30,9 +30,9 @@ class MyTriangle extends CGFobject {
 		//Counter-clockwise reference of vertices
 		this.indices = [
 			0, 1, 2,
-      2, 1, 0
 		];
 
+    // TODO normais ao contrario
 		//Facing Z positive
 		this.normals = [
 			0, 0, 1,

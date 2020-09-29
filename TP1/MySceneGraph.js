@@ -45,8 +45,8 @@ class MySceneGraph {
          */
         this.reader.open('scenes/' + filename, this);
 
-        // this.obj = new MyCilinder(scene, 2, 2, 4, 20, 2);
-        this.obj = new MyTriangle(scene, 1, 1, 2, 2, 3, 3);
+        this.obj = new MyCilinder(scene, 2, 2, 4, 20, 2);
+        // this.obj = new MyTriangle(scene, 0, 0, 0, 2, 1, 0);
 
         this.mat = new CGFappearance(scene);
         this.tex = new CGFtexture(scene, "scenes/images/earth.jpg");
@@ -437,30 +437,20 @@ class MySceneGraph {
         var tg = tgInfo.nodeName;
 
         if (tg == "translation") {
-            console.log(this.reader.getString(tgInfo, 'x'));
-            var x = tgInfo.attributes["x"];
+            var x = this.reader.getString(tgInfo, 'x');
             if (x == null) {
                 this.onXMLMinorError("x component in translation missing, assuming 0.");
                 x = 0;
             }
-            else {
-                x = x.value;
-            }
-            var y = tgInfo.attributes["y"];
+            var y = this.reader.getString(tgInfo, 'y');
             if (y == null) {
                 this.onXMLMinorError("y component in translation missing, assuming 0.");
                 y = 0;
             }
-            else {
-                y = y.value;
-            }
-            var z = tgInfo.attributes["z"];
+            var z = this.reader.getString(tgInfo, 'z');
             if (z == null) {
                 this.onXMLMinorError("z component in translation missing, assuming 0.");
                 z = 0;
-            }
-            else {
-                z = z.value;
             }
             var tgMtr = [0, 0, 0, x,
                          0, 0, 0, y,
@@ -468,21 +458,15 @@ class MySceneGraph {
                          0, 0, 0, 1];
         }
         else if (tg == "rotation") {
-            var axis = tgInfo.attributes["axis"];
+            var axis = this.reader.getString(tgInfo, "axis");
             if (axis == null) {
                 this.onXMLMinorError("axis component in rotation missing, assuming z.");
                 axis = "zz";
             }
-            else {
-                axis = axis.value;
-            }
-            var angle = tgInfo.attributes["angle"];
-            if (axis == null) {
+            var angle = this.reader.getString(tgInfo, "angle");
+            if (angle == null) {
                 this.onXMLMinorError("angle component in rotation missing, assuming 0.");
                 angle = 0;
-            }
-            else {
-                angle = angle.value;
             }
 
             switch (axis) {
@@ -510,29 +494,20 @@ class MySceneGraph {
             }
         }
         else if (tg == "scale") {
-            var sx = tgInfo.attributes["sx"];
+            var sx = this.reader.getString(tgInfo, "sx");
             if (sx == null) {
                 this.onXMLMinorError("sx component in scale missing, assuming 1.");
                 sx = 1;
             }
-            else {
-                sx = sx.value;
-            }
-            var sy = tgInfo.attributes["sy"];
+            var sy = this.reader.getString(tgInfo, "sy");
             if (sy == null) {
                 this.onXMLMinorError("sy component in scale missing, assuming 1.");
                 sy = 1;
             }
-            else {
-                sy = sy.value;
-            }
-            var sz = tgInfo.attributes["sz"];
+            var sz = this.reader.getString(tgInfo, "sz");
             if (sz == null) {
                 this.onXMLMinorError("sz component in scale missing, assuming 1.");
                 sz = 1;
-            }
-            else {
-                sz = sz.value;
             }
             var tgMtr = [sx, 0, 0, 0,
                          0, sy, 0, 0,
