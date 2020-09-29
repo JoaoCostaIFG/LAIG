@@ -22,14 +22,15 @@ class MyTriangle extends CGFobject {
 	
 	initBuffers() {
 		this.vertices = [
-			this.x1, this.y1, 0,	// 0
-			this.x2, this.y2, 0,	// 1
-			this.x3, this.y3, 0,	// 2
+      this.x1, this.y1, 0,	// 0
+      this.x2, this.y2, 0,	// 1
+      this.x3, this.y3, 0,	// 2
 		];
 
 		//Counter-clockwise reference of vertices
 		this.indices = [
 			0, 1, 2,
+      2, 1, 0
 		];
 
 		//Facing Z positive
@@ -57,9 +58,9 @@ class MyTriangle extends CGFobject {
     var sin = Math.sqrt(1 - cos * cos);
 
 		this.texCoords = [
-			0, 1,
-			a/1, 1,
-			c * cos / 1, 1 - c * sin / 1
+      0, 1,
+      a/1, 1,
+      c * cos / 1, 1 - c * sin / 1
 		];
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
