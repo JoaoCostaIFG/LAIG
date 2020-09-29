@@ -2,9 +2,9 @@ class MySphere extends CGFobject {
     /**
      * @method constructor
      * @param  {CGFscene} scene - MyScene object
+     * @param  {float} radius - radius 
      * @param  {integer} slices - number of slices around Y axis
      * @param  {integer} stacks - number of stacks along Y axis, from the center to the poles (half of sphere)
-     * @param   {float} radius - radius 
      */
     constructor(scene, radius, slices, stacks) {
       super(scene);
@@ -56,8 +56,8 @@ class MySphere extends CGFobject {
             // and the ones directly south (next, next+1)
             // (i.e. one full round of slices ahead)
             
-            this.indices.push( current + 1, current, next);
-            this.indices.push( current + 1, next, next +1);
+            this.indices.push(current + 1, current, next);
+            this.indices.push(current + 1, next, next +1);
           }
   
           //--- Normals
@@ -65,7 +65,8 @@ class MySphere extends CGFobject {
           // the vector from the center of the sphere to the vertex.
           // in a sphere of radius equal to one, the vector length is one.
           // therefore, the value of the normal is equal to the position vectro
-          this.normals.push(x, y, z);
+          var normalLen = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+          this.normals.push(x/normalLen, y/normalLen, z/normalLen);
           theta += thetaInc;
           
         }

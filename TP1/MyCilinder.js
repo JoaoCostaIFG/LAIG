@@ -61,11 +61,11 @@ class MyCilinder extends CGFobject {
 
       // this is vertice 0
       this.vertices.push(r1 * Math.cos(ang), r1 * Math.sin(ang), currHeight);
-      this.normals.push(r1 * Math.cos(ang), r1 * Math.sin(ang), 0);
+      this.normals.push(Math.cos(ang), Math.sin(ang), 0);
       this.texCoords.push(texCurr, texYCurr);
       // this is vertice 1
       this.vertices.push(r2 * Math.cos(ang), r2 * Math.sin(ang), currHeight + heightStep);
-      this.normals.push(r2 * Math.cos(ang), r2 * Math.sin(ang), 0);
+      this.normals.push(Math.cos(ang), Math.sin(ang), 0);
       this.texCoords.push(texCurr, texYCurr - texYStep);
       ang += alphaAng;
       texCurr += texStep;
@@ -74,12 +74,12 @@ class MyCilinder extends CGFobject {
       for (var i = (this.slices * 2 + 2) * (stackN - 1) + 2; i < (this.slices * 2 + 2) * stackN; i += 2) {
         // this is vertice 2
         this.vertices.push(r1 * Math.cos(ang), r1 * Math.sin(ang), currHeight);
-        this.normals.push(r1 * Math.cos(ang), r1 * Math.sin(ang), 0);
+        this.normals.push(Math.cos(ang), Math.sin(ang), 0);
         this.texCoords.push(texCurr, texYCurr);
 
         // this is vertice 3
         this.vertices.push(r2 * Math.cos(ang), r2 * Math.sin(ang), currHeight + heightStep);
-        this.normals.push(r2 * Math.cos(ang), r2 * Math.sin(ang), 0);
+        this.normals.push(Math.cos(ang), Math.sin(ang), 0);
         this.texCoords.push(texCurr, texYCurr - texYStep);
 
         // these are the triangles: 0-1-2 and 1-3-2
@@ -102,14 +102,14 @@ class MyCilinder extends CGFobject {
     var centerInd = this.vertices.length / 3 - 1;
 
     this.vertices.push(this.bottomRadius * Math.cos(ang), this.bottomRadius * Math.sin(ang), 0);
-    this.normals.push(this.bottomRadius * Math.cos(ang), this.bottomRadius * Math.sin(ang), -1);
+    this.normals.push(0, 0, -1);
     this.texCoords.push(Math.cos(ang) * 0.5 + 0.5, Math.sin(ang) * 0.5 + 0.5);
     ang += alphaAng;
 
     // do until we reach the number of vertices in current slice
     for (var i = 2; i <= this.slices + 1; ++i) {
       this.vertices.push(this.bottomRadius * Math.cos(ang), this.bottomRadius * Math.sin(ang), 0);
-      this.normals.push(this.bottomRadius * Math.cos(ang), this.bottomRadius * Math.sin(ang), -1);
+      this.normals.push(0, 0, -1);
       this.texCoords.push(Math.cos(ang) * 0.5 + 0.5, Math.sin(ang) * 0.5 + 0.5);
       ang += alphaAng;
 
@@ -125,14 +125,14 @@ class MyCilinder extends CGFobject {
     centerInd = this.vertices.length / 3 - 1;
 
     this.vertices.push(this.topRadius * Math.cos(ang), this.topRadius * Math.sin(ang), this.height);
-    this.normals.push(this.topRadius * Math.cos(ang), this.topRadius * Math.sin(ang), 1);
+    this.normals.push(0, 0, 1);
     this.texCoords.push(Math.cos(ang) * 0.5 + 0.5, Math.sin(ang) * 0.5 + 0.5);
     ang += alphaAng;
 
     // do until we reach the number of vertices in current slice
     for (var i = 2; i <= this.slices + 1; ++i) {
       this.vertices.push(this.topRadius * Math.cos(ang), this.topRadius * Math.sin(ang), this.height);
-      this.normals.push(this.topRadius * Math.cos(ang), this.topRadius * Math.sin(ang), 1);
+      this.normals.push(0, 0, 1);
       this.texCoords.push(Math.cos(ang) * 0.5 + 0.5, Math.sin(ang) * 0.5 + 0.5);
       ang += alphaAng;
 
