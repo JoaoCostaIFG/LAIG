@@ -46,6 +46,10 @@ class MySceneGraph {
         this.reader.open('scenes/' + filename, this);
 
         this.obj = new MyCilinder(scene, 1, 1, 5, 20, 20);
+
+        var tg = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+        var nodeObj = new MyNode();
+        nodeObj.addTgMatrix(tg);
     }
 
     /*

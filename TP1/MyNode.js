@@ -2,35 +2,23 @@
  * MyNode
  * @constructor
  */
-class MyNode{
-	constructor(id, dad) {
-		this.id = id;
-		this.tex = dad.getText();
-		this.mat = dad.getMaterial();
+class MyNode {
+    constructor(id, dad) {
+        this.id = id;
 
-		tgMatrix = [1, 0, 0, 0,
-					0, 1, 0, 0,
-					0, 0, 1, 0,
-					0, 0, 0, 1]; 
-		
-		
-	}
+        if (dad != null) {
+            this.tex = dad.getText();
+            this.mat = dad.getMaterial();
+        }
 
-	constructor(id, tex, mat, aft, afs) {
-		this.id = id;
-		this.tex = tex;
-		this.mat = mat;
-		this.aft = aft;
-		this.afs = afs;
-
-		tgMatrix = [1, 0, 0, 0,
-					0, 1, 0, 0,
-					0, 0, 1, 0,
-					0, 0, 0, 1]; 
-	}
+        this.tgMatrix = [1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    0, 0, 0, 1];
+    }
 
 	addTgMatrix(tg){
-		result = [0, 0, 0, 0,
+		var result = [0, 0, 0, 0,
 				  0, 0, 0, 0,
 				  0, 0, 0, 0,
 				  0, 0, 0, 0]
@@ -38,7 +26,9 @@ class MyNode{
 		for (var i = 0; i < 4; i++)
 			for (var j = 0; j < 4; j++)
 				for(var k = 0; k < 4; k++)
-					res[i * 4 + j] += A[i * 4 + k] * B[k * 4 + j];
+					result[i * 4 + j] += this.tgMatrix[i * 4 + k] * tg[k * 4 + j];
+
+        this.tgMatrix = result;
 	}
 
 	setTexture(tex, afs, aft)
@@ -63,5 +53,9 @@ class MyNode{
 		return this.mat;
 	}
 
+    getTgMatrix()
+    {
+        return this.tgMatrix;
+    }
 }
 
