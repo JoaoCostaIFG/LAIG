@@ -45,7 +45,7 @@ class MySceneGraph {
          */
         this.reader.open('scenes/' + filename, this);
 
-        this.obj = new MyCilinder(scene, 1, 1, 5, 20, 20);
+        this.obj = new MyCilinder(scene, 2, 2, 4, 4, 4);
     }
 
     /*
@@ -419,14 +419,137 @@ class MySceneGraph {
         return null;
     }
 
-    /**
-   * Parses the <nodes> block.
-   * @param {nodes block element} nodesNode
-   */
-  parseNodes(nodesNode) {
-        var children = nodesNode.children;
+    parseTransformation() {
 
-        this.nodes = [];
+    }
+    
+    /**
+    * Parses a given node's transformations
+    * @param {node object} nodeObj
+    */
+    parseNodeTransformations(nodeObj, tgInfo) {
+        var tgMtr = [1, 0, 0, 0,
+                     0, 1, 0, 0,
+                     0, 0, 1, 0,
+                     0, 0, 0, 1];
+
+        var tg = tgInfo.nodeName;
+
+        if (tg == "translation") {
+            var x = tgInfo.attributes["x"];
+            if (x == null) {
+                this.onXMLMinorError("x component in translation missing, assuming 0.");
+                x = 0;
+            }
+            else {
+                x = x.value;
+            }
+            var y = tgInfo.attributes["y"];
+            if (y == null) {
+                this.onXMLMinorError("y component in translation missing, assuming 0.");
+                y = 0;
+            }
+            else {
+                y = y.value;
+            }
+            var z = tgInfo.attributes["z"];
+            if (z == null) {
+                this.onXMLMinorError("z component in translation missing, assuming 0.");
+                z = 0;
+            }
+            else {
+                z = z.value;
+            }
+            var tgMtr = [0, 0, 0, x,
+                         0, 0, 0, y,
+                         0, 0, 0, z,
+                         0, 0, 0, 1];
+        }
+        else if (tg == "rotation") {
+            var axis = tgInfo.attributes["axis"];
+            if (axis == null) {
+                this.onXMLMinorError("axis component in rotation missing, assuming z.");
+                axis = "zz";
+            }
+            else {
+                axis = axis.value;
+            }
+            var angle = tgInfo.attributes["angle"];
+            if (axis == null) {
+                this.onXMLMinorError("angle component in rotation missing, assuming 0.");
+                angle = 0;
+            }
+            else {
+                angle = angle.value;
+            }
+
+            switch (axis) {
+                case "xx":
+                    var tgMtr = [1, 0, 0, 0,
+                                 0, Math.cos(angle), -Math.sin(angle), 0,
+                                 0, Math.sin(angle), Math.cos(angle), 0,
+                                 0, 0, 0, 1];
+                    break;
+                case "yy":
+                    var tgMtr = [Math.cos(angle), 0, -Math.sin(angle), 0,
+                                 0, 1, 0, 0,
+                                 -Math.sin(angle), 0, Math.cos(angle), 0,
+                                 0, 0, 0, 1];
+                    break;
+                case "zz":
+                    var tgMtr = [Math.cos(angle), -Math.sin(angle), 0, 0,
+                                 Math.sin(angle), Math.cos(angle), 0, 0,
+                                 0, 0, 1, 0,
+                                 0, 0, 0, 1];
+                    break;
+                default:
+                    this.onXMLMinorError("unknown rotation axis: " + axis + ". Assuming no rotation.");
+                    break;
+            }
+        }
+        else if (tg == "scale") {
+            var sx = tgInfo.attributes["sx"];
+            if (sx == null) {
+                this.onXMLMinorError("sx component in scale missing, assuming 1.");
+                sx = 1;
+            }
+            else {
+                sx = sx.value;
+            }
+            var sy = tgInfo.attributes["sy"];
+            if (sy == null) {
+                this.onXMLMinorError("sy component in scale missing, assuming 1.");
+                sy = 1;
+            }
+            else {
+                sy = sy.value;
+            }
+            var sz = tgInfo.attributes["sz"];
+            if (sz == null) {
+                this.onXMLMinorError("sz component in scale missing, assuming 1.");
+                sz = 1;
+            }
+            else {
+                sz = sz.value;
+            }
+            var tgMtr = [sx, 0, 0, 0,
+                         0, sy, 0, 0,
+                         0, 0, sz, 0,
+                         0, 0, 0, 1];
+        }
+        else {
+            this.onXMLMinorError("unknown transformation " + tg +".");
+        }
+
+        return tgMtr;
+    }
+
+    /**
+    * Parses the <nodes> block.
+    * @param {nodes block element} nodesNode
+    */
+    parseNodes(nodesNode) {
+        var children = nodesNode.children;
 
         var grandChildren = [];
         var grandgrandChildren = [];
@@ -434,7 +557,6 @@ class MySceneGraph {
 
         // Any number of nodes.
         for (var i = 0; i < children.length; i++) {
-
             if (children[i].nodeName != "node") {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
                 continue;
@@ -448,27 +570,49 @@ class MySceneGraph {
             // Checks for repeated IDs.
             if (this.nodes[nodeID] != null)
                 return "ID must be unique for each node (conflict: ID = " + nodeID + ")";
+            this.nodes[nodeID] = true; // TODO ref para node
 
             grandChildren = children[i].children;
 
             nodeNames = [];
-            for (var j = 0; j < grandChildren.length; j++) {
+            for (var j = 0; j < grandChildren.length; j++)
                 nodeNames.push(grandChildren[j].nodeName);
-            }
 
             var transformationsIndex = nodeNames.indexOf("transformations");
             var materialIndex = nodeNames.indexOf("material");
             var textureIndex = nodeNames.indexOf("texture");
             var descendantsIndex = nodeNames.indexOf("descendants");
 
-            this.onXMLMinorError("To do: Parse nodes.");
             // Transformations
+            if (transformationsIndex == -1) {
+                this.onXMLMinorError("tag <transformations> missing, assuming no transformations.");
+            }
+            else {
+                grandgrandChildren = grandChildren[transformationsIndex].children;
+                for (var j = 0; j < grandgrandChildren.length; j++) {
+                    this.parseNodeTransformations(nodeObj, grandgrandChildren[j]);
+                    // nodeObj.addTgMatrix(mtrTg);
+                }
+            }
+
 
             // Material
+            if (materialIndex == -1) {
+                this.onXMLMinorError("tag <material> missing, assuming 'null' material.");
+            }
+            else {
+                grandgrandChildren = grandChildren[transformationsIndex].children;
+                for (var j = 0; j < grandgrandChildren.length; j++) {
+                    this.parseNodeTransformations(nodeObj, grandgrandChildren[j]);
+                    // nodeObj.addTgMatrix(mtrTg);
+                }
+            }
 
             // Texture
+            this.onXMLMinorError("To do: Parse node textures.");
 
             // Descendants
+            this.onXMLMinorError("To do: Parse node descendants.");
         }
     }
 
