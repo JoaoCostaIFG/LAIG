@@ -40,8 +40,11 @@ class MyCilinder extends CGFobject {
 
     var heightStep = this.height / this.stacks;
     var currHeight = 0;
+
+    // cilinders can be sloped => normals have to be sloped
     var normalSlopeZ = (this.bottomRadius - this.topRadius) / this.height;
-    var normalLen = Math.sqrt(2 + Math.pow(normalSlopeZ, 2));
+    // cos(a)^2 + sin(a)^2 = 1
+    var normalLen = Math.sqrt(1 + Math.pow(normalSlopeZ, 2));
 
     for (var stackN = 1; stackN <= this.stacks; ++stackN) {
       ang = 0;
