@@ -48,9 +48,10 @@ class MySceneGraph {
         // TODO
         // this.obj = new MyCilinder(scene, 2, 2, 4, 20, 2);
         // this.obj = new MyTriangle(scene, 0, 0, 0, 2, 1, 0);
-        this.obj = new MySphere(scene, 2, 20, 20);
+        // this.obj = new MySphere(scene, 2, 20, 20);
+        this.obj = new MyTorus(scene, 40, 40, 0.1, 5);
 
-        // this.obj.enableNormalViz();
+        this.obj.enableNormalViz();
 
         this.mat = new CGFappearance(scene);
         this.tex = new CGFtexture(scene, "scenes/images/earth.jpg");
