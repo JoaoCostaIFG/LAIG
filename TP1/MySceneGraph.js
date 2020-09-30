@@ -735,18 +735,29 @@ class MySceneGraph {
                         var descId = this.reader.getString(grandgrandChildren[j], "id");
                         if (descId == null)
                             return "noderef is missing an id.";
-                        nodeObj.addDescendant(descId);
+                        nodeObj.addDescendantNode(descId);
                     }
                     else if (descType == "leaf") {
                         var leafObj = this.parseLeaf(grandgrandChildren[j]);
                         if (typeof leafObj === 'string' || leafObj instanceof String)
                             return leafObj;
-                        nodeObj.addDescendant(leafObj);
+                        nodeObj.addDescendantLeaf(leafObj);
                     }
                     else {
                         this.onXMLMinorError("unknown descendant type: " + descType + ".");
                     }
                 }
+            }
+        }
+
+        /* associate descendant noderef's IDs with the correct objects */
+        for (var key in this.nodes) {
+            var obj = this.nodes[key];
+            for (var i = 0; i < obj.descendantsNode.length; ++i) {
+                var desc = obj.descendantsNode[i];
+                if (this.nodes[desc] == null)
+                    return "missing node with ID: " + desc + ".";
+                obj.descendantsNode[i] = this.nodes[desc];
             }
         }
     }
@@ -861,9 +872,13 @@ class MySceneGraph {
         return color;
     }
 
-    processNode(id, tg, mat, tex, afs, aft) {
-        // TODO
+    processNode(nodeObj) {
+        // draw primitives
+        nodeObj.displayPrimitives();
 
+        // recursively process descendant MyNode objects
+        for (var i = 0; i < nodeObj.descendantsNode.length; ++i)
+            this.processNode(nodeObj.descendantsNode[i]);
     }
 
     /**
@@ -873,15 +888,7 @@ class MySceneGraph {
         // this.mat.apply();
         // this.obj.display();
 
-        for (var key in this.nodes) {
-            var obj = this.nodes[key];
-            for (var i = 0; i < obj.descendants.length; ++i) {
-                var a = obj.descendants[i];
-                if (!(typeof a === 'string' || a instanceof String)) {
-                    a.display();
-                }
-            }
-        }
+        this.processNode(this.nodes[this.idRoot]);
 
         //To do: Create display loop for transversing the scene graph, calling the root node's display function
         

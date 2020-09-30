@@ -16,7 +16,8 @@ class MyNode {
                         0, 0, 1, 0,
                         0, 0, 0, 1];
 
-        this.descendants = [];
+        this.descendantsNode = [];
+        this.descendantsLeaf = [];
     }
 
     addTgMatrix(tg) {
@@ -60,8 +61,18 @@ class MyNode {
         return this.tgMatrix;
     }
 
-    addDescendant(desc) {
-        this.descendants.push(desc);
+    addDescendantNode(desc) {
+        this.descendantsNode.push(desc);
+    }
+
+    addDescendantLeaf(desc) {
+        this.descendantsLeaf.push(desc);
+    }
+
+    displayPrimitives() {
+        // calls display on each CFGobject (leafs)
+        for (var i = 0; i < this.descendantsLeaf.length; ++i)
+            this.descendantsLeaf[i].display();
     }
 }
 
