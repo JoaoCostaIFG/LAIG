@@ -525,6 +525,7 @@ class MySceneGraph {
         var children = materialsNode.children;
 
         this.materials = [];
+        var numMaterials = 0;
 
         var grandChildren = [];
         var nodeNames = [];
@@ -532,25 +533,73 @@ class MySceneGraph {
         // Any number of materials.
         for (var i = 0; i < children.length; i++) {
 
+            // Storing light information
+            var global = [];
+            var attributeNames = [];
+            var attributeTypes = [];
+
+             //Check type of material
             if (children[i].nodeName != "material") {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
                 continue;
+            }
+            else {
+                attributeNames = ["shininess", "specular", "diffuse", "ambient", "emissive"];
+                attributeTypes = ["float","color", "color", "color", "color"];
             }
 
             // Get id of the current material.
             var materialID = this.reader.getString(children[i], 'id');
             if (materialID == null)
-                return "no ID defined for material";// 
+                return "no ID defined for material";
 
             // Checks for repeated IDs.
             if (this.materials[materialID] != null)
                 return "ID must be unique for each material (conflict: ID = " + materialID + ")";
 
-            //Continue here
-            this.onXMLMinorError("To do: Parse materials.");
+            grandChildren = children[i].children;
+            // Specifications for the current material.
+
+            nodeNames = [];
+            for(var j = 0; j < grandChildren.length; j++){
+                nodeNames.push(grandChildren[j].nodeName);
+            }
+
+            for (var j = 0; j < attributeNames.length; j++) {
+                var attributeIndex = nodeNames.indexOf(attributeNames[j]);
+
+                if (attributeIndex != -1) {
+                    if (attributeTypes[j] == "float")
+                        var aux = this.parseFloat(grandChildren[attributeIndex], "value", "shininess attribute for material of ID " + materialID);
+                    else
+                        var aux = this.parseColor(grandChildren[attributeIndex], attributeNames[j] + " illumination for ID " + materialID);
+
+                    if (typeof aux === 'string')
+                        return aux;
+
+                    global.push(aux);
+                }
+                else
+                    return "material" + attributeNames[j] + " undefined for ID = " + materialID;
+                
+            }
+
+            var mat =  new CGFappearance(this.scene);
+            mat.setShininess(global[0]);
+            mat.setSpecular(...global[1]);
+            mat.setDiffuse(...global[2]);
+            mat.setAmbient(...global[3]);
+            mat.setEmission(...global[4]);
+
+            this.materials[materialID] = mat;
+
+            numMaterials++;
         }
 
-        //this.log("Parsed materials");
+        if (numMaterials == 0)
+            return "at least one light must be defined";
+        console.log(this.materials);
+        this.log("Parsed materials");
         return null;
     }
 
