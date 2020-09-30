@@ -536,27 +536,22 @@ class MySceneGraph {
         var tg = tgInfo.nodeName;
 
         if (tg == "translation") {
-            var x = this.reader.getFloat(tgInfo, 'x');
-            if (x == null)
-                x = 0;
-            var y = this.reader.getFloat(tgInfo, 'y');
-            if (y == null)
-                y = 0;
-            var z = this.reader.getFloat(tgInfo, 'z');
-            if (z == null)
-                z = 0;
-            var tgMtr = [0, 0, 0, x,
-                         0, 0, 0, y,
-                         0, 0, 0, z,
+            var coords = this.parseCoordinates3D(tgInfo, "translation");
+            if (!Array.isArray(coords))
+              return coords;
+
+            var tgMtr = [0, 0, 0, coords[0],
+                         0, 0, 0, coords[1],
+                         0, 0, 0, coords[2],
                          0, 0, 0, 1];
         }
         else if (tg == "rotation") {
             var axis = this.reader.getString(tgInfo, "axis");
-            if (axis == null)
+            if (axis == null) {
+                this.onXMLMinorError("unable to parse rotation axis: " + axis + ". Assuming zz rotation.");
                 axis = "zz";
-            var angle = this.reader.getFloat(tgInfo, "angle");
-            if (angle == null)
-                angle = 0;
+            }
+            var angle = this.parseFloat(tgInfo, "angle", "angle", 0.0);
 
             switch (axis) {
                 case "xx":
@@ -583,22 +578,16 @@ class MySceneGraph {
             }
         }
         else if (tg == "scale") {
-            var sx = this.reader.getFloat(tgInfo, "sx");
-            if (sx == null)
-                sx = 1;
-            var sy = this.reader.getFloat(tgInfo, "sy");
-            if (sy == null)
-                sy = 1;
-            var sz = this.reader.getFloat(tgInfo, "sz");
-            if (sz == null)
-                sz = 1;
+            var sx = this.parseFloat(tgInfo, "sx", "sx", 1.0);
+            var sy = this.parseFloat(tgInfo, "sy", "sy", 1.0);
+            var sz = this.parseFloat(tgInfo, "sz", "sz", 1.0);
             var tgMtr = [sx, 0, 0, 0,
                          0, sy, 0, 0,
                          0, 0, sz, 0,
                          0, 0, 0, 1];
         }
         else {
-            this.onXMLMinorError("unknown transformation " + tg +".");
+            this.onXMLMinorError("unknown transformation " + tg + ".");
         }
 
         return tgMtr;
@@ -652,8 +641,10 @@ class MySceneGraph {
             else {
                 grandgrandChildren = grandChildren[transformationsIndex].children;
                 for (var j = 0; j < grandgrandChildren.length; j++) {
-                    this.parseNodeTransformations(grandgrandChildren[j]);
-                    nodeObj.addTgMatrix(this.parseNodeTransformations(grandgrandChildren[j]));
+                    var tg = this.parseNodeTransformations(grandgrandChildren[j]);
+                    if (tg === 'string')
+                        return tg;
+                    nodeObj.addTgMatrix(tg);
                 }
             }
 
@@ -679,6 +670,20 @@ class MySceneGraph {
         }
     }
 
+    parseFloat(node, name, messageError, defaultVal=null){
+        var f = this.reader.getFloat(node, name);
+        if (f == null) {
+            if (defaultVal != null) {
+                this.onXMLMinorError("unable to parse float component " + messageError + "; assuming 'value = " + defaultVal + "'");
+                f = defaultVal;
+            }
+            else {
+                return "unable to parse float component " + messageError;
+            }
+        }
+
+        return f;
+    }
 
     parseBoolean(node, name, messageError){
         var boolVal = true;
@@ -688,6 +693,7 @@ class MySceneGraph {
 
         return boolVal || 1;
     }
+
     /**
      * Parse the coordinates from a node with ID = id
      * @param {block element} node
