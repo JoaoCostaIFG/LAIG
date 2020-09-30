@@ -102,10 +102,10 @@
                 <noderef id="turbine3" />
                 <noderef id="turbine4" />
 
-                <noderef id="wing1" />
-                <noderef id="wing2" />
-                <noderef id="wing3" />
-                <noderef id="wing4" />
+                <!-- <noderef id="wing1" /> -->
+                <!-- <noderef id="wing2" /> -->
+                <!-- <noderef id="wing3" /> -->
+                <!-- <noderef id="wing4" /> -->
             </descendants>
         </node>
 

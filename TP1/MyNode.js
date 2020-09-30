@@ -11,27 +11,26 @@ class MyNode {
             this.mat = dad.getMaterial();
         }
 
-        this.tgMatrix = [1, 0, 0, 0,
-                        0, 1, 0, 0,
-                        0, 0, 1, 0,
-                        0, 0, 0, 1];
+        this.tgMatrix = mat4.create();
 
         this.descendantsNode = [];
         this.descendantsLeaf = [];
     }
 
     addTgMatrix(tg) {
-	    var result = [0, 0, 0, 0,
-				      0, 0, 0, 0,
-                      0, 0, 0, 0,
-                      0, 0, 0, 0];
+		// var result = [0, 0, 0, 0,
+					  // 0, 0, 0, 0,
+                      // 0, 0, 0, 0,
+                      // 0, 0, 0, 0];
 
-        for (var i = 0; i < 4; i++)
-	  	    for (var j = 0; j < 4; j++)
-		  		for(var k = 0; k < 4; k++)
-			  		result[i * 4 + j] += this.tgMatrix[i * 4 + k] * tg[k * 4 + j];
+        // for (var i = 0; i < 4; i++)
+			  // for (var j = 0; j < 4; j++)
+				  // for(var k = 0; k < 4; k++)
+					  // result[i * 4 + j] += this.tgMatrix[i * 4 + k] * tg[k * 4 + j];
 
-        this.tgMatrix = result;
+        // this.tgMatrix = result;
+
+        mat4.multiply(this.tgMatrix, this.tgMatrix, tg);
 	}
 
     setTexture(tex, afs, aft)
@@ -45,21 +44,6 @@ class MyNode {
 	{
 		this.mat = mat;
 	}
-
-	getText()
-	{
-		return this.tex;
-	}
-
-	getMaterial()
-	{
-		return this.mat;
-	}
-
-    getTgMatrix()
-    {
-        return this.tgMatrix;
-    }
 
     addDescendantNode(desc) {
         this.descendantsNode.push(desc);

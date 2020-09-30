@@ -530,11 +530,7 @@ class MySceneGraph {
     * @param {object that contains transformation's info} tgInfo
     */
     parseNodeTransformations(tgInfo) {
-        var tgMtr = [1, 0, 0, 0,
-                     0, 1, 0, 0,
-                     0, 0, 1, 0,
-                     0, 0, 0, 1];
-
+        var tgMtr = mat4.create();
         var tg = tgInfo.nodeName;
 
         if (tg == "translation") {
@@ -542,10 +538,7 @@ class MySceneGraph {
             if (!Array.isArray(coords))
               return coords;
 
-            var tgMtr = [0, 0, 0, coords[0],
-                         0, 0, 0, coords[1],
-                         0, 0, 0, coords[2],
-                         0, 0, 0, 1];
+            mat4.translate(tgMtr, tgMtr, coords);
         }
         else if (tg == "rotation") {
             var axis = this.reader.getString(tgInfo, "axis");
@@ -557,22 +550,13 @@ class MySceneGraph {
 
             switch (axis) {
                 case "xx":
-                    var tgMtr = [1, 0, 0, 0,
-                                 0, Math.cos(angle), -Math.sin(angle), 0,
-                                 0, Math.sin(angle), Math.cos(angle), 0,
-                                 0, 0, 0, 1];
+                    mat4.rotateX(tgMtr, tgMtr, angle);
                     break;
                 case "yy":
-                    var tgMtr = [Math.cos(angle), 0, -Math.sin(angle), 0,
-                                 0, 1, 0, 0,
-                                 -Math.sin(angle), 0, Math.cos(angle), 0,
-                                 0, 0, 0, 1];
+                    mat4.rotateY(tgMtr, tgMtr, angle);
                     break;
                 case "zz":
-                    var tgMtr = [Math.cos(angle), -Math.sin(angle), 0, 0,
-                                 Math.sin(angle), Math.cos(angle), 0, 0,
-                                 0, 0, 1, 0,
-                                 0, 0, 0, 1];
+                    mat4.rotateZ(tgMtr, tgMtr, angle);
                     break;
                 default:
                     this.onXMLMinorError("unknown rotation axis: " + axis + ". Assuming no rotation.");
@@ -583,10 +567,7 @@ class MySceneGraph {
             var sx = this.parseFloat(tgInfo, "sx", "sx", 1.0);
             var sy = this.parseFloat(tgInfo, "sy", "sy", 1.0);
             var sz = this.parseFloat(tgInfo, "sz", "sz", 1.0);
-            var tgMtr = [sx, 0, 0, 0,
-                         0, sy, 0, 0,
-                         0, 0, sz, 0,
-                         0, 0, 0, 1];
+            mat4.scale(tgMtr, tgMtr, [sx, sy, sz]);
         }
         else {
             this.onXMLMinorError("unknown transformation " + tg + ".");
@@ -873,12 +854,17 @@ class MySceneGraph {
     }
 
     processNode(nodeObj) {
+        this.scene.multMatrix(nodeObj.tgMatrix);
+        this.scene.pushMatrix();
+
         // draw primitives
         nodeObj.displayPrimitives();
 
         // recursively process descendant MyNode objects
         for (var i = 0; i < nodeObj.descendantsNode.length; ++i)
             this.processNode(nodeObj.descendantsNode[i]);
+
+        this.scene.popMatrix();
     }
 
     /**

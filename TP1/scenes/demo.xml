@@ -80,7 +80,7 @@
                 <!-- may be repeated as necessary. It can refer an -->
                 <!-- identifier of another node, before or later defined in the file. -->
                 <!-- next lines define nodes of type leaf; may be repeated, in any order, as necessary -->
-                <!-- <leaf type="rectangle" x1="0" y1="1" x2="1" y2="0" /> -->
+                <leaf type="rectangle" x1="0" y1="1" x2="1" y2="0" />
                 <!-- 2D coordinates on the XY plane for left-top and right-bottom vertices. -->
             </descendants>
         </node>
