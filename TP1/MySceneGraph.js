@@ -310,7 +310,7 @@ class MySceneGraph {
 
                 if (attributeIndex != -1) {
                     var aux = this.reader.getFloat(children[i], attributeNames[j], "camera float (" + attributeNames[j] + ") with ID " + cameraId);
-                    if (typeof aux === 'string')
+                    if (typeof aux === 'string' || aux instanceof String)
                         return aux;
 
                     global.push(aux);
@@ -336,7 +336,7 @@ class MySceneGraph {
 
                 if (attributeIndex != -1) {
                     var aux = this.parseCoordinates3D(grandChildren[attributeIndex], attributeNames[j], "camera position (" + attributeNames[j] + ") with ID " + cameraId);
-                    if (typeof aux === 'string')
+                    if (typeof aux === 'string' || aux instanceof String)
                         return aux;
 
                     global.push(aux);
@@ -454,7 +454,7 @@ class MySceneGraph {
                     else
                         var aux = this.parseColor(grandChildren[attributeIndex], attributeNames[j] + " illumination for ID " + lightId);
 
-                    if (typeof aux === 'string')
+                    if (typeof aux === 'string' || aux instanceof String)
                         return aux;
 
                     global.push(aux);
@@ -596,7 +596,7 @@ class MySceneGraph {
     }
 
     parseLeaf(leafNode) {
-        var obj;
+        // TODO getInteger ?
 
         var attributeNames = [];
         var objType = this.reader.getString(leafNode, "type");
@@ -608,17 +608,58 @@ class MySceneGraph {
                 attributeNames = ["x1", "y1", "x2", "y2", "x3", "y3"];
                 break;
             case "cylinder":
-                attributeNames = ["height", "topRadius", "bottomRadius", "stacks", "slices"];
+                attributeNames = ["bottomRadius", "topRadius", "height", "slices", "stacks"];
                 break;
             case "sphere":
                 attributeNames = ["radius", "slices", "stacks"];
                 break;
             case "torus":
-                attributeNames = ["inner", "outer", "slices", "loops"];
+                attributeNames = ["slices", "loops", "inner", "outer"];
                 break;
             default:
-                break;           
+                return "unknown leaf type: " + objType + ".";
         }
+
+        // Parse remaining tag info
+        var global = [];
+        var nodeNames = [];
+        for (var j = 0; j < leafNode.attributes.length; j++) {
+            nodeNames.push(leafNode.attributes[j].nodeName);
+        }
+        for (var j = 0; j < attributeNames.length; j++) {
+            var attributeIndex = nodeNames.indexOf(attributeNames[j]);
+
+            if (attributeIndex != -1) {
+                var aux = this.parseFloat(leafNode, attributeNames[j], "leaf float (" + attributeNames[j] + ") with type " + objType);
+                if (typeof aux === 'string' || aux instanceof String)
+                    return aux;
+
+                global.push(aux);
+            }
+            else
+                return "leaf " + attributeNames[j] + " undefined for type = " + objType;
+        }
+
+        var obj;
+        switch (objType) {
+            case "rectangle":
+                obj = new MyRectangle(this.scene, ...global);
+                break;
+            case "triangle":
+                obj = new MyTriangle(this.scene, ...global);
+                break;
+            case "cylinder":
+                obj = new MyCilinder(this.scene, ...global);
+                break;
+            case "sphere":
+                obj = new MySphere(this.scene, ...global);
+                break;
+            default: // "torus":
+                obj = new MyTorus(this.scene, ...global);
+                break;
+        }
+
+        return obj;
     }
 
     /**
@@ -670,7 +711,7 @@ class MySceneGraph {
                 grandgrandChildren = grandChildren[transformationsIndex].children;
                 for (var j = 0; j < grandgrandChildren.length; j++) {
                     var tg = this.parseNodeTransformations(grandgrandChildren[j]);
-                    if (tg === 'string')
+                    if (typeof tg === 'string' || tg instanceof String)
                         return tg;
                     nodeObj.addTgMatrix(tg);
                 }
@@ -698,9 +739,12 @@ class MySceneGraph {
                     }
                     else if (descType == "leaf") {
                         var leafObj = this.parseLeaf(grandgrandChildren[j]);
-                        console.log(leafObj);
+                        if (typeof leafObj === 'string' || leafObj instanceof String)
+                            return leafObj;
+                        nodeObj.addDescendant(leafObj);
                     }
                     else {
+                        this.onXMLMinorError("unknown descendant type: " + descType + ".");
                     }
                 }
             }
@@ -709,7 +753,7 @@ class MySceneGraph {
 
     parseFloat(node, name, messageError, defaultVal=null){
         var f = this.reader.getFloat(node, name);
-        if (f == null) {
+        if (f == null || isNaN(f)) {
             if (defaultVal != null) {
                 this.onXMLMinorError("unable to parse float component " + messageError + "; assuming 'value = " + defaultVal + "'");
                 f = defaultVal;
@@ -817,12 +861,27 @@ class MySceneGraph {
         return color;
     }
 
+    processNode(id, tg, mat, tex, afs, aft) {
+        // TODO
+
+    }
+
     /**
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        this.mat.apply();
-        this.obj.display();
+        // this.mat.apply();
+        // this.obj.display();
+
+        for (var key in this.nodes) {
+            var obj = this.nodes[key];
+            for (var i = 0; i < obj.descendants.length; ++i) {
+                var a = obj.descendants[i];
+                if (!(typeof a === 'string' || a instanceof String)) {
+                    a.display();
+                }
+            }
+        }
 
         //To do: Create display loop for transversing the scene graph, calling the root node's display function
         
