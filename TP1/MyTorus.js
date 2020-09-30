@@ -9,8 +9,8 @@ class MyTorus extends CGFobject {
      */
     constructor(scene, slices, loops, innerRadius, outerRadius) {
       super(scene);
-      this.loops = loops;
-      this.slices = slices;
+      this.latDivs = loops;
+      this.longDivs = slices;
       this.innerRadius = innerRadius;
       this.outerRadius = outerRadius;
   
@@ -19,7 +19,7 @@ class MyTorus extends CGFobject {
   
     /**
      * @method initBuffers
-     * Initializes the torus buffers
+     * Initializes the sphere buffers
      */
     initBuffers() {
       this.vertices = [];
@@ -27,68 +27,57 @@ class MyTorus extends CGFobject {
       this.normals = [];
       this.texCoords = [];
   
-      var phiInc = (2 * Math.PI) / this.loops;
-      var thetaInc = (2 * Math.PI) / this.slices;
+      var phiInc = (2 * Math.PI) / this.latDivs;
+      var thetaInc = (2 * Math.PI) / this.longDivs;
+      var latVertices = this.longDivs + 1;
+
+      var phi = 0;
+      var theta = 0;
+      // build an all-around stack at a time, starting on "north pole" and proceeding "south"
+      for (let latitude = 0; latitude <= this.latDivs; latitude++) {
+        var sinPhi = Math.sin(phi);
+        var cosPhi = Math.cos(phi);
   
-      for (var sliceN = 0; sliceN <= this.loops; sliceN++) {
-        
-        var theta = 0;
-        var sinTheta = Math.sin(theta);
-        var cosTheta = Math.cos(theta);
-
-        // in each loop, build all the slices around
-        for (var loopN = 0; loopN <= this.slices; loopN++) {
-            
-          var phi = 0;
-          var sinPhi = Math.sin(phi);
-          var cosPhi = Math.sin(phi);
-
-          //--- Vertices coordinates
-          var x = (this.outerRadius + this.innerRadius * cosTheta) * cosPhi;
-          var y = (this.outerRadius + this.innerRadius * cosTheta) * sinPhi;
-          var z = this.innerRadius * sinTheta;
-          
-          this.vertices.push(x, y, z);
-
-          //Normals
-          var nx = cosPhi * cosTheta;
-          var ny = cosTheta * sinPhi;
-          var nz = sinTheta;
-
-          this.normals.push(nx, ny, nz);
+        // in each stack, build all the slices around, starting on longitude 0
+        theta = 0;
+        for (let longitude = 0; longitude <= this.longDivs; longitude++) {
+            //--- Vertices coordinates
+            var x = (this.outerRadius + this.innerRadius * Math.cos(theta)) * cosPhi;
+            var y = (this.outerRadius + this.innerRadius * Math.cos(theta)) * sinPhi;
+            var z = this.innerRadius * Math.sin(theta);
+            this.vertices.push(x, y, z);
   
-          //--- Texture Coordinates
-          this.texCoords.push(sliceN/this.slices);
-          this.texCoords.push(loopN/this.loops);
-
-          //--- Indices 
-          
-          /* think about a prism made of rectangles. Each rectangle like so:
-          * 1----3
-          * |\   |
-          * | \  |
-          * |  \ |
-          * |   \|
-          * 0----2
-          *
-          */
-         if (sliceN < this.slices && loopN < this.loops) {
-          var current = loopN * (this.loops +1) + sliceN;
-          var next = current + (this.loops +1);
-          // pushing two triangles using indices from this round (current, current+1)
-          // and the ones directly south (next, next+1)
-          // (i.e. one full round of slices ahead)
-
-          this.indices.push(current + 1, current, next);
-          this.indices.push(current + 1, next, next +1);
-        }
-  
-          theta += thetaInc;          
+            //--- Texture Coordinates
+            this.texCoords.push(longitude/this.longDivs, latitude/this.latDivs);
+      
+            //--- Indices
+            if (latitude < this.latDivs && longitude < this.longDivs) {
+                var current = latitude * latVertices + longitude;
+                var next = current + latVertices;
+                // pushing two triangles using indices from this round (current, current+1)
+                // and the ones directly south (next, next+1)
+                // (i.e. one full round of slices ahead)
+                
+                this.indices.push(current + 1, current, next);
+                this.indices.push(current + 1, next, next +1);
+            }
+      
+            //--- Normals
+            // at each vertex, the direction of the normal is equal to 
+            // the vector from the center of the sphere to the vertex.
+            // in a sphere of radius equal to one, the vector length is one.
+            // therefore, the value of the normal is equal to the position vectro
+            var nx = Math.cos(theta) * cosPhi;
+            var ny = Math.cos(theta) * sinPhi;
+            var nz = Math.sin(theta);
+            var normalLen = Math.sqrt(Math.pow(nx, 2) + Math.pow(ny, 2) + Math.pow(nz, 2));
+            this.normals.push(nx/normalLen, ny/normalLen, nz/normalLen);
+            theta += thetaInc;
         }
         phi += phiInc;
       }
-  
+
       this.primitiveType = this.scene.gl.TRIANGLES;
       this.initGLBuffers();
     }
-  }
+}

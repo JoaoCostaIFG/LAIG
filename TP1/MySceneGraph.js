@@ -45,7 +45,9 @@ class MySceneGraph {
          */
         this.reader.open('scenes/' + filename, this);
 
-        this.obj = new MyCilinder(scene, 2, 2, 4, 20, 2);
+        this.obj = new MyTorus(scene, 10, 10, 0.5, 2.5);
+        this.obj.enableNormalViz();
+        // this.obj = new MyTorus(scene, 2, 20, 20);
 
         this.mat = new CGFappearance(scene);
         this.tex = new CGFtexture(scene, "scenes/images/earth.jpg");
