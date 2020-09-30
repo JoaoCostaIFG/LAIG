@@ -46,10 +46,11 @@ class MySceneGraph {
         this.reader.open('scenes/' + filename, this);
 
         // TODO
-        this.obj = new MyCilinder(scene, 2, 2, 4, 20, 2);
+        // this.obj = new MyCilinder(scene, 2, 2, 4, 20, 2);
         // this.obj = new MyTriangle(scene, 0, 0, 0, 2, 1, 0);
+        this.obj = new MySphere(scene, 2, 20, 20);
 
-        this.obj.enableNormalViz();
+        // this.obj.enableNormalViz();
 
         this.mat = new CGFappearance(scene);
         this.tex = new CGFtexture(scene, "scenes/images/earth.jpg");
@@ -593,6 +594,32 @@ class MySceneGraph {
         return tgMtr;
     }
 
+    parseLeaf(leafNode) {
+        var obj;
+
+        var attributeNames = [];
+        var objType = this.reader.getString(leafNode, "type");
+        switch (objType) {
+            case "rectangle":
+                attributeNames = ["x1", "y1", "x2", "y2"];
+                break;
+            case "triangle":
+                attributeNames = ["x1", "y1", "x2", "y2", "x3", "y3"];
+                break;
+            case "cylinder":
+                attributeNames = ["height", "topRadius", "bottomRadius", "stacks", "slices"];
+                break;
+            case "sphere":
+                attributeNames = ["radius", "slices", "stacks"];
+                break;
+            case "torus":
+                attributeNames = ["inner", "outer", "slices", "loops"];
+                break;
+            default:
+                break;           
+        }
+    }
+
     /**
     * Parses the <nodes> block.
     * @param {nodes block element} nodesNode
@@ -649,24 +676,33 @@ class MySceneGraph {
             }
 
             // Material
-            if (materialIndex == -1) {
-                this.onXMLMinorError("tag <material> missing, assuming 'null' material.");
-            }
-            else {
-                /*
-                grandgrandChildren = grandChildren[transformationsIndex].children;
-                for (var j = 0; j < grandgrandChildren.length; j++) {
-                    this.parseNodeTransformations(nodeObj, grandgrandChildren[j]);
-                    // nodeObj.addTgMatrix(mtrTg);
-                }
-                */
-            }
+            this.onXMLMinorError("To do: Parse node material.");
 
             // Texture
             this.onXMLMinorError("To do: Parse node textures.");
 
             // Descendants
-            this.onXMLMinorError("To do: Parse node descendants.");
+            if (descendantsIndex == -1) {
+                return "tag <descendants> missing. Parsing failed";
+            }
+            else {
+                grandgrandChildren = grandChildren[descendantsIndex].children;
+                for (var j = 0; j < grandgrandChildren.length; j++) {
+                    var descType = grandgrandChildren[j].nodeName;
+                    if (descType == "noderef") {
+                        var descId = this.reader.getString(grandgrandChildren[j], "id");
+                        if (descId == null)
+                            return "noderef is missing an id.";
+                        nodeObj.addDescendant(descId);
+                    }
+                    else if (descType == "leaf") {
+                        var leafObj = this.parseLeaf(grandgrandChildren[j]);
+                        console.log(leafObj);
+                    }
+                    else {
+                    }
+                }
+            }
         }
     }
 

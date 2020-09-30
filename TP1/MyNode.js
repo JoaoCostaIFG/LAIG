@@ -12,9 +12,11 @@ class MyNode {
         }
 
         this.tgMatrix = [1, 0, 0, 0,
-                    0, 1, 0, 0,
-                    0, 0, 1, 0,
-                    0, 0, 0, 1];
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        0, 0, 0, 1];
+
+        this.descendants = [];
     }
 
 	addTgMatrix(tg){
@@ -56,6 +58,10 @@ class MyNode {
     getTgMatrix()
     {
         return this.tgMatrix;
+    }
+
+    addDescendant(desc) {
+        this.descendants.push(desc);
     }
 }
 
