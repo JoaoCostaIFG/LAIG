@@ -40,6 +40,8 @@ class MyCilinder extends CGFobject {
 
     var heightStep = this.height / this.stacks;
     var currHeight = 0;
+    var normalSlopeZ = (this.bottomRadius - this.topRadius) / this.height;
+    var normalLen = Math.sqrt(2 + Math.pow(normalSlopeZ, 2));
 
     for (var stackN = 1; stackN <= this.stacks; ++stackN) {
       ang = 0;
@@ -61,11 +63,11 @@ class MyCilinder extends CGFobject {
 
       // this is vertice 0
       this.vertices.push(r1 * Math.cos(ang), r1 * Math.sin(ang), currHeight);
-      this.normals.push(Math.cos(ang), Math.sin(ang), 0);
+      this.normals.push(Math.cos(ang) / normalLen, Math.sin(ang) / normalLen, normalSlopeZ / normalLen);
       this.texCoords.push(texCurr, texYCurr);
       // this is vertice 1
       this.vertices.push(r2 * Math.cos(ang), r2 * Math.sin(ang), currHeight + heightStep);
-      this.normals.push(Math.cos(ang), Math.sin(ang), 0);
+      this.normals.push(Math.cos(ang) / normalLen, Math.sin(ang) / normalLen, normalSlopeZ / normalLen);
       this.texCoords.push(texCurr, texYCurr - texYStep);
       ang += alphaAng;
       texCurr += texStep;
@@ -74,12 +76,12 @@ class MyCilinder extends CGFobject {
       for (var i = (this.slices * 2 + 2) * (stackN - 1) + 2; i < (this.slices * 2 + 2) * stackN; i += 2) {
         // this is vertice 2
         this.vertices.push(r1 * Math.cos(ang), r1 * Math.sin(ang), currHeight);
-        this.normals.push(Math.cos(ang), Math.sin(ang), 0);
+        this.normals.push(Math.cos(ang) / normalLen, Math.sin(ang) / normalLen, normalSlopeZ / normalLen);
         this.texCoords.push(texCurr, texYCurr);
 
         // this is vertice 3
         this.vertices.push(r2 * Math.cos(ang), r2 * Math.sin(ang), currHeight + heightStep);
-        this.normals.push(Math.cos(ang), Math.sin(ang), 0);
+        this.normals.push(Math.cos(ang) / normalLen, Math.sin(ang) / normalLen, normalSlopeZ / normalLen);
         this.texCoords.push(texCurr, texYCurr - texYStep);
 
         // these are the triangles: 0-1-2 and 1-3-2

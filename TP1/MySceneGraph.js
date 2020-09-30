@@ -45,6 +45,7 @@ class MySceneGraph {
          */
         this.reader.open('scenes/' + filename, this);
 
+        // TODO
         this.obj = new MyCilinder(scene, 2, 2, 4, 20, 2);
         // this.obj = new MyTriangle(scene, 0, 0, 0, 2, 1, 0);
 
@@ -252,10 +253,106 @@ class MySceneGraph {
      * @param {view block element} viewsNode
      */
     parseViews(viewsNode) {
-        this.onXMLMinorError("To do: Parse views and create cameras.");
+        var children = viewsNode.children;
 
-        // this.log("Parsed views");
+        this.cameras = [];
+        // assume first camera if none given
+        this.defaultCameraId = this.reader.getString(viewsNode, "default");
+        if (this.defaultCameraId == null)
+            return this.defaultCameraId;
+        var numCameras = 0;
 
+        var grandChildren = [];
+        var nodeNames = [];
+
+        for (var i = 0; i < children.length; i++) {
+            // Storing camera information
+            var global = [];
+            var attributeNames = [];
+
+            // Check type of camera
+            if (children[i].nodeName == "perspective") {
+                attributeNames = ["angle", "near", "far"];
+                global = ["perspective"];
+            }
+            else if (children[i].nodeName == "ortho") {
+                attributeNames = ["left", "right", "bottom", "top", "near", "far"];
+                global = ["ortho"];
+            }
+            else {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // Get id of the current camera.
+            var cameraId = this.reader.getString(children[i], 'id');
+            if (cameraId == null)
+                return "no ID defined for camera";
+            global.push(cameraId);
+
+            // Checks for repeated IDs.
+            if (this.cameras[cameraId] != null)
+                return "ID must be unique for each camera (conflict: ID = " + cameraId + ")";
+
+            // Specifications for the current light.
+
+            // Parse remaining tag info
+            nodeNames = [];
+            for (var j = 0; j < children[i].attributes.length; j++) {
+                nodeNames.push(children[i].attributes[j].nodeName);
+            }
+            for (var j = 0; j < attributeNames.length; j++) {
+                var attributeIndex = nodeNames.indexOf(attributeNames[j]);
+
+                if (attributeIndex != -1) {
+                    var aux = this.reader.getFloat(children[i], attributeNames[j], "camera float (" + attributeNames[j] + ") with ID " + cameraId);
+                    if (typeof aux === 'string')
+                        return aux;
+
+                    global.push(aux);
+                }
+                else
+                    return "camera " + attributeNames[j] + " undefined for ID = " + cameraId;
+            }
+
+            // Parse other info
+            if (children[i].nodeName == "perspective")
+                attributeNames = ["from", "to"];
+            else
+                attributeNames = ["from", "to", "up"];
+
+            nodeNames = [];
+            grandChildren = children[i].children;
+            for (var j = 0; j < grandChildren.length; j++) {
+                nodeNames.push(grandChildren[j].nodeName);
+            }
+
+            for (var j = 0; j < attributeNames.length; j++) {
+                var attributeIndex = nodeNames.indexOf(attributeNames[j]);
+
+                if (attributeIndex != -1) {
+                    var aux = this.parseCoordinates3D(grandChildren[attributeIndex], attributeNames[j], "camera position (" + attributeNames[j] + ") with ID " + cameraId);
+                    if (typeof aux === 'string')
+                        return aux;
+
+                    global.push(aux);
+                }
+                else if (attributeNames[j] == "up") // default value
+                    global.push([0, 1, 0]);
+                else
+                    return "camera " + attributeNames[j] + " undefined for ID = " + cameraId;
+            }
+
+            this.cameras[cameraId] = global;
+            ++numCameras;
+        }
+
+        if (numCameras == 0)
+            return "at least one camera must be defined";
+        if (this.cameras[this.defaultCameraId] == null)
+            return "default camera (" + this.defaultCameraId + ") was not defined.";
+
+        this.log("Parsed views");
         return null;
     }
 
@@ -347,11 +444,11 @@ class MySceneGraph {
 
                 if (attributeIndex != -1) {
                     if (attributeTypes[j] == "boolean")
-                        var aux = this.parseBoolean(grandChildren[attributeIndex], "value", "enabled attribute for light of ID" + lightId);
+                        var aux = this.parseBoolean(grandChildren[attributeIndex], "value", "enabled attribute for light of ID " + lightId);
                     else if (attributeTypes[j] == "position")
-                        var aux = this.parseCoordinates4D(grandChildren[attributeIndex], "light position for ID" + lightId);
+                        var aux = this.parseCoordinates4D(grandChildren[attributeIndex], "light position for ID " + lightId);
                     else
-                        var aux = this.parseColor(grandChildren[attributeIndex], attributeNames[j] + " illumination for ID" + lightId);
+                        var aux = this.parseColor(grandChildren[attributeIndex], attributeNames[j] + " illumination for ID " + lightId);
 
                     if (typeof aux === 'string')
                         return aux;
@@ -359,7 +456,7 @@ class MySceneGraph {
                     global.push(aux);
                 }
                 else
-                    return "light " + attributeNames[i] + " undefined for ID = " + lightId;
+                    return "light " + attributeNames[j] + " undefined for ID = " + lightId;
             }
             this.lights[lightId] = global;
             numLights++;
@@ -437,21 +534,15 @@ class MySceneGraph {
         var tg = tgInfo.nodeName;
 
         if (tg == "translation") {
-            var x = this.reader.getString(tgInfo, 'x');
-            if (x == null) {
-                this.onXMLMinorError("x component in translation missing, assuming 0.");
+            var x = this.reader.getFloat(tgInfo, 'x');
+            if (x == null)
                 x = 0;
-            }
-            var y = this.reader.getString(tgInfo, 'y');
-            if (y == null) {
-                this.onXMLMinorError("y component in translation missing, assuming 0.");
+            var y = this.reader.getFloat(tgInfo, 'y');
+            if (y == null)
                 y = 0;
-            }
-            var z = this.reader.getString(tgInfo, 'z');
-            if (z == null) {
-                this.onXMLMinorError("z component in translation missing, assuming 0.");
+            var z = this.reader.getFloat(tgInfo, 'z');
+            if (z == null)
                 z = 0;
-            }
             var tgMtr = [0, 0, 0, x,
                          0, 0, 0, y,
                          0, 0, 0, z,
@@ -459,15 +550,11 @@ class MySceneGraph {
         }
         else if (tg == "rotation") {
             var axis = this.reader.getString(tgInfo, "axis");
-            if (axis == null) {
-                this.onXMLMinorError("axis component in rotation missing, assuming z.");
+            if (axis == null)
                 axis = "zz";
-            }
-            var angle = this.reader.getString(tgInfo, "angle");
-            if (angle == null) {
-                this.onXMLMinorError("angle component in rotation missing, assuming 0.");
+            var angle = this.reader.getFloat(tgInfo, "angle");
+            if (angle == null)
                 angle = 0;
-            }
 
             switch (axis) {
                 case "xx":
@@ -494,21 +581,15 @@ class MySceneGraph {
             }
         }
         else if (tg == "scale") {
-            var sx = this.reader.getString(tgInfo, "sx");
-            if (sx == null) {
-                this.onXMLMinorError("sx component in scale missing, assuming 1.");
+            var sx = this.reader.getFloat(tgInfo, "sx");
+            if (sx == null)
                 sx = 1;
-            }
-            var sy = this.reader.getString(tgInfo, "sy");
-            if (sy == null) {
-                this.onXMLMinorError("sy component in scale missing, assuming 1.");
+            var sy = this.reader.getFloat(tgInfo, "sy");
+            if (sy == null)
                 sy = 1;
-            }
-            var sz = this.reader.getString(tgInfo, "sz");
-            if (sz == null) {
-                this.onXMLMinorError("sz component in scale missing, assuming 1.");
+            var sz = this.reader.getFloat(tgInfo, "sz");
+            if (sz == null)
                 sz = 1;
-            }
             var tgMtr = [sx, 0, 0, 0,
                          0, sy, 0, 0,
                          0, 0, sz, 0,
@@ -695,7 +776,7 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        // this.mat.apply();
+        this.mat.apply();
         this.obj.display();
 
         //To do: Create display loop for transversing the scene graph, calling the root node's display function

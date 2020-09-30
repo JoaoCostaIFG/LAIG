@@ -21,7 +21,9 @@ class XMLscene extends CGFscene {
 
         this.sceneInited = false;
 
-        this.initCameras();
+        // this.initCameras();
+        // default camera
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
 
         this.enableTextures(true);
 
@@ -38,15 +40,52 @@ class XMLscene extends CGFscene {
 
         this.defaultAppearance=new CGFappearance(this);
 
+        this.cameras = [];
+        this.selectedCamera = -1;
+        this.lastCamera = -1;
+        this.cameraList = {};
     }
 
     /**
      * Initializes the scene cameras.
      */
     initCameras() {
-      // TODO
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        var i = 0;
+
+        for (var key in this.graph.cameras) {
+            var camInfo = this.graph.cameras[key];
+            var cam;
+            if (camInfo[0] == "perspective") {
+                cam = new CGFcamera(...camInfo.slice(2));
+            }
+            else {
+                cam = new CGFcameraOrtho(...camInfo.slice(2));
+            }
+
+            this.cameras.push(cam);
+            this.cameraList[camInfo[1]] = i;
+            if (camInfo[1] == this.graph.defaultCameraId)
+                this.selectedCamera = i;
+
+            ++i;
+        }
+
+        this.interface.gui
+            .add(this, "selectedCamera", this.cameraList)
+            .name("Selected camera");
+        // TODO ?
+            // .onChange(this.updateSelectedCamera());
     }
+
+    updateCurrentCamera() {
+        if (this.lastCamera == this.selectedCamera)
+            return;
+
+        this.lastCamera = this.selectedCamera;
+        this.camera = this.cameras[this.selectedCamera];
+        this.interface.setActiveCamera(this.camera);
+    }
+
     /**
      * Initializes the scene lights with the values read from the XML file.
      */
@@ -90,6 +129,7 @@ class XMLscene extends CGFscene {
 
         this.setGlobalAmbientLight(...this.graph.ambient);
 
+        this.initCameras();
         this.initLights();
 
         this.sceneInited = true;
@@ -106,6 +146,7 @@ class XMLscene extends CGFscene {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
         // Initialize Model-View matrix as identity (no transformation
+        this.updateCurrentCamera();
         this.updateProjectionMatrix();
         this.loadIdentity();
 
