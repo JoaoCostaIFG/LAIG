@@ -22,9 +22,9 @@ class MyTriangle extends CGFobject {
 	
 	initBuffers() {
 		this.vertices = [
-      this.x1, this.y1, 0,	// 0
-      this.x2, this.y2, 0,	// 1
-      this.x3, this.y3, 0,	// 2
+            this.x1, this.y1, 0,	// 0
+            this.x2, this.y2, 0,	// 1
+            this.x3, this.y3, 0,	// 2
 		];
 
 		//Counter-clockwise reference of vertices
@@ -32,38 +32,40 @@ class MyTriangle extends CGFobject {
 			0, 1, 2,
 		];
 
-    // TODO normais ao contrario
-		//Facing Z positive
+        var out = vec3.create();
+        vec3.cross(out, [this.x2 - this.x1, this.y2 - this.y1, 0], [this.x3 - this.x1, this.y3 - this.y1, 0]);
+        var normalZ = out[2] > 0 ? 1 : -1;
 		this.normals = [
-			0, 0, 1,
-			0, 0, 1,
-			0, 0, 1
+			0, 0, normalZ,
+			0, 0, normalZ,
+			0, 0, normalZ,
+			0, 0, normalZ
 		];
 		
 		/*
 		Texture coords (s,t)
 		+----------> s
-    |
-    |
-		|
-		v
-    t
-    */
+        |
+        |
+        |
+        v
+        t
+        */
 
-    var a = Math.sqrt(Math.pow(this.x2 - this.x1, 2) + Math.pow(this.y2 - this.y1, 2));
-    var b = Math.sqrt(Math.pow(this.x3 - this.x2, 2) + Math.pow(this.y3 - this.y2, 2));
-    var c = Math.sqrt(Math.pow(this.x1 - this.x3, 2) + Math.pow(this.y1 - this.y3, 2));
+        var a = Math.sqrt(Math.pow(this.x2 - this.x1, 2) + Math.pow(this.y2 - this.y1, 2));
+        var b = Math.sqrt(Math.pow(this.x3 - this.x2, 2) + Math.pow(this.y3 - this.y2, 2));
+        var c = Math.sqrt(Math.pow(this.x1 - this.x3, 2) + Math.pow(this.y1 - this.y3, 2));
 
-    var cos = (a *a - b * b + c * c) / (2 * a * c);
-    var sin = Math.sqrt(1 - cos * cos);
+        var cos = (a *a - b * b + c * c) / (2 * a * c);
+        var sin = Math.sqrt(1 - cos * cos);
 
-		this.texCoords = [
-      0, 1,
-      a/1, 1,
-      c * cos / 1, 1 - c * sin / 1
-		];
-		this.primitiveType = this.scene.gl.TRIANGLES;
-		this.initGLBuffers();
+        this.texCoords = [
+          0, 1,
+          a/1, 1,
+          c * cos / 1, 1 - c * sin / 1
+        ];
+        this.primitiveType = this.scene.gl.TRIANGLES;
+        this.initGLBuffers();
 	}
 
 	/**

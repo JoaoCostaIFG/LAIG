@@ -32,9 +32,8 @@ class MyRectangle extends CGFobject {
 			1, 3, 2
 		];
 
-        // vector x1 -> x2. If components, have diferent signs, needs inverted normals
+        // vector P1 -> P2. If components, have diferent signs, needs inverted normals
         var normalZ = (this.y2 - this.y1) * (this.x2 - this.x1) < 0 ? -1 : 1;
-		//Facing Z positive
 		this.normals = [
 			0, 0, normalZ,
 			0, 0, normalZ,
