@@ -598,7 +598,7 @@ class MySceneGraph {
 
         if (numMaterials == 0)
             return "at least one light must be defined";
-        console.log(this.materials);
+        
         this.log("Parsed materials");
         return null;
     }
@@ -777,8 +777,15 @@ class MySceneGraph {
             }
 
             // Material
-            this.onXMLMinorError("To do: Parse node material.");
+            if (materialIndex == -1) {
+                this.onXMLMinorError("tag <material> missing for node (conflict: ID = " + nodeID + ")");
+            }
+            else{
+                var materialID = this.reader.getString(grandChildren[materialIndex], 'id');
 
+                nodeObj.setMaterial(materialID);
+            }
+            
             // Texture
             this.onXMLMinorError("To do: Parse node textures.");
 
