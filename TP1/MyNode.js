@@ -55,8 +55,10 @@ class MyNode {
 
     displayPrimitives() {
         // calls display on each CFGobject (leafs)
-        for (var i = 0; i < this.descendantsLeaf.length; ++i)
+      for (var i = 0; i < this.descendantsLeaf.length; ++i) {
+            // this.descendantsLeaf[i].enableNormalViz();
             this.descendantsLeaf[i].display();
+      }
     }
 }
 

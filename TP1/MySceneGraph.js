@@ -598,7 +598,7 @@ class MySceneGraph {
 
         if (numMaterials == 0)
             return "at least one light must be defined";
-        console.log(this.materials);
+
         this.log("Parsed materials");
         return null;
     }
@@ -624,7 +624,8 @@ class MySceneGraph {
                 this.onXMLMinorError("unable to parse rotation axis: " + axis + ". Assuming zz rotation.");
                 axis = "zz";
             }
-            var angle = this.parseFloat(tgInfo, "angle", "angle", 0.0);
+            // need to convert to rad
+            var angle = this.parseFloat(tgInfo, "angle", "angle", 0.0) * DEGREE_TO_RAD;
 
             switch (axis) {
                 case "xx":
@@ -932,8 +933,8 @@ class MySceneGraph {
     }
 
     processNode(nodeObj) {
-        this.scene.multMatrix(nodeObj.tgMatrix);
         this.scene.pushMatrix();
+        this.scene.multMatrix(nodeObj.tgMatrix);
 
         // draw primitives
         nodeObj.displayPrimitives();

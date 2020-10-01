@@ -32,8 +32,8 @@ class MyRectangle extends CGFobject {
 			1, 3, 2
 		];
 
-        // vector P1 -> P2. If components, have diferent signs, needs inverted normals
-        var normalZ = (this.y2 - this.y1) * (this.x2 - this.x1) < 0 ? -1 : 1;
+    // vector P1 -> P2. If components, have diferent signs, needs inverted normals
+    var normalZ = (this.y2 - this.y1) * (this.x2 - this.x1) < 0 ? -1 : 1;
 		this.normals = [
 			0, 0, normalZ,
 			0, 0, normalZ,
@@ -44,12 +44,12 @@ class MyRectangle extends CGFobject {
 		/*
 		Texture coords (s,t)
 		+----------> s
-        |
-        |
+    |
+    |
 		|
 		v
-        t
-        */
+    t
+    */
 
 		this.texCoords = [
 			0, 1,
