@@ -49,10 +49,10 @@
          requires a distinct "id". At least one material should be present. -->
         <material id="demoMaterial">
             <shininess value="1.0" />
-            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
-            <specular r="0.6" g="0.0" b="0.0" a="1.0" />
-            <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.0" g="1.0" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="1.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="1.0" b="0.0" a="1.0" />
+            <emissive r="0.0" g="1.0" b="0.0" a="1.0" />
         </material>
     </materials>
 
@@ -313,12 +313,11 @@
             </texture>
 
             <transformations>
-                <translation x="10.8" y="4.3" z="0.0" />
-                <rotation axis="zz" angle="20" />
+                <translation x="12.2" y="4.3" z="0.0" />
             </transformations>
 
             <descendants>
-                <noderef id="wing" />
+                <noderef id="wingBaseTopLeft" />
             </descendants>
         </node>
         <node id="wingTopRight">
@@ -327,12 +326,11 @@
             </texture>
 
             <transformations>
-                <translation x="-10.8" y="4.3" z="0.0" />
-                <rotation axis="zz" angle="-20" />
+                <translation x="-12.2" y="4.3" z="0.0" />
             </transformations>
 
             <descendants>
-                <noderef id="wing" />
+                <noderef id="wingBaseTopRight" />
             </descendants>
         </node>
         <node id="wingBotLeft">
@@ -341,12 +339,11 @@
             </texture>
 
             <transformations>
-                <translation x="10.8" y="-4.3" z="0.0" />
-                <rotation axis="zz" angle="-20" />
+                <translation x="12.2" y="-4.3" z="0.0" />
             </transformations>
 
             <descendants>
-                <noderef id="wing" />
+                <noderef id="wingBaseBotLeft" />
             </descendants>
         </node>
         <node id="wingBotRight">
@@ -355,12 +352,69 @@
             </texture>
 
             <transformations>
-                <translation x="-10.8" y="-4.3" z="0.0" />
+                <translation x="-12.2" y="-4.3" z="0.0" />
+            </transformations>
+
+            <descendants>
+                <noderef id="wingBaseBotRight" />
+            </descendants>
+        </node>
+
+        <!-- WINGBASE -->
+        <node id="wingBaseTopLeft">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
                 <rotation axis="zz" angle="20" />
             </transformations>
 
             <descendants>
                 <noderef id="wing" />
+                <noderef id="gunTopLeft" />
+            </descendants>
+        </node>
+        <node id="wingBaseTopRight">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <rotation axis="zz" angle="-20" />
+            </transformations>
+
+            <descendants>
+                <noderef id="wing" />
+                <noderef id="gunTopRight" />
+            </descendants>
+        </node>
+        <node id="wingBaseBotLeft">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <rotation axis="zz" angle="-20" />
+            </transformations>
+
+            <descendants>
+                <noderef id="wing" />
+                <noderef id="gunBotLeft" />
+            </descendants>
+        </node>
+        <node id="wingBaseBotRight">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <rotation axis="zz" angle="20" />
+            </transformations>
+
+            <descendants>
+                <noderef id="wing" />
+                <noderef id="gunBotRight" />
             </descendants>
         </node>
         <node id="wing">
@@ -369,12 +423,78 @@
             </texture>
 
             <transformations>
-                <scale sx="10" sy="0.3" sz="1" />
+                <scale sx="12" sy="0.3" sz="1" />
                 <rotation axis="zz" angle="45" />
             </transformations>
 
             <descendants>
                 <leaf type="cylinder" height="10.0" topRadius="1.0" bottomRadius="1.0" stacks="4" slices="4"/>
+            </descendants>
+        </node>
+
+        <!-- GUN -->
+        <node id="gunTopLeft">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <translation x="7.0" y="0.4" z="8.0" />
+            </transformations>
+
+            <descendants>
+                <noderef id="gun" />
+            </descendants>
+        </node>
+        <node id="gunTopRight">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <translation x="-7.0" y="0.4" z="8.0" />
+            </transformations>
+
+            <descendants>
+                <noderef id="gun" />
+            </descendants>
+        </node>
+        <node id="gunBotLeft">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <translation x="7.0" y="-0.4" z="8.0" />
+            </transformations>
+
+            <descendants>
+                <noderef id="gun" />
+            </descendants>
+        </node>
+        <node id="gunBotRight">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+                <translation x="-7.0" y="-0.4" z="8.0" />
+            </transformations>
+
+            <descendants>
+                <noderef id="gun" />
+            </descendants>
+        </node>
+        <node id="gun">
+            <material id="null" />
+            <texture id="clear">
+            </texture>
+
+            <transformations>
+            </transformations>
+
+            <descendants>
+                <leaf type="cylinder" height="4" topRadius="0.4" bottomRadius="0.4" stacks="2" slices="10"/>
             </descendants>
         </node>
 
