@@ -71,6 +71,7 @@
 
             <descendants>
                 <noderef id="x-wing" />
+                <noderef id="skybox" />
             </descendants>
         </node>
         <node id="x-wing">
@@ -495,6 +496,67 @@
 
             <descendants>
                 <leaf type="cylinder" height="4" topRadius="0.4" bottomRadius="0.4" stacks="2" slices="10"/>
+            </descendants>
+        </node>
+
+
+        <!-- SKYBOX -->
+        <node id="skybox">
+            <material id="null" />
+            <texture id="demoTexture">
+            </texture>
+
+            <transformations>
+            </transformations>
+
+            <descendants>
+                <noderef id="skyboxBack" />
+                <!-- <noderef id="skyboxFront" /> -->
+                <!-- <noderef id="skyboxUp" /> -->
+                <noderef id="skyboxBottom" />
+                <!-- <noderef id="skyboxLeft" /> -->
+                <noderef id="skyboxRight" />
+            </descendants>
+        </node>
+        <node id="skyboxBack">
+            <material id="null" />
+            <texture id="null">
+            </texture>
+
+            <transformations>
+                <translation x="0.0" y="0.0" z="-100.0" />
+            </transformations>
+
+            <descendants>
+                <leaf type="rectangle" x1="-100" y1="-100" x2="100" y2="100" />
+            </descendants>
+        </node>
+        <node id="skyboxBottom">
+            <material id="null" />
+            <texture id="null">
+            </texture>
+
+            <transformations>
+                <translation x="0.0" y="-100.0" z="0.0" />
+                <rotation axis="xx" angle="-90" />
+            </transformations>
+
+            <descendants>
+                <leaf type="rectangle" x1="-100" y1="-100" x2="100" y2="100" />
+            </descendants>
+        </node>
+        <node id="skyboxRight">
+            <material id="null" />
+            <texture id="null">
+            </texture>
+
+            <transformations>
+                <translation x="-100.0" y="0.0" z="0.0" />
+                <rotation axis="yy" angle="-90" />
+            </transformations>
+
+            <descendants>
+                <leaf type="rectangle" x1="-100" y1="100" x2="100" y2="-100" />
             </descendants>
         </node>
 
