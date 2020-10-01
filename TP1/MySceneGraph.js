@@ -778,10 +778,44 @@ class MySceneGraph {
             }
 
             // Material
-            this.onXMLMinorError("To do: Parse node material.");
+            if (materialIndex == -1) {
+                this.onXMLMinorError("tag <material> missing for node (conflict: ID = " + nodeID + ")");
+            }
+            else{
+                var materialID = this.reader.getString(grandChildren[materialIndex], 'id');
+                if(materialID == null)
+                    return "material is missing an id."
 
+                nodeObj.setMaterial(materialID);
+            }
+            
             // Texture
-            this.onXMLMinorError("To do: Parse node textures.");
+            if (textureIndex == -1) {
+                this.onXMLMinorError("tag <texture> missing for node (conflict: ID = " + nodeID + ")");
+            }
+            else{
+                var textureID = this.reader.getString(grandChildren[textureIndex], 'id');
+                if(textureID == null)
+                    return "texture is missing an id."
+
+                grandgrandChildren = grandChildren[textureIndex].children;
+                for(var j = 0; j < grandgrandChildren.length; j++){
+                    var tag = grandgrandChildren[j].nodeName;
+                    if(tag == "amplification"){
+                        var afs = this.reader.getString(grandgrandChildren[j], "afs");
+                        if(afs == null)
+                            return "afs is missing";
+
+                        var aft = this.reader.getString(grandgrandChildren[j], "aft");
+                        if(aft == null)
+                            return "aft is missing";
+                    }
+                    else
+                        this.onXMLMinorError("unknown tag: " + tag + ".");
+                }
+
+                nodeObj.setTexture(textureID, afs, aft);  
+            }
 
             // Descendants
             if (descendantsIndex == -1) {
