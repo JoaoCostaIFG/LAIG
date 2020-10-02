@@ -27,8 +27,10 @@ class MySceneGraph {
         scene.graph = this;
 
         this.nodes = [];
-
         this.idRoot = null; // The id of the root element.
+
+        this.activeMaterials = [];
+        this.activeTextures = [];
 
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
@@ -44,18 +46,6 @@ class MySceneGraph {
          * If any error occurs, the reader calls onXMLError on this object, with an error message
          */
         this.reader.open('scenes/' + filename, this);
-
-        // TODO
-        // this.obj = new MyCilinder(scene, 2, 2, 4, 20, 2);
-        // this.obj = new MyTriangle(scene, 0, 0, 0, 2, 1, 0);
-        // this.obj = new MySphere(scene, 2, 20, 20);
-        this.obj = new MyTorus(scene, 40, 40, 0.1, 5);
-
-        this.obj.enableNormalViz();
-
-        this.mat = new CGFappearance(scene);
-        this.tex = new CGFtexture(scene, "scenes/images/earth.jpg");
-        this.mat.setTexture(this.tex);
     }
 
     /*
@@ -509,7 +499,6 @@ class MySceneGraph {
                 return "no Path defined for texture";
 
             this.textures[textureID] = new CGFtexture(this.scene, texturePath);
-           
         }
 
         this.log("Parsed textures");
@@ -749,7 +738,7 @@ class MySceneGraph {
             if (this.nodes[nodeID] != null)
                 return "ID must be unique for each node (conflict: ID = " + nodeID + ")";
             
-            var nodeObj = new MyNode(nodeID, null); // TODO ref para parent node
+            var nodeObj = new MyNode(this, nodeID, null); // TODO ref para parent node
             this.nodes[nodeID] = nodeObj;
 
             grandChildren = children[i].children;
@@ -844,14 +833,37 @@ class MySceneGraph {
             }
         }
 
-        /* associate descendant noderef's IDs with the correct objects */
+        var postProc = this.nodesPostProcessing();
+        if (postProc != null)
+            return postProc;
+    }
+
+    nodesPostProcessing() {
         for (var key in this.nodes) {
             var obj = this.nodes[key];
+          
+            /* associate descendant noderef's IDs with the correct objects */
             for (var i = 0; i < obj.descendantsNode.length; ++i) {
                 var desc = obj.descendantsNode[i];
                 if (this.nodes[desc] == null)
                     return "missing node with ID: " + desc + ".";
                 obj.descendantsNode[i] = this.nodes[desc];
+            }
+
+            /* associate CFGtextures with MyNodes */
+            var nodeTex = obj.tex;
+            if (nodeTex != "null" && nodeTex != "clear") {
+              if (this.textures[nodeTex] == null)
+                return "texture with id " + nodeTex + " was referenced in node with id " + key + " but was not defined.";
+              obj.tex = this.textures[nodeTex];
+            }
+
+            /* associate CFGapperances with MyNodes */
+            var nodeMat = obj.mat;
+            if (nodeMat != "null") {
+              if (this.materials[nodeMat] == null)
+                return "material with id " + nodeMat + " was referenced in node with id " + key + " but was not defined.";
+              obj.mat = this.materials[nodeMat];
             }
         }
     }
@@ -966,31 +978,46 @@ class MySceneGraph {
         return color;
     }
 
-    processNode(nodeObj) {
+    pushTransformation(tg) {
         this.scene.pushMatrix();
-        this.scene.multMatrix(nodeObj.tgMatrix);
+        this.scene.multMatrix(tg);
+    }
 
-        // draw primitives
-        nodeObj.displayPrimitives();
-
-        // recursively process descendant MyNode objects
-        for (var i = 0; i < nodeObj.descendantsNode.length; ++i)
-            this.processNode(nodeObj.descendantsNode[i]);
-
+    popTransformation() {
         this.scene.popMatrix();
+    }
+
+    pushMaterial(mat) {
+        this.activeMaterials.push(mat);
+        mat.apply();
+    }
+
+    popMaterial() {
+        this.activeMaterials.pop();
+        var lastMatInd = this.activeMaterials.length - 1;
+        if (lastMatInd >= 0) this.activeMaterials[lastMatInd].apply();
+    }
+
+    pushTexture(tex) {
+        this.activeTextures.push(tex);
+        tex.bind();
+    }
+
+    popTexture() {
+        this.activeTextures.pop();
+        var lastTexInd = this.activeTextures.length - 1;
+        if (lastTexInd >= 0) this.activeTextures[lastTexInd].bind();
+    }
+
+    unbindActiveTex() {
+        if (this.scene.activeTexture != null)
+            this.scene.activeTextures.unbind();
     }
 
     /**
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        // this.mat.apply();
-        // this.obj.display();
-
-        this.processNode(this.nodes[this.idRoot]);
-
-        //To do: Create display loop for transversing the scene graph, calling the root node's display function
-        
-        //this.nodes[this.idRoot].display()
+        this.nodes[this.idRoot].display();
     }
 }
