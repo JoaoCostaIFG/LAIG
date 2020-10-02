@@ -48,6 +48,10 @@
         <texture id="skybox_right" path="./scenes/images/skybox/right.png" />
         <texture id="skybox_top" path="./scenes/images/skybox/top.png" />
         <texture id="skybox_bottom" path="./scenes/images/skybox/bottom.png" />
+
+        <texture id="xwingtex" path="./scenes/images/x-wing.png" />
+        <texture id="centerWindowTex" path="./scenes/images/centerWindow.png" />
+
     </textures>
 
 
@@ -56,10 +60,10 @@
          requires a distinct "id". At least one material should be present. -->
         <material id="demoMaterial">
             <shininess value="1.0" />
-            <ambient r="0.0" g="1.0" b="0.0" a="1.0" />
-            <diffuse r="0.0" g="1.0" b="0.0" a="1.0" />
-            <specular r="0.0" g="1.0" b="0.0" a="1.0" />
-            <emissive r="0.0" g="1.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <emissive r="1.0" g="1.0" b="1.0" a="1.0" />
         </material>
 
         <material id="skyboxMaterial">
@@ -117,7 +121,7 @@
         <!-- CHASSIS -->
         <node id="chassis">
             <material id="null" />
-            <texture id="clear">
+            <texture id="xwingtex">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
 
@@ -133,7 +137,7 @@
         </node>
         <node id="nose">
             <material id="null" />
-            <texture id="clear">
+            <texture id="null">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
 
@@ -181,7 +185,7 @@
         </node>
         <node id="cockpitWindowCenter">
             <material id="null" />
-            <texture id="clear">
+            <texture id="centerWindowTex">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
 
@@ -435,7 +439,7 @@
         </node>
         <node id="wing">
             <material id="null" />
-            <texture id="clear">
+            <texture id="xwingtex">
             </texture>
 
             <transformations>

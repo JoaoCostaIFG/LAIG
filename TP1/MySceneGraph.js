@@ -1011,7 +1011,7 @@ class MySceneGraph {
 
     unbindActiveTex() {
         if (this.scene.activeTexture != null)
-            this.scene.activeTextures.unbind();
+            this.scene.activeTexture.unbind();
     }
 
     /**
