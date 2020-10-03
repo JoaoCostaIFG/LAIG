@@ -115,7 +115,7 @@ class MyCilinder extends CGFobject {
     for (var i = 2; i <= this.slices + 1; ++i) {
       this.vertices.push(this.bottomRadius * Math.cos(ang), this.bottomRadius * Math.sin(ang), 0);
       this.normals.push(0, 0, -1);
-      this.texCoords.push(Math.cos(ang) * 0.5 + 0.5, Math.sin(ang) * 0.5 + 0.5);
+      this.texCoords.push(Math.cos(ang) * 0.5 + 0.5, 1 - (Math.sin(ang) * 0.5 + 0.5));
       ang += alphaAng;
 
       this.indices.push(centerInd + i, centerInd + i - 1, centerInd);
@@ -138,7 +138,7 @@ class MyCilinder extends CGFobject {
     for (var i = 2; i <= this.slices + 1; ++i) {
       this.vertices.push(this.topRadius * Math.cos(ang), this.topRadius * Math.sin(ang), this.height);
       this.normals.push(0, 0, 1);
-      this.texCoords.push(Math.cos(ang) * 0.5 + 0.5, Math.sin(ang) * 0.5 + 0.5);
+      this.texCoords.push(Math.cos(ang) * 0.5 + 0.5, 1 - (Math.sin(ang) * 0.5 + 0.5));
       ang += alphaAng;
 
       this.indices.push(centerInd + i - 1, centerInd + i, centerInd);
