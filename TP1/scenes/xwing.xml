@@ -167,7 +167,24 @@
             </transformations>
 
             <descendants>
+                <noderef id="noseEnd" />
                 <leaf type="cylinder" height="24.0" topRadius="1.5" bottomRadius="5.0" stacks="4" slices="6"/>
+            </descendants>
+        </node>
+        <node id="noseEnd">
+            <material id="null" />
+            <texture id="xwingChassisTex">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <translation x="0.0" y="0.0" z="24.0" />
+                <rotation axis="z" angle="-30" />
+                <scale sx="1.0" sy="0.8" sz="1.0" />
+            </transformations>
+
+            <descendants>
+                <leaf type="cylinder" height="2.0" topRadius="1.0" bottomRadius="2.5" stacks="4" slices="6"/>
             </descendants>
         </node>
 
