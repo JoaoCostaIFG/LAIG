@@ -1072,6 +1072,9 @@ class MySceneGraph {
   pushMaterial(mat) {
     this.activeMaterials.push(mat);
     mat.apply();
+
+    var lastTexInd = this.activeTextures.length - 1;
+    if (lastTexInd >= 0) this.activeTextures[lastTexInd].bind();
   }
 
   popMaterial() {
