@@ -311,7 +311,7 @@
         </node>
         <node id="turbine">
             <material id="null" />
-            <texture id="ttt">
+            <texture id="turbineTex">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
 
