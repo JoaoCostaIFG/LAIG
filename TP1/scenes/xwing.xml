@@ -50,7 +50,7 @@
         <texture id="xwingtex" path="./scenes/images/x-wing.jpg" />
         <texture id="centerWindowTex" path="./scenes/images/centerWindow.png" />
 
-        <texture id="ttt" path="./scenes/images/test.png" />
+        <texture id="turbineTex" path="./scenes/images/turbine.png" />
     </textures>
 
 
@@ -206,6 +206,7 @@
         <node id="cockpitWindowLeft">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -219,6 +220,7 @@
         <node id="cockpitWindowRight">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -252,6 +254,7 @@
         <node id="turbineTopLeft">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -265,6 +268,7 @@
         <node id="turbineTopRight">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -278,6 +282,7 @@
         <node id="turbineBotLeft">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -292,6 +297,7 @@
         <node id="turbineBotRight">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -306,6 +312,7 @@
         <node id="turbine">
             <material id="null" />
             <texture id="ttt">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -319,6 +326,7 @@
         <node id="turbineComponent">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -336,6 +344,7 @@
         <node id="wingTopLeft">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -349,6 +358,7 @@
         <node id="wingTopRight">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -362,6 +372,7 @@
         <node id="wingBotLeft">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -375,6 +386,7 @@
         <node id="wingBotRight">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -390,6 +402,7 @@
         <node id="wingBaseTopLeft">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -404,6 +417,7 @@
         <node id="wingBaseTopRight">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -418,6 +432,7 @@
         <node id="wingBaseBotLeft">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -432,6 +447,7 @@
         <node id="wingBaseBotRight">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -446,6 +462,7 @@
         <node id="wing">
             <material id="null" />
             <texture id="xwingtex">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -462,6 +479,7 @@
         <node id="gunTopLeft">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -475,6 +493,7 @@
         <node id="gunTopRight">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -488,6 +507,7 @@
         <node id="gunBotLeft">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -501,6 +521,7 @@
         <node id="gunBotRight">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -514,6 +535,7 @@
         <node id="gun">
             <material id="null" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -529,6 +551,7 @@
         <node id="skybox">
             <material id="skyboxMaterial" />
             <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -546,6 +569,7 @@
         <node id="skyboxBack">
             <material id="null" />
             <texture id="skybox_back">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -559,6 +583,7 @@
         <node id="skyboxFront">
             <material id="null" />
             <texture id="skybox_front">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -574,6 +599,7 @@
         <node id="skyboxTop">
             <material id="null" />
             <texture id="skybox_top">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -589,6 +615,7 @@
         <node id="skyboxBottom">
             <material id="null" />
             <texture id="skybox_bottom">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -603,6 +630,7 @@
         <node id="skyboxLeft">
             <material id="null" />
             <texture id="skybox_left">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -618,6 +646,7 @@
         <node id="skyboxRight">
             <material id="null" />
             <texture id="skybox_right">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
