@@ -6,14 +6,14 @@
         <!-- identifier of root node of the scene graph; this node -->
         <!-- must be defined in one of the following NODE declarations -->
     </initials>
-    <views default="defaultCamera">
+    <views default="defaultCam">
         <!-- at least one of the following type of cameras must be declared -->
-        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
+        <perspective id="defaultCam" near="0.1" far="500" angle="45">
             <from x="50" y="20" z="60" />
             <to x="0" y="-2" z="0" />
         </perspective>
-        <ortho id="demoOrtho" near="0.2" far="100" left="-0.2" right="0.2" top="0.2" bottom="-0.2">
-            <from x="5" y="0" z="10" />
+        <ortho id="orthoCam" near="0.1" far="500" left="-50" right="50" top="50" bottom="-50">
+            <from x="50" y="20" z="60" />
             <to x="5" y="0" z="0" />
             <up x="0" y="1" z="0" /><!-- optional, default 0,1,0 -->
         </ortho>
@@ -47,17 +47,19 @@
         <texture id="skybox_top" path="./scenes/images/skybox/top.png" />
         <texture id="skybox_bottom" path="./scenes/images/skybox/bottom.png" />
 
-        <texture id="xwingtex" path="./scenes/images/x-wing.jpg" />
+        <texture id="xwingChassisTex" path="./scenes/images/x-wing_chassis.png" />
+        <texture id="xwingNoseTex" path="./scenes/images/x-wing_nose.png" />
         <texture id="centerWindowTex" path="./scenes/images/centerWindow.png" />
 
         <texture id="turbineTex" path="./scenes/images/turbine.png" />
+        <texture id="gunTex" path="./scenes/images/gunTex.png" />
     </textures>
 
 
     <materials>
         <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material
          requires a distinct "id". At least one material should be present. -->
-        <material id="rootMaterial">
+        <material id="metalMaterial">
             <shininess value="1.0" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -68,8 +70,8 @@
             <shininess value="0.2" />
             <ambient r="0.7" g="0.8" b="0.69" a="1.0" />
             <diffuse r="0.7" g="0.8" b="0.69" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <emissive r="0.0" g="0.0" b="0.0" a="0.0" />
+            <specular r="0.7" g="0.8" b="0.69" a="1.0" />
+            <emissive r="0.7" g="0.8" b="0.69" a="1.0" />
         </material>
         <material id="windowMaterial">
             <shininess value="100" />
@@ -85,12 +87,19 @@
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
             <emissive r="0.71" g="0.85" b="0.56" a="1.0" />
         </material>
+        <material id="turbineRingMat">
+            <shininess value="100" />
+            <ambient r="0.23" g="0.23" b="0.23" a="1.0" />
+            <diffuse r="0.23" g="0.23" b="0.23" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+            <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
     </materials>
 
     <nodes>
         <node id="root">
             <!-- next two lines are mandatory -->
-            <material id="rootMaterial" /><!-- this superimposes the material received from parent node id="null" maintains material from parent node -->
+            <material id="metalMaterial" /><!-- this superimposes the material received from parent node id="null" maintains material from parent node -->
 
             <texture id="clear"><!-- declared texture superimposes the texture received from parent node id="null" maintains texture from parent node id="clear" clears texture declaration received from parent node -->
                 <amplification afs="1.0" aft="1.0" />
@@ -133,7 +142,7 @@
         <!-- CHASSIS -->
         <node id="chassis">
             <material id="null" />
-            <texture id="xwingtex">
+            <texture id="xwingChassisTex">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
 
@@ -149,7 +158,7 @@
         </node>
         <node id="nose">
             <material id="null" />
-            <texture id="null">
+            <texture id="xwingNoseTex">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
 
@@ -332,8 +341,8 @@
             </descendants>
         </node>
         <node id="turbineComponent">
-            <material id="null" />
-            <texture id="clear">
+            <material id="turbineRingMat" />
+            <texture id="xwingChassisTex">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
 
@@ -469,7 +478,7 @@
         </node>
         <node id="wing">
             <material id="null" />
-            <texture id="xwingtex">
+            <texture id="xwingChassisTex">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
 
@@ -542,7 +551,7 @@
         </node>
         <node id="gun">
             <material id="null" />
-            <texture id="clear">
+            <texture id="gunTex">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
 
@@ -556,7 +565,7 @@
         </node>
         <node id="gunFront">
             <material id="null" />
-            <texture id="clear">
+            <texture id="gunTex">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
 
