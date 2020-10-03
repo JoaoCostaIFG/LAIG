@@ -40,8 +40,6 @@
 
     <textures>
         <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
-        <texture id="demoTexture" path="./scenes/images/vidral.jpga" />
-
         <texture id="skybox_back" path="./scenes/images/skybox/back.png" />
         <texture id="skybox_front" path="./scenes/images/skybox/front.png" />
         <texture id="skybox_left" path="./scenes/images/skybox/left.png" />
@@ -49,9 +47,10 @@
         <texture id="skybox_top" path="./scenes/images/skybox/top.png" />
         <texture id="skybox_bottom" path="./scenes/images/skybox/bottom.png" />
 
-        <texture id="xwingtex" path="./scenes/images/x-wing.png" />
+        <texture id="xwingtex" path="./scenes/images/x-wing.jpg" />
         <texture id="centerWindowTex" path="./scenes/images/centerWindow.png" />
 
+        <texture id="ttt" path="./scenes/images/test.png" />
     </textures>
 
 
@@ -65,13 +64,19 @@
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
             <emissive r="1.0" g="1.0" b="1.0" a="1.0" />
         </material>
-
         <material id="skyboxMaterial">
             <shininess value="0.2" />
             <ambient r="0.7" g="0.8" b="0.69" a="1.0" />
             <diffuse r="0.7" g="0.8" b="0.69" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
             <emissive r="0.3" g="0.3" b="0.3" a="1.0" />
+        </material>
+        <material id="windowMaterial">
+            <shininess value="100" />
+            <ambient r="0.0" g="0.0" b="0.0" a="0.1" />
+            <diffuse r="0.3" g="0.3" b="0.3" a="0.1" />
+            <specular r="0.8" g="0.8" b="0.8" a="0.1" />
+            <emissive r="0.0" g="0.0" b="0.0" a="0.1" />
         </material>
     </materials>
 
@@ -184,7 +189,7 @@
             </descendants>
         </node>
         <node id="cockpitWindowCenter">
-            <material id="null" />
+            <material id="windowMaterial" />
             <texture id="centerWindowTex">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
@@ -225,8 +230,9 @@
             </descendants>
         </node>
         <node id="cockpitSideWindow">
-            <material id="null" />
-            <texture id="clear">
+            <material id="windowMaterial" />
+            <texture id="centerWindowTex">
+                <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
@@ -299,7 +305,7 @@
         </node>
         <node id="turbine">
             <material id="null" />
-            <texture id="clear">
+            <texture id="ttt">
             </texture>
 
             <transformations>
