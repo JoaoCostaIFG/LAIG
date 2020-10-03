@@ -3,14 +3,14 @@
  * @constructor
  */
 class MyNode {
-  constructor(sceneGraph, id, dad) {
+  constructor(sceneGraph, id) {
     this.id = id;
     this.sceneGraph = sceneGraph;
 
-    if (dad != null) {
-      this.tex = dad.getText();
-      this.mat = dad.getMaterial();
-    }
+    // if (dad != null) {
+      // this.tex = dad.getText();
+      // this.mat = dad.getMaterial();
+    // }
 
     this.tgMatrix = mat4.create();
 
@@ -86,11 +86,5 @@ class MyNode {
       this.sceneGraph.popMaterial();
     // transformations pop
     this.sceneGraph.popTransformation();
-  }
-
-  setParent(dad) {
-    if (this.tex == "null") this.tex = dad.tex;
-
-    if (this.mat == "null") this.mat = dad.mat;
   }
 }

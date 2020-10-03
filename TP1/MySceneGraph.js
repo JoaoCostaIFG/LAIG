@@ -777,7 +777,7 @@ class MySceneGraph {
           "ID must be unique for each node (conflict: ID = " + nodeID + ")"
         );
 
-      var nodeObj = new MyNode(this, nodeID, null); // TODO ref para parent node
+      var nodeObj = new MyNode(this, nodeID);
       this.nodes[nodeID] = nodeObj;
 
       grandChildren = children[i].children;
@@ -814,6 +814,9 @@ class MySceneGraph {
           "id"
         );
         if (materialID == null) return "material is missing an id.";
+
+        if (materialID == "null" && nodeID == this.idRoot)
+          this.onXMLMinorError("root node (" + this.idRoot + ") has no parents so 'null' material doesn't make sense.");
 
         nodeObj.setMaterial(materialID);
       }
@@ -865,6 +868,10 @@ class MySceneGraph {
               ". Assuming afs = aft = 1."
           );
         }
+
+        if (textureID == "null" && nodeID == this.idRoot)
+          this.onXMLMinorError("root node (" + this.idRoot + ") has no parents so 'null' texture doesn't make sense.");
+
         nodeObj.setTexture(textureID, afs, aft);
       }
 
@@ -935,6 +942,8 @@ class MySceneGraph {
         obj.mat = this.materials[nodeMat];
       }
     }
+
+    // TODO check for unused nodes
   }
 
   parseFloat(node, name, messageError, defaultVal = null) {

@@ -57,7 +57,7 @@
     <materials>
         <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material
          requires a distinct "id". At least one material should be present. -->
-        <material id="demoMaterial">
+        <material id="rootMaterial">
             <shininess value="1.0" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -83,7 +83,7 @@
     <nodes>
         <node id="root">
             <!-- next two lines are mandatory -->
-            <material id="demoMaterial" /><!-- this superimposes the material received from parent node id="null" maintains material from parent node -->
+            <material id="rootMaterial" /><!-- this superimposes the material received from parent node id="null" maintains material from parent node -->
 
             <texture id="clear"><!-- declared texture superimposes the texture received from parent node id="null" maintains texture from parent node id="clear" clears texture declaration received from parent node -->
                 <amplification afs="1.0" aft="1.0" />
