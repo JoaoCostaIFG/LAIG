@@ -833,8 +833,8 @@ class MySceneGraph {
           return "texture for node " + nodeID + " is missing an id.";
 
         let foundAmp = false;
-        let afs = 1.0;
-        let aft = 1.0;
+        var afs = 1.0;
+        var aft = 1.0;
         grandgrandChildren = grandChildren[textureIndex].children;
         for (var j = 0; j < grandgrandChildren.length; j++) {
           var tag = grandgrandChildren[j].nodeName;
@@ -887,7 +887,7 @@ class MySceneGraph {
             if (descId == null) return "noderef is missing an id.";
             nodeObj.addDescendantNode(descId);
           } else if (descType == "leaf") {
-            var leafObj = this.parseLeaf(grandgrandChildren[j]);
+            var leafObj = this.parseLeaf(grandgrandChildren[j], afs, aft);
             if (typeof leafObj === "string" || leafObj instanceof String)
               return leafObj;
             nodeObj.addDescendantLeaf(leafObj);
