@@ -62,14 +62,14 @@
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <emissive r="1.0" g="1.0" b="1.0" a="1.0" />
+            <emissive r="0.0" g="0.0" b="0.0" a="0.0" />
         </material>
         <material id="skyboxMaterial">
             <shininess value="0.2" />
             <ambient r="0.7" g="0.8" b="0.69" a="1.0" />
             <diffuse r="0.7" g="0.8" b="0.69" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <emissive r="0.3" g="0.3" b="0.3" a="1.0" />
+            <emissive r="0.0" g="0.0" b="0.0" a="0.0" />
         </material>
         <material id="windowMaterial">
             <shininess value="100" />
@@ -316,11 +316,12 @@
             </texture>
 
             <transformations>
+              <translation x="0.0" y="0.0" z="3.0" />
             </transformations>
 
             <descendants>
                 <noderef id="turbineComponent" />
-                <leaf type="cylinder" height="10.0" topRadius="2.0" bottomRadius="2.0" stacks="2" slices="15"/>
+                <leaf type="cylinder" height="7.0" topRadius="2.0" bottomRadius="2.0" stacks="2" slices="15"/>
             </descendants>
         </node>
         <node id="turbineComponent">
@@ -330,11 +331,11 @@
             </texture>
 
             <transformations>
-                <translation x="0" y="0.8" z="-2.0" />
+                <translation x="0" y="0.8" z="-5.0" />
             </transformations>
 
             <descendants>
-                <leaf type="cylinder" height="2.0" topRadius="1.0" bottomRadius="1.0" stacks="2" slices="15"/>
+                <leaf type="cylinder" height="5.0" topRadius="1.0" bottomRadius="1.0" stacks="2" slices="15"/>
                 <leaf type="torus" inner="0.2" outer="1.0" slices="20" loops="20" />
             </descendants>
         </node>
@@ -542,7 +543,38 @@
             </transformations>
 
             <descendants>
-                <leaf type="cylinder" height="4" topRadius="0.4" bottomRadius="0.4" stacks="2" slices="10"/>
+                <noderef id="gunFront" />
+                <leaf type="cylinder" height="4" topRadius="0.5" bottomRadius="0.5" stacks="2" slices="10"/>
+            </descendants>
+        </node>
+        <node id="gunFront">
+            <material id="null" />
+            <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <translation x="0.0" y="0.0" z="4.0" />
+            </transformations>
+
+            <descendants>
+                <noderef id="gunFrontRing" />
+                <leaf type="cylinder" height="5" topRadius="0.2" bottomRadius="0.2" stacks="2" slices="10"/>
+                <leaf type="torus" inner="0.2" outer="1.0" slices="20" loops="20" />
+            </descendants>
+        </node>
+        <node id="gunFrontRing">
+            <material id="null" />
+            <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <translation x="0.0" y="0.0" z="2.0" />
+            </transformations>
+
+            <descendants>
+                <leaf type="torus" inner="0.2" outer="0.5" slices="20" loops="20" />
             </descendants>
         </node>
 
