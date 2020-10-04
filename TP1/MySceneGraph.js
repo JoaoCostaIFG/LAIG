@@ -549,9 +549,9 @@ class MySceneGraph {
       } else {
         attributeNames = [
           "shininess",
-          "specular",
-          "diffuse",
           "ambient",
+          "diffuse",
+          "specular",
           "emissive",
         ];
         attributeTypes = ["float", "color", "color", "color", "color"];
@@ -604,9 +604,9 @@ class MySceneGraph {
 
       var mat = new CGFappearance(this.scene);
       mat.setShininess(global[0]);
-      mat.setSpecular(...global[1]);
-      mat.setDiffuse(...global[2]);
       mat.setAmbient(...global[3]);
+      mat.setDiffuse(...global[2]);
+      mat.setSpecular(...global[1]);
       mat.setEmission(...global[4]);
 
       this.materials[materialID] = mat;
@@ -1143,18 +1143,24 @@ class MySceneGraph {
     this.scene.popMatrix();
   }
 
+  applyLastTex() {
+    var lastTexInd = this.activeTextures.length - 1;
+    if (lastTexInd >= 0) this.activeTextures[lastTexInd].bind();
+  }
+
   pushMaterial(mat) {
     this.activeMaterials.push(mat);
     mat.apply();
 
-    var lastTexInd = this.activeTextures.length - 1;
-    if (lastTexInd >= 0) this.activeTextures[lastTexInd].bind();
+    this.applyLastTex();
   }
 
   popMaterial() {
     this.activeMaterials.pop();
     var lastMatInd = this.activeMaterials.length - 1;
     if (lastMatInd >= 0) this.activeMaterials[lastMatInd].apply();
+
+    this.applyLastTex();
   }
 
   pushTexture(tex) {
@@ -1164,8 +1170,7 @@ class MySceneGraph {
 
   popTexture() {
     this.activeTextures.pop();
-    var lastTexInd = this.activeTextures.length - 1;
-    if (lastTexInd >= 0) this.activeTextures[lastTexInd].bind();
+    this.applyLastTex();
   }
 
   unbindActiveTex() {
