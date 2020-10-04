@@ -624,26 +624,29 @@ class MySceneGraph {
    * Parses a given node's transformations
    * @param {object that contains transformation's info} tgInfo
    */
-  parseNodeTransformations(tgInfo) {
+  parseNodeTransformations(tgInfo, nodeID) {
     var tgMtr = mat4.create();
     var tg = tgInfo.nodeName;
 
     if (tg == "translation") {
-      var coords = this.parseCoordinates3D(tgInfo, "translation");
+      var coords = this.parseCoordinates3D(
+        tgInfo,
+        "translation of node with ID: " + nodeID + "."
+      );
       if (!Array.isArray(coords)) return coords;
 
       mat4.translate(tgMtr, tgMtr, coords);
     } else if (tg == "rotation") {
       var axis = this.reader.getString(tgInfo, "axis");
-      if (axis == null) {
-        this.onXMLMinorError(
-          "unable to parse rotation axis: " + axis + ". Assuming zz rotation."
-        );
-        axis = "z";
-      }
-      // need to convert to rad
-      var angle =
-        this.parseFloat(tgInfo, "angle", "angle", 0.0) * DEGREE_TO_RAD;
+      if (axis == null)
+        return "unable to parse rotation axis of node with ID: " + nodeID + ".";
+      var angle = this.parseFloat(
+        tgInfo,
+        "angle",
+        "angle of node with ID: " + nodeID + "."
+      );
+      if (angle == null) return angle;
+      angle *= DEGREE_TO_RAD; // need to convert to rad
 
       switch (axis) {
         case "x":
@@ -657,23 +660,48 @@ class MySceneGraph {
           break;
         default:
           this.onXMLMinorError(
-            "unknown rotation axis: " + axis + ". Assuming no rotation."
+            "unknown rotation axis: " +
+              axis +
+              " for node with ID: " +
+              nodeID +
+              ". Assuming no rotation."
           );
           break;
       }
     } else if (tg == "scale") {
-      var sx = this.parseFloat(tgInfo, "sx", "sx", 1.0);
-      var sy = this.parseFloat(tgInfo, "sy", "sy", 1.0);
-      var sz = this.parseFloat(tgInfo, "sz", "sz", 1.0);
+      var sx = this.parseFloat(
+        tgInfo,
+        "sx",
+        "sx of node with ID: " + nodeID + "."
+      );
+      if (sx == null) return sx;
+      var sy = this.parseFloat(
+        tgInfo,
+        "sy",
+        "sy of node with ID: " + nodeID + "."
+      );
+      if (sy == null) return sy;
+      var sz = this.parseFloat(
+        tgInfo,
+        "sz",
+        "sz of node with ID: " + nodeID + "."
+      );
+      if (sz == null) return sz;
       mat4.scale(tgMtr, tgMtr, [sx, sy, sz]);
     } else {
-      this.onXMLMinorError("unknown transformation " + tg + ".");
+      this.onXMLMinorError(
+        "unknown transformation " +
+          tg +
+          " for node with ID: " +
+          nodeID +
+          ". Ignoring it."
+      );
     }
 
     return tgMtr;
   }
 
-  parseLeaf(leafNode, afs=1.0, aft=1.0) {
+  parseLeaf(leafNode, afs = 1.0, aft = 1.0) {
     // TODO getInteger ?
 
     var attributeNames = [];
@@ -714,11 +742,21 @@ class MySceneGraph {
       var attributeIndex = nodeNames.indexOf(attributeNames[j]);
 
       if (attributeIndex != -1) {
-        var aux = this.parseFloat(
-          leafNode,
-          attributeNames[j],
-          "leaf float (" + attributeNames[j] + ") with type " + objType
-        );
+        var aux;
+        if (attributeNames[j] == "slices" || attributeNames[j] == "stacks") {
+          aux = this.parseInteger(
+            leafNode,
+            attributeNames[j],
+            "leaf integer (" + attributeNames[j] + ") with type " + objType
+          );
+          console.log(aux);
+        } else {
+          aux = this.parseFloat(
+            leafNode,
+            attributeNames[j],
+            "leaf float (" + attributeNames[j] + ") with type " + objType
+          );
+        }
         if (typeof aux === "string" || aux instanceof String) return aux;
 
         global.push(aux);
@@ -816,7 +854,11 @@ class MySceneGraph {
         if (materialID == null) return "material is missing an id.";
 
         if (materialID == "null" && nodeID == this.idRoot)
-          this.onXMLMinorError("root node (" + this.idRoot + ") has no parents so 'null' material doesn't make sense.");
+          this.onXMLMinorError(
+            "root node (" +
+              this.idRoot +
+              ") has no parents so 'null' material doesn't make sense."
+          );
 
         nodeObj.setMaterial(materialID);
       }
@@ -870,7 +912,11 @@ class MySceneGraph {
         }
 
         if (textureID == "null" && nodeID == this.idRoot)
-          this.onXMLMinorError("root node (" + this.idRoot + ") has no parents so 'null' texture doesn't make sense.");
+          this.onXMLMinorError(
+            "root node (" +
+              this.idRoot +
+              ") has no parents so 'null' texture doesn't make sense."
+          );
 
         nodeObj.setTexture(textureID, afs, aft);
       }
@@ -964,6 +1010,26 @@ class MySceneGraph {
     }
 
     return f;
+  }
+
+  parseInteger(node, name, messageError, defaultVal = null) {
+    var i = this.reader.getInteger(node, name);
+    if (i == null || isNaN(i)) {
+      if (defaultVal != null) {
+        this.onXMLMinorError(
+          "unable to parse integer component " +
+            messageError +
+            "; assuming 'value = " +
+            defaultVal +
+            "'"
+        );
+        i = defaultVal;
+      } else {
+        return "unable to parse integer component " + messageError;
+      }
+    }
+
+    return i;
   }
 
   parseBoolean(node, name, messageError) {
