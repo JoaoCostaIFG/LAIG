@@ -775,7 +775,7 @@ class MySceneGraph {
         obj = new MyTriangle(this.scene, ...global, afs, aft);
         break;
       case "cylinder":
-        obj = new MyCilinder(this.scene, ...global);
+        obj = new MyCylinder(this.scene, ...global);
         break;
       case "sphere":
         obj = new MySphere(this.scene, ...global);

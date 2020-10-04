@@ -39,10 +39,7 @@ class MyInterface extends CGFinterface {
       if (i >= 8) break; // Only eight lights allowed by WebCGF on default shaders.
 
       let graphLight = this.scene.graph.lights[key];
-      lightsDir
-        .add(this.scene, "xmlLight" + i)
-        .name(graphLight[5])
-        .onChange(this.scene.updateLightState.bind(this.scene));
+      lightsDir.add(this.scene, "xmlLight" + i).name(graphLight[5]);
 
       ++i;
     }

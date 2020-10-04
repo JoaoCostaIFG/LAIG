@@ -1,8 +1,8 @@
 /**
- * MyCilinder
+ * MyCylinder
  * @constructor
  */
-class MyCilinder extends CGFobject {
+class MyCylinder extends CGFobject {
   constructor(scene, bottomRadius, topRadius, height, slices, stacks) {
     super(scene);
     this.bottomRadius = bottomRadius;

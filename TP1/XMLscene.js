@@ -101,7 +101,6 @@ class XMLscene extends CGFscene {
 
       if (this["xmlLight" + i]) this.lights[i].enable();
       else this.lights[i].disable();
-      console.log(this["xmlLight" + i]);
 
       this.lights[i].update();
 
@@ -152,9 +151,9 @@ class XMLscene extends CGFscene {
 
     this.setGlobalAmbientLight(...this.graph.ambient);
 
-    this.initLights();
     this.initCameras();
     this.updateCurrentCamera();
+    this.initLights();
 
     this.interface.instGuiButtons();
 
@@ -170,6 +169,12 @@ class XMLscene extends CGFscene {
     // Clear image and depth buffer everytime we update the scene
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+
+    // We're not sure why this line needs to be here
+    // but it's the only way we can get this to work.
+    // Without this here, the scene lights start acting weird.
+    // TODO ?
+    this.updateLightState();
 
     // Initialize Model-View matrix as identity (no transformation
     this.updateProjectionMatrix();
