@@ -296,6 +296,8 @@ class MySceneGraph {
             attributeNames[j],
             "camera float (" + attributeNames[j] + ") with ID " + cameraId
           );
+          if (attributeNames[j] == "angle")
+            aux *= DEGREE_TO_RAD; // need to convert to rad
           if (typeof aux === "string" || aux instanceof String) return aux;
 
           global.push(aux);
