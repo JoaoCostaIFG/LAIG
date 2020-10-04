@@ -296,8 +296,7 @@ class MySceneGraph {
             attributeNames[j],
             "camera float (" + attributeNames[j] + ") with ID " + cameraId
           );
-          if (attributeNames[j] == "angle")
-            aux *= DEGREE_TO_RAD; // need to convert to rad
+          if (attributeNames[j] == "angle") aux *= DEGREE_TO_RAD; // need to convert to rad
           if (typeof aux === "string" || aux instanceof String) return aux;
 
           global.push(aux);
@@ -462,6 +461,8 @@ class MySceneGraph {
             "light " + attributeNames[j] + " undefined for ID = " + lightId
           );
       }
+
+      global.push(lightId);
       this.lights[lightId] = global;
       numLights++;
     }
@@ -1042,14 +1043,16 @@ class MySceneGraph {
         !isNaN(boolVal) &&
         (boolVal == true || boolVal == false)
       )
-    )
+    ) {
       this.onXMLMinorError(
         "unable to parse value component " +
           messageError +
           "; assuming 'value = 1'"
       );
+      boolVal = true;
+    }
 
-    return boolVal || 1;
+    return boolVal;
   }
 
   /**

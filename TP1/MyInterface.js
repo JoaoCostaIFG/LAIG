@@ -1,50 +1,73 @@
 /**
-* MyInterface class, creating a GUI interface.
-*/
+ * MyInterface class, creating a GUI interface.
+ */
 class MyInterface extends CGFinterface {
-    /**
-     * @constructor
-     */
-    constructor() {
-        super();
+  /**
+   * @constructor
+   */
+  constructor() {
+    super();
+  }
+
+  /**
+   * Initializes the interface.
+   * @param {CGFapplication} application
+   */
+  init(application) {
+    super.init(application);
+    // init GUI. For more information on the methods, check:
+    //  http://workshop.chromeexperiments.com/examples/gui
+
+    this.gui = new dat.GUI();
+
+    // add a group of controls (and open/expand by defult)
+
+    this.initKeys();
+
+    return true;
+  }
+
+  instGuiButtons() {
+    this.gui
+      .add(this.scene, "selectedCamera", this.scene.cameraList)
+      .name("Selected camera")
+      .onChange(this.scene.updateCurrentCamera.bind(this.scene));
+
+    var lightsDir = this.gui.addFolder("Lights");
+    var i = 0;
+    for (let key in this.scene.graph.lights) {
+      if (i >= 8) break; // Only eight lights allowed by WebCGF on default shaders.
+
+      let graphLight = this.scene.graph.lights[key];
+      lightsDir
+        .add(this.scene, "xmlLight" + i)
+        .name(graphLight[5])
+        .onChange(this.scene.updateLightState.bind(this.scene));
+
+      ++i;
     }
 
-    /**
-     * Initializes the interface.
-     * @param {CGFapplication} application
-     */
-    init(application) {
-        super.init(application);
-        // init GUI. For more information on the methods, check:
-        //  http://workshop.chromeexperiments.com/examples/gui
+    lightsDir.open();
+  }
 
-        this.gui = new dat.GUI();
+  /**
+   * initKeys
+   */
+  initKeys() {
+    this.scene.gui = this;
+    this.processKeyboard = function () {};
+    this.activeKeys = {};
+  }
 
-        // add a group of controls (and open/expand by defult)
+  processKeyDown(event) {
+    this.activeKeys[event.code] = true;
+  }
 
-        this.initKeys();
+  processKeyUp(event) {
+    this.activeKeys[event.code] = false;
+  }
 
-        return true;
-    }
-
-    /**
-     * initKeys
-     */
-    initKeys() {
-        this.scene.gui=this;
-        this.processKeyboard=function(){};
-        this.activeKeys={};
-    }
-
-    processKeyDown(event) {
-        this.activeKeys[event.code]=true;
-    };
-
-    processKeyUp(event) {
-        this.activeKeys[event.code]=false;
-    };
-
-    isKeyPressed(keyCode) {
-        return this.activeKeys[keyCode] || false;
-    }
+  isKeyPressed(keyCode) {
+    return this.activeKeys[keyCode] || false;
+  }
 }
