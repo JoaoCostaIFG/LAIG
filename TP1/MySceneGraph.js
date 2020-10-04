@@ -749,7 +749,6 @@ class MySceneGraph {
             attributeNames[j],
             "leaf integer (" + attributeNames[j] + ") with type " + objType
           );
-          console.log(aux);
         } else {
           aux = this.parseFloat(
             leafNode,
