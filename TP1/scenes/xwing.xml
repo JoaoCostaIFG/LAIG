@@ -52,6 +52,7 @@
         <texture id="centerWindowTex" path="./scenes/images/centerWindow.png" />
 
         <texture id="turbineTex" path="./scenes/images/turbine.png" />
+        <texture id="heliceTex" path="./scenes/images/helice.png" />
         <texture id="gunTex" path="./scenes/images/gunTex.png" />
     </textures>
 
@@ -60,7 +61,7 @@
         <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material
          requires a distinct "id". At least one material should be present. -->
         <material id="metalMaterial">
-            <shininess value="1.0" />
+            <shininess value="10.0" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -353,8 +354,24 @@
             </transformations>
 
             <descendants>
+                <noderef id="turbineHelice" />
                 <noderef id="turbineComponent" />
                 <leaf type="cylinder" height="7.0" topRadius="2.0" bottomRadius="2.0" stacks="2" slices="15"/>
+            </descendants>
+        </node>
+        <node id="turbineHelice">
+            <material id="null" />
+            <texture id="heliceTex">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+              <translation x="0" y="0" z="7.0" />
+              <scale sx="1" sy="1" sz="0.05" />
+            </transformations>
+
+            <descendants>
+                <leaf type="sphere" radius="2.0" slices="20" stacks="20"/>
             </descendants>
         </node>
         <node id="turbineComponent">
