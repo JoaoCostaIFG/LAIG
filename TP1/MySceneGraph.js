@@ -607,10 +607,11 @@ class MySceneGraph {
 
       var mat = new CGFappearance(this.scene);
       mat.setShininess(global[0]);
-      mat.setAmbient(...global[3]);
+      mat.setAmbient(...global[1]);
       mat.setDiffuse(...global[2]);
-      mat.setSpecular(...global[1]);
+      mat.setSpecular(...global[3]);
       mat.setEmission(...global[4]);
+      console.log(global);
 
       this.materials[materialID] = mat;
 

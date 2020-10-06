@@ -94,20 +94,6 @@ class XMLscene extends CGFscene {
     this.interface.setActiveCamera(this.camera);
   }
 
-  updateLightState() {
-    let i = 0;
-    for (let key in this.graph.lights) {
-      if (i >= 8) break; // Only eight lights allowed by WebCGF on default shaders.
-
-      if (this["xmlLight" + i]) this.lights[i].enable();
-      else this.lights[i].disable();
-
-      this.lights[i].update();
-
-      ++i;
-    }
-  }
-
   /**
    * Initializes the scene lights with the values read from the XML file.
    */
@@ -141,6 +127,20 @@ class XMLscene extends CGFscene {
     }
   }
 
+  updateLightState() {
+    let i = 0;
+    for (let key in this.graph.lights) {
+      if (i >= 8) break; // Only eight lights allowed by WebCGF on default shaders.
+
+      if (this["xmlLight" + i]) this.lights[i].enable();
+      else this.lights[i].disable();
+
+      this.lights[i].update();
+
+      ++i;
+    }
+  }
+
   /** Handler called when the graph is finally loaded.
    * As loading is asynchronous, this may be called already after the application has started the run loop
    */
@@ -170,15 +170,16 @@ class XMLscene extends CGFscene {
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
-    // We're not sure why this line needs to be here
-    // but it's the only way we can get this to work.
-    // Without this here, the scene lights start acting weird.
-    // TODO ?
-    this.updateLightState();
-
     // Initialize Model-View matrix as identity (no transformation
     this.updateProjectionMatrix();
     this.loadIdentity();
+
+    // We're not sure why this line needs to be here
+    // but it's the only way we can get this to work.
+    // Without this here, the scene lights start acting weird.
+    // Transformations affect lights?
+    // TODO ?
+    this.updateLightState();
 
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
