@@ -28,11 +28,17 @@ class MyInterface extends CGFinterface {
   }
 
   instGuiButtons() {
+    // camera list
     this.gui
       .add(this.scene, "selectedCamera", this.scene.cameraList)
       .name("Selected camera")
       .onChange(this.scene.updateCurrentCamera.bind(this.scene));
 
+    this.gui
+      .add(this.scene, "areLightsVisible", this.scene.areLightsVisible)
+      .name("Show lights as objects");
+
+    // lights button
     var lightsDir = this.gui.addFolder("Lights");
     var i = 0;
     for (let key in this.scene.graph.lights) {

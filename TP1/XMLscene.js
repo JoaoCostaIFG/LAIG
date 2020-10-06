@@ -47,6 +47,8 @@ class XMLscene extends CGFscene {
     this.defaultAppearance = new CGFappearance(this);
 
     // lights
+    this.areLightsVisible = false;
+
     this.xmlLight0 = false;
     this.xmlLight1 = false;
     this.xmlLight2 = false;
@@ -112,7 +114,7 @@ class XMLscene extends CGFscene {
       this.lights[i].setDiffuse(...graphLight[3]);
       this.lights[i].setSpecular(...graphLight[4]);
 
-      this.lights[i].setVisible(true);
+      this.lights[i].setVisible(this.areLightsVisible);
       if (graphLight[0]) {
         this["xmlLight" + i] = true;
         this.lights[i].enable();
@@ -131,6 +133,8 @@ class XMLscene extends CGFscene {
     let i = 0;
     for (let key in this.graph.lights) {
       if (i >= 8) break; // Only eight lights allowed by WebCGF on default shaders.
+
+      this.lights[i].setVisible(this.areLightsVisible);
 
       if (this["xmlLight" + i]) this.lights[i].enable();
       else this.lights[i].disable();
@@ -174,17 +178,17 @@ class XMLscene extends CGFscene {
     this.updateProjectionMatrix();
     this.loadIdentity();
 
+    // Apply transformations corresponding to the camera position relative to the origin
+    this.applyViewMatrix();
+
+    this.pushMatrix();
+
     // We're not sure why this line needs to be here
     // but it's the only way we can get this to work.
     // Without this here, the scene lights start acting weird.
     // Transformations affect lights?
     // TODO ?
     this.updateLightState();
-
-    // Apply transformations corresponding to the camera position relative to the origin
-    this.applyViewMatrix();
-
-    this.pushMatrix();
 
     for (var i = 0; i < this.lights.length; i++) {
       this.lights[i].setVisible(true);
