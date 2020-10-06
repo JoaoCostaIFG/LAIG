@@ -54,10 +54,7 @@ class MyNode {
 
   displayPrimitives() {
     // calls display on each CFGobject (leafs)
-    for (var i = 0; i < this.descendantsLeaf.length; ++i) {
-      // this.descendantsLeaf[i].enableNormalViz();
-      this.descendantsLeaf[i].display();
-    }
+    this.descendantsLeaf.forEach(leaf => leaf.display());
   }
 
   display() {
@@ -86,5 +83,13 @@ class MyNode {
       this.sceneGraph.popMaterial();
     // transformations pop
     this.sceneGraph.popTransformation();
+  }
+
+  enableNormalViz() {
+    this.descendantsLeaf.forEach(leaf => leaf.enableNormalViz());
+  }
+
+  disableNormalViz() {
+    this.descendantsLeaf.forEach(leaf => leaf.disableNormalViz());
   }
 }

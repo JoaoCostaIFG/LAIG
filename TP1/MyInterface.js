@@ -34,6 +34,13 @@ class MyInterface extends CGFinterface {
       .name("Selected camera")
       .onChange(this.scene.updateCurrentCamera.bind(this.scene));
 
+    // toggle to show object normals
+    this.gui
+      .add(this.scene.graph, "showNormals", this.scene.graph.showNormals)
+      .name("Show objects normals")
+      .onChange(this.scene.graph.toggleObjectNormals.bind(this.scene.graph));
+
+    // toggle to show lights as objects
     this.gui
       .add(this.scene, "areLightsVisible", this.scene.areLightsVisible)
       .name("Show lights as objects");

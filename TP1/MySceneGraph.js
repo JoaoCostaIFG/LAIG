@@ -37,6 +37,8 @@ class MySceneGraph {
     this.axisCoords["y"] = [0, 1, 0];
     this.axisCoords["z"] = [0, 0, 1];
 
+    this.showNormals = false;
+
     // File reading
     this.reader = new CGFXMLreader();
 
@@ -611,7 +613,6 @@ class MySceneGraph {
       mat.setDiffuse(...global[2]);
       mat.setSpecular(...global[3]);
       mat.setEmission(...global[4]);
-      console.log(global);
 
       this.materials[materialID] = mat;
 
@@ -1181,6 +1182,14 @@ class MySceneGraph {
 
   unbindActiveTex() {
     if (this.scene.activeTexture != null) this.scene.activeTexture.unbind();
+  }
+
+  toggleObjectNormals() {
+    for (var key in this.nodes) {
+      var node = this.nodes[key];
+      if (this.showNormals) node.enableNormalViz();
+      else node.disableNormalViz();
+    }
   }
 
   /**
