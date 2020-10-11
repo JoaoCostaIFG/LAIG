@@ -23,7 +23,7 @@ class XMLscene extends CGFscene {
 
     // this.initCameras();
     // default camera
-    this.camera = new CGFcamera(
+    this.camera = new MyCGFcamera(
       0.4,
       0.1,
       500,
@@ -75,9 +75,9 @@ class XMLscene extends CGFscene {
       var camInfo = this.graph.cameras[key];
       var cam;
       if (camInfo[0] == "perspective") {
-        cam = new CGFcamera(...camInfo.slice(2));
+        cam = new MyCGFcamera(...camInfo.slice(2));
       } else {
-        cam = new CGFcameraOrtho(...camInfo.slice(2));
+        cam = new MyCGFcameraOrtho(...camInfo.slice(2));
       }
 
       this.cameras.push(cam);
@@ -93,6 +93,7 @@ class XMLscene extends CGFscene {
 
     this.lastCamera = this.selectedCamera;
     this.camera = this.cameras[this.selectedCamera];
+    this.camera.reset();
     this.interface.setActiveCamera(this.camera);
   }
 
