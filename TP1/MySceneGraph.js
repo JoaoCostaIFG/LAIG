@@ -331,13 +331,14 @@ class MySceneGraph {
           if (typeof aux === "string" || aux instanceof String) return aux;
 
           global.push(aux);
-        } else if (attributeNames[j] == "up")
+        } else if (attributeNames[j] == "up") {
           // default value
           global.push([0, 1, 0]);
-        else
+        } else {
           return (
             "camera " + attributeNames[j] + " undefined for ID = " + cameraId
           );
+        }
       }
 
       this.cameras[cameraId] = global;
@@ -965,31 +966,31 @@ class MySceneGraph {
       }
 
       /* associate CFGtextures with MyNodes */
-      var nodeTex = obj.tex;
-      if (nodeTex != "null" && nodeTex != "clear") {
-        if (this.textures[nodeTex] == null)
+      let nodeTexId = obj.texId;
+      if (obj.texBehaviour == TexBehaviour.CHANGE) {
+        if (this.textures[nodeTexId] == null)
           return (
             "texture with id " +
-            nodeTex +
+            nodeTexId +
             " was referenced in node with id " +
             key +
             " but was not defined."
           );
-        obj.tex = this.textures[nodeTex];
+        obj.tex = this.textures[nodeTexId];
       }
 
       /* associate CFGapperances with MyNodes */
-      var nodeMat = obj.mat;
-      if (nodeMat != "null") {
-        if (this.materials[nodeMat] == null)
+      let nodeMatId = obj.matId;
+      if (obj.matBehaviour == MatBehaviour.CHANGE) {
+        if (this.materials[nodeMatId] == null)
           return (
             "material with id " +
-            nodeMat +
+            nodeMatId +
             " was referenced in node with id " +
             key +
             " but was not defined."
           );
-        obj.mat = this.materials[nodeMat];
+        obj.mat = this.materials[nodeMatId];
       }
     }
 

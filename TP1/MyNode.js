@@ -1,3 +1,14 @@
+const TexBehaviour = {
+  CHANGE: 0,
+  KEEP: 1,
+  CLEAR: 2,
+};
+
+const MatBehaviour = {
+  CHANGE: 0,
+  KEEP: 1,
+};
+
 /**
  * MyNode
  * @constructor
@@ -7,41 +18,46 @@ class MyNode {
     this.id = id;
     this.sceneGraph = sceneGraph;
 
-    // if (dad != null) {
-      // this.tex = dad.getText();
-      // this.mat = dad.getMaterial();
-    // }
-
     this.tgMatrix = mat4.create();
+
+    this.texId = "null";
+    this.tex = null;
+    this.texBehaviour = TexBehaviour.KEEP;
+    this.afs = 1.0;
+    this.aft = 1.0;
+
+    this.matId = "null";
+    this.mat = null;
+    this.matBehaviour = MatBehaviour.KEEP;
 
     this.descendantsNode = [];
     this.descendantsLeaf = [];
   }
 
   addTgMatrix(tg) {
-    // var result = [0, 0, 0, 0,
-    // 0, 0, 0, 0,
-    // 0, 0, 0, 0,
-    // 0, 0, 0, 0];
-
-    // for (var i = 0; i < 4; i++)
-    // for (var j = 0; j < 4; j++)
-    // for(var k = 0; k < 4; k++)
-    // result[i * 4 + j] += this.tgMatrix[i * 4 + k] * tg[k * 4 + j];
-
-    // this.tgMatrix = result;
-
     mat4.multiply(this.tgMatrix, this.tgMatrix, tg);
   }
 
-  setTexture(tex, afs, aft) {
-    this.tex = tex;
+  setTexture(texId, afs, aft) {
+    this.texId = texId;
     this.afs = afs;
     this.aft = aft;
+
+    if (this.texId == "null")
+      this.texBehaviour = TexBehaviour.KEEP;
+    else if (this.texId == "clear")
+      this.texBehaviour = TexBehaviour.CLEAR;
+    else
+      this.texBehaviour = TexBehaviour.CHANGE;
   }
 
-  setMaterial(mat) {
-    this.mat = mat;
+  setMaterial(matId) {
+    this.matId = matId;
+
+    if (this.matId == "null")
+      this.matBehaviour = MatBehaviour.KEEP;
+    else
+      this.matBehaviour = MatBehaviour.CHANGE;
   }
 
   addDescendantNode(desc) {
@@ -53,43 +69,45 @@ class MyNode {
   }
 
   displayPrimitives() {
+    // draw primitives
     // calls display on each CFGobject (leafs)
-    this.descendantsLeaf.forEach(leaf => leaf.display());
+    this.descendantsLeaf.forEach((leaf) => leaf.display());
   }
 
-  display() {
-    // transformations push
+  scenePushes() {
+    // transformations
     this.sceneGraph.pushTransformation(this.tgMatrix);
-    // materials push
-    if (this.mat != "null") this.sceneGraph.pushMaterial(this.mat);
-    // textures push
-    if (this.tex != "null" && this.tex != "clear")
+    // materials
+    if (this.matBehaviour == MatBehaviour.CHANGE) this.sceneGraph.pushMaterial(this.mat);
+    // textures
+    if (this.texBehaviour == TexBehaviour.CHANGE)
       this.sceneGraph.pushTexture(this.tex);
-    else if (this.tex == "clear")
-      this.sceneGraph.unbindActiveTex();
+    else if (this.texBehaviour == TexBehaviour.CLEAR) this.sceneGraph.unbindActiveTex();
+  }
 
-    // draw primitives
-    this.displayPrimitives();
-
-    // recursively process descendant MyNode objects
-    for (var i = 0; i < this.descendantsNode.length; ++i)
-      this.descendantsNode[i].display();
-
-    // textures pop
-    if (this.tex != "null" && this.tex != "clear")
-      this.sceneGraph.popTexture();
-    // materials pop
-    if (this.mat != "null")
-      this.sceneGraph.popMaterial();
-    // transformations pop
+  scenePops() {
+    // textures
+    if (this.texBehaviour == TexBehaviour.CHANGE) this.sceneGraph.popTexture();
+    // materials
+    if (this.matBehaviour == MatBehaviour.CHANGE) this.sceneGraph.popMaterial();
+    // transformations
     this.sceneGraph.popTransformation();
   }
 
+  display() {
+    this.scenePushes();
+    this.displayPrimitives();
+    // recursively process descendant MyNode objects
+    for (var i = 0; i < this.descendantsNode.length; ++i)
+      this.descendantsNode[i].display();
+    this.scenePops();
+  }
+
   enableNormalViz() {
-    this.descendantsLeaf.forEach(leaf => leaf.enableNormalViz());
+    this.descendantsLeaf.forEach((leaf) => leaf.enableNormalViz());
   }
 
   disableNormalViz() {
-    this.descendantsLeaf.forEach(leaf => leaf.disableNormalViz());
+    this.descendantsLeaf.forEach((leaf) => leaf.disableNormalViz());
   }
 }
