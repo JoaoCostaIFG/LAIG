@@ -1,6 +1,12 @@
 /**
  * MyCylinder
  * @constructor
+ * @param scene - Reference to MyScene object
+ * @param bottomRadius - radius of bottom base 
+ * @param topRadius - radius of top base 
+ * @param height - height of cylinder
+ * @param slices - number of slices
+ * @param stacks - number of stacks 
  */
 class MyCylinder extends CGFobject {
   constructor(scene, bottomRadius, topRadius, height, slices, stacks) {
@@ -20,6 +26,8 @@ class MyCylinder extends CGFobject {
 
     var ang = 0;
     var alphaAng = (2 * Math.PI) / this.slices;
+
+    //For Texture Coords
 
     this.texCoords = [];
     var texCurr = 0, texYCurr = 1;
@@ -68,6 +76,7 @@ class MyCylinder extends CGFobject {
       this.vertices.push(r1 * Math.cos(ang), r1 * Math.sin(ang), currHeight);
       this.normals.push(Math.cos(ang) / normalLen, Math.sin(ang) / normalLen, normalSlopeZ / normalLen);
       this.texCoords.push(texCurr, texYCurr);
+      
       // this is vertice 1
       this.vertices.push(r2 * Math.cos(ang), r2 * Math.sin(ang), currHeight + heightStep);
       this.normals.push(Math.cos(ang) / normalLen, Math.sin(ang) / normalLen, normalSlopeZ / normalLen);
@@ -77,6 +86,7 @@ class MyCylinder extends CGFobject {
 
       // do until we reach the number of vertices in current slice
       for (var i = (this.slices * 2 + 2) * (stackN - 1) + 2; i < (this.slices * 2 + 2) * stackN; i += 2) {
+        
         // this is vertice 2
         this.vertices.push(r1 * Math.cos(ang), r1 * Math.sin(ang), currHeight);
         this.normals.push(Math.cos(ang) / normalLen, Math.sin(ang) / normalLen, normalSlopeZ / normalLen);
@@ -99,6 +109,7 @@ class MyCylinder extends CGFobject {
     }
 
     /* bottom cap */
+
     /* center */
     ang = 0;
     this.vertices.push(0, 0, 0);
@@ -106,6 +117,7 @@ class MyCylinder extends CGFobject {
     this.texCoords.push(0.5, 0.5);
     var centerInd = this.vertices.length / 3 - 1;
 
+    /* other vertices */ 
     this.vertices.push(this.bottomRadius * Math.cos(ang), this.bottomRadius * Math.sin(ang), 0);
     this.normals.push(0, 0, -1);
     this.texCoords.push(Math.cos(ang) * 0.5 + 0.5, Math.sin(ang) * 0.5 + 0.5);
@@ -129,6 +141,7 @@ class MyCylinder extends CGFobject {
     this.texCoords.push(0.5, 0.5);
     centerInd = this.vertices.length / 3 - 1;
 
+    /* other vertices  */
     this.vertices.push(this.topRadius * Math.cos(ang), this.topRadius * Math.sin(ang), this.height);
     this.normals.push(0, 0, 1);
     this.texCoords.push(Math.cos(ang) * 0.5 + 0.5, Math.sin(ang) * 0.5 + 0.5);
