@@ -6,6 +6,8 @@
  * @param y1 - y coordinate corner 1
  * @param x2 - x coordinate corner 2
  * @param y2 - y coordinate corner 2
+ * @param afs - texture amplification in s axis 
+ * @param aft - texture amplification in t axis
  */
 class MyRectangle extends CGFobject {
 	constructor(scene, x1, y1, x2, y2, afs=1.0, aft=1.0) {
@@ -34,8 +36,11 @@ class MyRectangle extends CGFobject {
 			1, 3, 2
 		];
 
-    // vector P1 -> P2. If components, have diferent signs, needs inverted normals
-    var normalZ = (this.y2 - this.y1) * (this.x2 - this.x1) < 0 ? -1 : 1;
+		//Normals
+
+		// vector P1 -> P2. If components, have diferent signs, needs inverted normals
+		var normalZ = (this.y2 - this.y1) * (this.x2 - this.x1) < 0 ? -1 : 1;
+		
 		this.normals = [
 			0, 0, normalZ,
 			0, 0, normalZ,

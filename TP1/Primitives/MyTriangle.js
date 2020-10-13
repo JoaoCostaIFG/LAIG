@@ -6,6 +6,10 @@
  * @param y1 - y coordinate corner 1
  * @param x2 - x coordinate corner 2
  * @param y2 - y coordinate corner 2
+ * @param x3 - x coordinate corner 3
+ * @param y3 - y coordinate corner 3
+ * @param afs - texture amplification in s axis 
+ * @param aft - texture amplification in t axis
  */
 class MyTriangle extends CGFobject {
 	constructor(scene, x1, y1, x2, y2, x3, y3, afs=1.0, aft=1.0) {
@@ -34,9 +38,11 @@ class MyTriangle extends CGFobject {
 			0, 1, 2,
 		];
 
+		//Normals
         var out = vec3.create();
         vec3.cross(out, [this.x2 - this.x1, this.y2 - this.y1, 0], [this.x3 - this.x1, this.y3 - this.y1, 0]);
-        var normalZ = out[2] > 0 ? 1 : -1;
+		var normalZ = out[2] > 0 ? 1 : -1; // If components, have diferent signs, needs inverted normals
+		
 		this.normals = [
 			0, 0, normalZ,
 			0, 0, normalZ,
@@ -61,7 +67,6 @@ class MyTriangle extends CGFobject {
         var cos = (a *a - b * b + c * c) / (2 * a * c);
         var sin = Math.sqrt(1 - cos * cos);
 
-        // TODO 1 - ... na ultima coord ? 
         this.texCoords = [
           0, 0,
           a / this.afs, 0,

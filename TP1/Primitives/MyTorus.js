@@ -2,10 +2,10 @@ class MyTorus extends CGFobject {
     /**
      * @method constructor
      * @param  {CGFscene} scene - MyScene object
-     * @param  {integer} slices 
-     * @param  {integer} loops 
-     * @param   {float} innerRadius 
-     * @param   {float} outerRadius 
+     * @param  {integer} slices - number of slices
+     * @param  {integer} loops - number of loops
+     * @param   {float} innerRadius - inner radius
+     * @param   {float} outerRadius - outer radius
      */
     constructor(scene, slices, loops, innerRadius, outerRadius) {
       super(scene);
