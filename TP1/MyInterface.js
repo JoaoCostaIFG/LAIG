@@ -37,13 +37,13 @@ class MyInterface extends CGFinterface {
     // toggle to show object normals
     this.gui
       .add(this.scene.graph, "showNormals", this.scene.graph.showNormals)
-      .name("Show objects normals")
+      .name("Show normals")
       .onChange(this.scene.graph.toggleObjectNormals.bind(this.scene.graph));
 
     // toggle to show lights as objects
     this.gui
       .add(this.scene, "areLightsVisible", this.scene.areLightsVisible)
-      .name("Show lights as objects");
+      .name("Show lights");
 
     // lights button
     var lightsDir = this.gui.addFolder("Lights");

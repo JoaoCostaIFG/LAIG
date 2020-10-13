@@ -90,6 +90,7 @@
         <texture id="centerWindowTex" path="./scenes/images/centerWindow.png" />
 
         <texture id="turbineTex" path="./scenes/images/turbine.png" />
+        <texture id="turbineTubeTex" path="./scenes/images/turbineTube.png" />
         <texture id="heliceTex" path="./scenes/images/helice.png" />
         <texture id="gunTex" path="./scenes/images/gunTex.png" />
     </textures>
@@ -107,9 +108,9 @@
         </material>
         <material id="skyboxMaterial">
             <shininess value="0.2" />
-            <ambient r="0.7" g="0.8" b="0.69" a="1.0" />
-            <diffuse r="0.7" g="0.8" b="0.69" a="1.0" />
-            <specular r="0.7" g="0.8" b="0.69" a="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
             <emissive r="0.7" g="0.8" b="0.69" a="1.0" />
         </material>
         <material id="windowMaterial">
@@ -414,7 +415,7 @@
         </node>
         <node id="turbineComponent">
             <material id="turbineRingMat" />
-            <texture id="xwingChassisTex">
+            <texture id="turbineTubeTex">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
 
@@ -424,6 +425,19 @@
 
             <descendants>
                 <leaf type="cylinder" height="5.0" topRadius="1.0" bottomRadius="1.0" stacks="2" slices="15"/>
+                <noderef id="turbineComponentRing" />
+            </descendants>
+        </node>
+        <node id="turbineComponentRing">
+            <material id="turbineRingMat" />
+            <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+            </transformations>
+
+            <descendants>
                 <leaf type="torus" inner="0.2" outer="1.0" slices="20" loops="20" />
             </descendants>
         </node>
