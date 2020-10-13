@@ -29,6 +29,10 @@
             <to x="5" y="0" z="0" />
             <up x="0" y="1" z="0" /><!-- optional, default 0,1,0 -->
         </ortho>
+        <perspective id="faceCam" near="0.1" far="500" angle="45">
+            <from x="0" y="4.4" z="13.4" />
+            <to x="0" y="4.4" z="0" />
+        </perspective>
     </views>
 
     <illumination>
@@ -93,6 +97,8 @@
         <texture id="turbineTubeTex" path="./scenes/images/turbineTube.png" />
         <texture id="heliceTex" path="./scenes/images/helice.png" />
         <texture id="gunTex" path="./scenes/images/gunTex.png" />
+
+        <texture id="headTex" path="./scenes/images/head.png" />
     </textures>
 
 
@@ -249,12 +255,13 @@
         </node>
         <node id="pilot">
             <material id="null" />
-            <texture id="clear">
+            <texture id="headTex">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
                 <translation x="0.0" y="0.8" z="-2.0" />
+                <rotation axis="x" angle="-90" />
             </transformations>
 
             <descendants>
