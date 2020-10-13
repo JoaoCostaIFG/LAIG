@@ -88,6 +88,9 @@ class XMLscene extends CGFscene {
     }
   }
 
+  /**
+   * Updates which camera is selected
+   */
   updateCurrentCamera() {
     if (this.lastCamera == this.selectedCamera) return;
 
@@ -130,6 +133,9 @@ class XMLscene extends CGFscene {
     }
   }
 
+  /**
+   * Updates lights state
+   */
   updateLightState() {
     let i = 0;
     for (let key in this.graph.lights) {

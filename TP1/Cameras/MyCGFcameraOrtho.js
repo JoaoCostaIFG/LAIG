@@ -1,4 +1,18 @@
+/**
+ * MyCGFcameraOrtho
+ * @constructor
+ * @param left - left component
+ * @param right - right component
+ * @param bottom - bottom component
+ * @param top - top component
+ * @param near - near component
+ * @param far - far component
+ * @param position - camera's position
+ * @param target - camera's target
+ * @param up - up component
+ */
 class MyCGFcameraOrtho extends CGFcameraOrtho {
+
   constructor(left, right, bottom, top, near, far, position, target, up) {
     super(left, right, bottom, top, near, far, position, target, up);
 
@@ -7,6 +21,9 @@ class MyCGFcameraOrtho extends CGFcameraOrtho {
     this.initUp = up;
   }
 
+  /**
+   * Reset camera to its initial state
+   */
   reset() {
     vec4.copy(this.position, this.initPosition);
     vec4.copy(this.target, this.initTarget);
