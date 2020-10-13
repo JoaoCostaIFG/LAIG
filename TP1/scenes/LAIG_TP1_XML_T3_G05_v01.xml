@@ -99,6 +99,8 @@
         <texture id="gunTex" path="./scenes/images/gunTex.png" />
 
         <texture id="headTex" path="./scenes/images/head.png" />
+
+        <texture id="deathStarTex" path="./scenes/images/death_star.jpg" />
     </textures>
 
 
@@ -140,6 +142,13 @@
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
             <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
+        <material id="deathStarMat">
+            <shininess value="100" />
+            <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+            <diffuse r="0.2" g="0.2" b="0.2" a="1.0" />
+            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+            <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
     </materials>
 
     <nodes>
@@ -156,8 +165,24 @@
             </transformations>
 
             <descendants>
-                <noderef id="x-wing" />
                 <noderef id="skybox" />
+                <noderef id="deathStar" />
+                <noderef id="x-wing" />
+            </descendants>
+        </node>
+        <node id="deathStar">
+            <material id="deathStarMat" />
+            <texture id="deathStarTex">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <translation x="-50" y="60" z="-60" />
+                <rotation axis="x" angle="-90" />
+            </transformations>
+
+            <descendants>
+                <leaf type="sphere" radius="20" slices="20" stacks="20"/>
             </descendants>
         </node>
         <node id="x-wing">
