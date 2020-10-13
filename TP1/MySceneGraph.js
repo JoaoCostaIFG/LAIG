@@ -706,9 +706,14 @@ class MySceneGraph {
     return tgMtr;
   }
 
+  /**
+   * Parses a Leaf Type Node
+   * @param {leaf block element} leafNode 
+   * @param afs - texture amplification in s axis 
+   * @param aft - texture amplification in t axis
+   */
   parseLeaf(leafNode, afs = 1.0, aft = 1.0) {
-    // TODO getInteger ?
-
+  
     var attributeNames = [];
     var objType = this.reader.getString(leafNode, "type");
     switch (objType) {
@@ -952,6 +957,9 @@ class MySceneGraph {
     if (postProc != null) return postProc;
   }
 
+  /**
+   * Checks for missing/unused nodes, textures or materials
+   */
   nodesPostProcessing() {
     for (var key in this.nodes) {
       var obj = this.nodes[key];
@@ -996,6 +1004,13 @@ class MySceneGraph {
     // TODO check for unused nodes
   }
 
+  /**
+   * Parses a float
+   * @param {block element} node 
+   * @param {name of float} name
+   * @param {message to be displayed in case of error} messageError
+   * @param {default value to assume in case of error} defaultVal
+   */
   parseFloat(node, name, messageError, defaultVal = null) {
     var f = this.reader.getFloat(node, name);
     if (f == null || isNaN(f)) {
@@ -1016,6 +1031,13 @@ class MySceneGraph {
     return f;
   }
 
+  /**
+   * Parses an integer
+   * @param {block element} node 
+   * @param {name of integer} name
+   * @param {message to be displayed in case of error} messageError
+   * @param {default value to assume in case of error} defaultVal
+   */
   parseInteger(node, name, messageError, defaultVal = null) {
     var i = this.reader.getInteger(node, name);
     if (i == null || isNaN(i)) {
@@ -1036,6 +1058,12 @@ class MySceneGraph {
     return i;
   }
 
+  /**
+   * Parses a boolean
+   * @param {block element} node 
+   * @param {name of boolean} name
+   * @param {message to be displayed in case of error} messageError
+   */
   parseBoolean(node, name, messageError) {
     var boolVal = true;
     boolVal = this.reader.getBoolean(node, name);
@@ -1141,20 +1169,34 @@ class MySceneGraph {
     return color;
   }
 
+  /**
+   * Pushes a transformation into scene's transformations stack
+   * @param {Transformation Matrix to be pushed into scene's tranformations stack} tg 
+   */
   pushTransformation(tg) {
     this.scene.pushMatrix();
     this.scene.multMatrix(tg);
   }
 
+  /**
+   * Pops a transformation from scene's transformations' stack
+   */
   popTransformation() {
     this.scene.popMatrix();
   }
 
+  /**
+   * Binds last texture from active textures' stack
+   */
   applyLastTex() {
     var lastTexInd = this.activeTextures.length - 1;
     if (lastTexInd >= 0) this.activeTextures[lastTexInd].bind();
   }
 
+  /**
+   * Pushes a material into materials' stack and applies it
+   * @param {Material to push into materials' stack} mat 
+   */
   pushMaterial(mat) {
     this.activeMaterials.push(mat);
     mat.apply();
@@ -1162,6 +1204,9 @@ class MySceneGraph {
     this.applyLastTex();
   }
 
+  /**
+   * Pops a material from scene's materials' stack & applies last material & texture
+   */
   popMaterial() {
     this.activeMaterials.pop();
     var lastMatInd = this.activeMaterials.length - 1;
@@ -1170,20 +1215,33 @@ class MySceneGraph {
     this.applyLastTex();
   }
 
+  /**
+   * Pushes a texture into textures' stack & binds it
+   * @param {Texture to push into textures' stack} tex 
+   */
   pushTexture(tex) {
     this.activeTextures.push(tex);
     tex.bind();
   }
 
+  /**
+   * Pops a texture from scene's testures' stack & applies last texture
+   */
   popTexture() {
     this.activeTextures.pop();
     this.applyLastTex();
   }
 
+  /**
+   * Unbinds active texture 
+   */
   unbindActiveTex() {
     if (this.scene.activeTexture != null) this.scene.activeTexture.unbind();
   }
 
+  /**
+   * Toggles objects' normals
+   */
   toggleObjectNormals() {
     for (var key in this.nodes) {
       var node = this.nodes[key];
