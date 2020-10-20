@@ -470,13 +470,13 @@ class MySceneGraph {
       numLights++;
     }
 
-    if (numLights == 0) return "at least one light must be defined";
+    if (numLights == 0) return "at least one light must be defined.";
     else if (numLights > 8)
       this.onXMLMinorError(
-        "too many lights defined; WebGL imposes a limit of 8 lights"
+        "too many lights defined; WebGL imposes a limit of 8 lights."
       );
 
-    this.log("Parsed lights");
+    this.log("Parsed lights.");
     return null;
   }
 
@@ -620,7 +620,7 @@ class MySceneGraph {
       numMaterials++;
     }
 
-    if (numMaterials == 0) return "at least one light must be defined";
+    if (numMaterials == 0) return "at least one material must be defined.";
 
     this.log("Parsed materials");
     return null;
@@ -709,12 +709,11 @@ class MySceneGraph {
 
   /**
    * Parses a Leaf Type Node
-   * @param {leaf block element} leafNode 
-   * @param afs - texture amplification in s axis 
+   * @param {leaf block element} leafNode
+   * @param afs - texture amplification in s axis
    * @param aft - texture amplification in t axis
    */
   parseLeaf(leafNode, afs = 1.0, aft = 1.0) {
-  
     var attributeNames = [];
     var objType = this.reader.getString(leafNode, "type");
     switch (objType) {
@@ -979,29 +978,35 @@ class MySceneGraph {
       /* associate CFGtextures with MyNodes */
       let nodeTexId = obj.texId;
       if (obj.texBehaviour == TexBehaviour.CHANGE) {
-        if (this.textures[nodeTexId] == null)
-          return (
+        if (this.textures[nodeTexId] == null) {
+          this.onXMLMinorError(
             "texture with id " +
-            nodeTexId +
-            " was referenced in node with id " +
-            key +
-            " but was not defined."
+              nodeTexId +
+              " was referenced in node with id " +
+              key +
+              " but was not defined. Assuming 'null' texture."
           );
-        obj.tex = this.textures[nodeTexId];
+          obj.texBehaviour = TexBehaviour.KEEP;
+        } else {
+          obj.tex = this.textures[nodeTexId];
+        }
       }
 
       /* associate CFGapperances with MyNodes */
       let nodeMatId = obj.matId;
       if (obj.matBehaviour == MatBehaviour.CHANGE) {
-        if (this.materials[nodeMatId] == null)
-          return (
+        if (this.materials[nodeMatId] == null) {
+          this.onXMLMinorError(
             "material with id " +
-            nodeMatId +
-            " was referenced in node with id " +
-            key +
-            " but was not defined."
+              nodeMatId +
+              " was referenced in node with id " +
+              key +
+              " but was not defined. Assuming 'null' material."
           );
-        obj.mat = this.materials[nodeMatId];
+          obj.matBehaviour = MatBehaviour.KEEP;
+        } else {
+          obj.mat = this.materials[nodeMatId];
+        }
       }
     }
 
@@ -1010,7 +1015,7 @@ class MySceneGraph {
 
   /**
    * Parses a float
-   * @param {block element} node 
+   * @param {block element} node
    * @param {name of float} name
    * @param {message to be displayed in case of error} messageError
    * @param {default value to assume in case of error} defaultVal
@@ -1037,7 +1042,7 @@ class MySceneGraph {
 
   /**
    * Parses an integer
-   * @param {block element} node 
+   * @param {block element} node
    * @param {name of integer} name
    * @param {message to be displayed in case of error} messageError
    * @param {default value to assume in case of error} defaultVal
@@ -1064,7 +1069,7 @@ class MySceneGraph {
 
   /**
    * Parses a boolean
-   * @param {block element} node 
+   * @param {block element} node
    * @param {name of boolean} name
    * @param {message to be displayed in case of error} messageError
    */
@@ -1175,7 +1180,7 @@ class MySceneGraph {
 
   /**
    * Pushes a transformation into scene's transformations stack
-   * @param {Transformation Matrix to be pushed into scene's tranformations stack} tg 
+   * @param {Transformation Matrix to be pushed into scene's tranformations stack} tg
    */
   pushTransformation(tg) {
     this.scene.pushMatrix();
@@ -1199,7 +1204,7 @@ class MySceneGraph {
 
   /**
    * Pushes a material into materials' stack and applies it
-   * @param {Material to push into materials' stack} mat 
+   * @param {Material to push into materials' stack} mat
    */
   pushMaterial(mat) {
     this.activeMaterials.push(mat);
@@ -1221,7 +1226,7 @@ class MySceneGraph {
 
   /**
    * Pushes a texture into textures' stack & binds it
-   * @param {Texture to push into textures' stack} tex 
+   * @param {Texture to push into textures' stack} tex
    */
   pushTexture(tex) {
     this.activeTextures.push(tex);
@@ -1237,7 +1242,7 @@ class MySceneGraph {
   }
 
   /**
-   * Unbinds active texture 
+   * Unbinds active texture
    */
   unbindActiveTex() {
     if (this.scene.activeTexture != null) this.scene.activeTexture.unbind();
