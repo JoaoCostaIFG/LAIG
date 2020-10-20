@@ -956,6 +956,9 @@ class MySceneGraph {
 
     var postProc = this.nodesPostProcessing();
     if (postProc != null) return postProc;
+
+    if (this.nodes[this.idRoot] == null)
+      return "Root node " + this.idRoot + " was not defined.";
   }
 
   /**
