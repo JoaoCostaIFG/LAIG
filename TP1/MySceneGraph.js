@@ -459,10 +459,20 @@ class MySceneGraph {
           if (typeof aux === "string" || aux instanceof String) return aux;
 
           global.push(aux);
-        } else
-          return (
-            "light " + attributeNames[j] + " undefined for ID = " + lightId
-          );
+        } else {
+          if (attributeNames[j] == "enable") {
+            this.onXMLMinorError(
+              "light enable attribute undefined for ID = " +
+                lightId +
+                "; assuming true."
+            );
+            global.push(true);
+          } else {
+            return (
+              "light " + attributeNames[j] + " undefined for ID = " + lightId
+            );
+          }
+        }
       }
 
       global.push(lightId);
@@ -604,7 +614,10 @@ class MySceneGraph {
           global.push(aux);
         } else
           return (
-            "material" + attributeNames[j] + " undefined for ID = " + materialID
+            "material " +
+            attributeNames[j] +
+            " undefined for ID = " +
+            materialID
           );
       }
 
@@ -896,16 +909,15 @@ class MySceneGraph {
             afs = this.parseFloat(
               grandgrandChildren[j],
               "afs",
-              "texture afs field for node " + nodeID + " is missing."
+              "texture afs field for node " + nodeID,
+              1.0
             );
-            if (typeof afs === "string" || afs instanceof String) return afs;
             aft = this.parseFloat(
               grandgrandChildren[j],
               "aft",
-              "texture afs field for node " + nodeID + " is missing."
+              "texture afs field for node " + nodeID,
+              1.0
             );
-            if (typeof aft === "string" || aft instanceof String) return aft;
-
             foundAmp = true;
           } else {
             this.onXMLMinorError(
