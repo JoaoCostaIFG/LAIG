@@ -15,12 +15,14 @@
 - Uses at least one instance of all the primitives.
 - Has multiple cameras, lights, materials and textures.
 - Scene
-  - A skybox with a colored Star War's X-Wing ship model.
+  - A skybox with a colored Star War's X-Wing ship model and death star.
   - [Link to the Scene](./scenes/LAIG_TP1_XML_T3_G05_v01.xml)
+- Extra interface controls for better debugging: show/ vertexes' normals
+  and show/hide light objects.
+- Cameras reset to initial position upon switching between them.
 
 ---
 
 ## Issues/Problems
 
-- There could be better error messages in some places.
-- We can develop more syntax error tolerance for the xml files.
+- There are no issues that we know of.

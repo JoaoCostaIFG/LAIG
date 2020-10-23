@@ -599,7 +599,7 @@ class MySceneGraph {
               attributeNames[j] + " illumination for ID " + materialID
             );
 
-          if (typeof aux === "string") return aux;
+          if (typeof aux === "string" || aux instanceof String) return aux;
 
           global.push(aux);
         } else
@@ -651,7 +651,7 @@ class MySceneGraph {
         "angle",
         "angle of node with ID: " + nodeID + "."
       );
-      if (angle == null) return angle;
+      if (typeof angle === "string" || angle instanceof String) return angle;
       angle *= DEGREE_TO_RAD; // need to convert to rad
 
       switch (axis) {
@@ -680,19 +680,19 @@ class MySceneGraph {
         "sx",
         "sx of node with ID: " + nodeID + "."
       );
-      if (sx == null) return sx;
+      if (typeof sx === "string" || sx instanceof String) return sx;
       var sy = this.parseFloat(
         tgInfo,
         "sy",
         "sy of node with ID: " + nodeID + "."
       );
-      if (sy == null) return sy;
+      if (typeof sy === "string" || sy instanceof String) return sy;
       var sz = this.parseFloat(
         tgInfo,
         "sz",
         "sz of node with ID: " + nodeID + "."
       );
-      if (sz == null) return sz;
+      if (typeof sz === "string" || sz instanceof String) return sz;
       mat4.scale(tgMtr, tgMtr, [sx, sy, sz]);
     } else {
       this.onXMLMinorError(
@@ -847,8 +847,11 @@ class MySceneGraph {
         grandgrandChildren = grandChildren[transformationsIndex].children;
         for (var j = 0; j < grandgrandChildren.length; j++) {
           var tg = this.parseNodeTransformations(grandgrandChildren[j]);
-          if (typeof tg === "string" || tg instanceof String) return tg;
-          nodeObj.addTgMatrix(tg);
+          if (typeof tg === "string" || tg instanceof String) {
+            this.onXMLMinorError(tg + " Ignoring it.");
+          } else {
+            nodeObj.addTgMatrix(tg);
+          }
         }
       }
 
