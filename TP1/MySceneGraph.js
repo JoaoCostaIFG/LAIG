@@ -678,21 +678,21 @@ class MySceneGraph {
       var sx = this.parseFloat(
         tgInfo,
         "sx",
-        "sx of node with ID: " + nodeID + "."
+        "sx of node with ID: " + nodeID,
+        1.0
       );
-      if (typeof sx === "string" || sx instanceof String) return sx;
       var sy = this.parseFloat(
         tgInfo,
         "sy",
-        "sy of node with ID: " + nodeID + "."
+        "sy of node with ID: " + nodeID,
+        1.0
       );
-      if (typeof sy === "string" || sy instanceof String) return sy;
       var sz = this.parseFloat(
         tgInfo,
         "sz",
-        "sz of node with ID: " + nodeID + "."
+        "sz of node with ID: " + nodeID,
+        1.0
       );
-      if (typeof sz === "string" || sz instanceof String) return sz;
       mat4.scale(tgMtr, tgMtr, [sx, sy, sz]);
     } else {
       this.onXMLMinorError(
@@ -846,7 +846,7 @@ class MySceneGraph {
       } else {
         grandgrandChildren = grandChildren[transformationsIndex].children;
         for (var j = 0; j < grandgrandChildren.length; j++) {
-          var tg = this.parseNodeTransformations(grandgrandChildren[j]);
+          var tg = this.parseNodeTransformations(grandgrandChildren[j], nodeID);
           if (typeof tg === "string" || tg instanceof String) {
             this.onXMLMinorError(tg + " Ignoring it.");
           } else {
