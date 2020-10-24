@@ -748,7 +748,7 @@
         <node id="skyboxBack">
             <material id="null" />
             <texture id="skybox_back">
-                <amplification afs="1.0" aft="1.0" />
+                <amplification afs="200.0" aft="200.0" />
             </texture>
 
             <transformations>
@@ -762,7 +762,7 @@
         <node id="skyboxFront">
             <material id="null" />
             <texture id="skybox_front">
-                <amplification afs="1.0" aft="1.0" />
+                <amplification afs="200.0" aft="200.0" />
             </texture>
 
             <transformations>
@@ -778,7 +778,7 @@
         <node id="skyboxTop">
             <material id="null" />
             <texture id="skybox_top">
-                <amplification afs="1.0" aft="1.0" />
+                <amplification afs="200.0" aft="200.0" />
             </texture>
 
             <transformations>
@@ -794,7 +794,7 @@
         <node id="skyboxBottom">
             <material id="null" />
             <texture id="skybox_bottom">
-                <amplification afs="1.0" aft="1.0" />
+                <amplification afs="200.0" aft="200.0" />
             </texture>
 
             <transformations>
@@ -809,7 +809,7 @@
         <node id="skyboxLeft">
             <material id="null" />
             <texture id="skybox_left">
-                <amplification afs="1.0" aft="1.0" />
+                <amplification afs="200.0" aft="200.0" />
             </texture>
 
             <transformations>
@@ -825,7 +825,7 @@
         <node id="skyboxRight">
             <material id="null" />
             <texture id="skybox_right">
-                <amplification afs="1.0" aft="1.0" />
+                <amplification afs="200.0" aft="200.0" />
             </texture>
 
             <transformations>
