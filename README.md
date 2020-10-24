@@ -12,10 +12,12 @@
 
 ### [TP1 - Scene Graph](TP1)
 
-- (items briefly describing main strong points)
+- Detailed scene.
+- Uses at least one instance of all the primitives.
+- Has multiple cameras, lights, materials and textures.
 - Scene
-  - (Brief description of the created scene)
-  - (relative link to the scene)
+  - A skybox with a colored Star War's X-Wing ship model and death star.
+  - [Link to the Scene](./TP1/scenes/LAIG_TP1_XML_T3_G05_v01.xml)
 
 -----
 
