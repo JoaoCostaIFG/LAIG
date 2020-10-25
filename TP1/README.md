@@ -17,7 +17,7 @@
 - Scene
   - A skybox with a colored Star War's X-Wing ship model and death star.
   - [Link to the Scene](./scenes/LAIG_TP1_XML_T3_G05_v01.xml)
-- Extra interface controls for better debugging: show/ vertexes' normals
+- Extra interface controls for better debugging: show/hide vertexes' normals
   and show/hide light objects.
 - Cameras reset to initial position upon switching between them.
 
