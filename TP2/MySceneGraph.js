@@ -7,7 +7,8 @@ var ILLUMINATION_INDEX = 2;
 var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
 var MATERIALS_INDEX = 5;
-var NODES_INDEX = 6;
+var ANIMATIONS_INDEX = 6;
+var NODES_INDEX = 7;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -31,6 +32,7 @@ class MySceneGraph {
 
     this.activeMaterials = [];
     this.activeTextures = [];
+    // this.activeAnimations = []; // TODO ?
 
     this.axisCoords = [];
     this.axisCoords["x"] = [1, 0, 0];
@@ -178,8 +180,21 @@ class MySceneGraph {
       if (index != MATERIALS_INDEX)
         this.onXMLMinorError("tag <materials> out of order");
 
-      //Parse materials block
+      // Parse materials block
       if ((error = this.parseMaterials(nodes[index])) != null) return error;
+    }
+
+    // <animations>
+    if ((index = nodeNames.indexOf("animations")) == -1)
+      this.onXMLMinorError(
+        "tag <animations> missing. Assuming that there are no animations"
+      );
+    else {
+      if (index != ANIMATIONS_INDEX)
+        this.onXMLMinorError("tag <animations> out of order");
+
+      // Parse animations block
+      if ((error = this.parseAnimations(nodes[index])) != null) return error;
     }
 
     // <nodes>
@@ -189,7 +204,7 @@ class MySceneGraph {
       if (index != NODES_INDEX)
         this.onXMLMinorError("tag <nodes> out of order");
 
-      //Parse nodes block
+      // Parse nodes block
       if ((error = this.parseNodes(nodes[index])) != null) return error;
     }
     this.log("all parsed");
@@ -639,85 +654,174 @@ class MySceneGraph {
     return null;
   }
 
-  /**
-   * Parses a given node's transformations
-   * @param {object that contains transformation's info} tgInfo
-   */
-  parseNodeTransformations(tgInfo, nodeID) {
-    var tgMtr = mat4.create();
-    var tg = tgInfo.nodeName;
-
-    if (tg == "translation") {
-      var coords = this.parseCoordinates3D(
-        tgInfo,
-        "translation of node with ID: " + nodeID + "."
-      );
-      if (!Array.isArray(coords)) return coords;
-
-      mat4.translate(tgMtr, tgMtr, coords);
-    } else if (tg == "rotation") {
-      var axis = this.reader.getString(tgInfo, "axis");
-      if (axis == null)
-        return "unable to parse rotation axis of node with ID: " + nodeID + ".";
-      var angle = this.parseFloat(
-        tgInfo,
-        "angle",
-        "angle of node with ID: " + nodeID + "."
-      );
-      if (typeof angle === "string" || angle instanceof String) return angle;
-      angle *= DEGREE_TO_RAD; // need to convert to rad
-
-      switch (axis) {
-        case "x":
-          mat4.rotateX(tgMtr, tgMtr, angle);
-          break;
-        case "y":
-          mat4.rotateY(tgMtr, tgMtr, angle);
-          break;
-        case "z":
-          mat4.rotateZ(tgMtr, tgMtr, angle);
-          break;
-        default:
-          this.onXMLMinorError(
-            "unknown rotation axis: " +
-              axis +
-              " for node with ID: " +
-              nodeID +
-              ". Assuming no rotation."
-          );
-          break;
-      }
-    } else if (tg == "scale") {
-      var sx = this.parseFloat(
-        tgInfo,
-        "sx",
-        "sx of node with ID: " + nodeID,
-        1.0
-      );
-      var sy = this.parseFloat(
-        tgInfo,
-        "sy",
-        "sy of node with ID: " + nodeID,
-        1.0
-      );
-      var sz = this.parseFloat(
-        tgInfo,
-        "sz",
-        "sz of node with ID: " + nodeID,
-        1.0
-      );
-      mat4.scale(tgMtr, tgMtr, [sx, sy, sz]);
-    } else {
+  checkTransformationIndex(tgNames, tg, expectedInd, animationID) {
+    var ind;
+    ind = tgNames.indexOf(tg);
+    if (ind == -1)
       this.onXMLMinorError(
-        "unknown transformation " +
-          tg +
-          " for node with ID: " +
-          nodeID +
-          ". Ignoring it."
+        "<" + tg + "> tag on animation " + animationID + " is missing."
       );
+    else if (ind != expectedInd)
+      this.onXMLMinorError(
+        "<" +
+          tg +
+          "> tag on animation " +
+          animationID +
+          " isn't on the corect position."
+      );
+  }
+
+  /**
+   * Parses the <animationsNode> node.
+   * @param {animations block element} animationsNode
+   */
+  parseAnimations(animationsNode) {
+    let children = animationsNode.children;
+
+    this.animations = [];
+
+    // Any number of animations
+    for (let i = 0; i < children.length; ++i) {
+      if (children[i].nodeName != "animation") {
+        this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+        continue;
+      }
+
+      var animationID = this.reader.getString(children[i], "id");
+      if (animationID == null) return "no ID defined for animation";
+
+      if (this.animations[animationID] != null)
+        return (
+          "ID must be unique for each animation (conflict: ID = " +
+          animationID +
+          ")"
+        );
+
+      let keyframes = [];
+      let prevInst = -1;
+      let grandChildren = children[i].children;
+      for (let j = 0; j < grandChildren.length; ++j) {
+        let inst = this.parseFloat(
+          grandChildren[j],
+          "instant",
+          "Instant not defined for keyframe on node: " + animationID
+        );
+        if (prevInst >= inst)
+          this.onXMLMinorError(
+            "The instants " +
+              prevInst +
+              " and " +
+              inst +
+              " are unordered. Assuming crescent order."
+          );
+        prevInst = inst;
+
+        /* tx, ty, tz, rx, ry, rz, sx, sy, sz */
+        let global = [0, 0, 0, 0, 0, 0, 1, 1, 1];
+        // TODO list of bools to check if all tgs are given
+
+        let grandgrandChildren = grandChildren[j].children;
+        for (let k = 0; k < grandgrandChildren.length; ++k) {
+          let tgInd = -1;
+          let tgName = grandgrandChildren[k].nodeName;
+          switch (tgName) {
+            case "translation":
+              tgInd = 0;
+              let coords = this.parseCoordinates3D(
+                grandgrandChildren[k],
+                "translation of animation with ID: " + animationID + "."
+              );
+              if (!Array.isArray(coords)) return coords;
+              global[0] = coords[0];
+              global[1] = coords[1];
+              global[2] = coords[2];
+              break;
+            case "rotation":
+              let axis = this.reader.getString(grandgrandChildren[k], "axis");
+              if (axis == null)
+                return (
+                  "unable to parse rotation axis of animation with ID: " +
+                  animationID +
+                  "."
+                );
+
+              let angle = this.parseFloat(
+                grandgrandChildren[k],
+                "angle",
+                "angle of animation with ID: " + animationID + "."
+              );
+              if (typeof angle === "string" || angle instanceof String)
+                return angle;
+              angle *= DEGREE_TO_RAD; // need to convert to rad
+
+              switch (axis) {
+                case "x":
+                  tgInd = 1;
+                  global[3] = angle;
+                  break;
+                case "y":
+                  tgInd = 2;
+                  global[4] = angle;
+                  break;
+                case "z":
+                  tgInd = 3;
+                  global[5] = angle;
+                  break;
+                default:
+                  this.onXMLMinorError(
+                    "unknown rotation axis: " +
+                      axis +
+                      " for animation with ID: " +
+                      animationID +
+                      ". Skipping it.."
+                  );
+                  break;
+              }
+              break;
+            case "scale":
+              tgInd = 4;
+              let scales = this.parseCoordinates3DScale(
+                grandgrandChildren[k],
+                "animation with ID: " + animationID,
+                1.0
+              );
+              if (!Array.isArray(scales)) return scales;
+              global[6] = scales[0];
+              global[7] = scales[1];
+              global[8] = scales[2];
+              break;
+            default:
+              this.onXMLMinorError(
+                "Transformation " +
+                  tgName +
+                  " on animation with ID: " +
+                  animationID +
+                  " is unkown. Skipping it.."
+              );
+              break;
+          }
+
+          // queixar de transformacoes fora de ordem
+          if (tgInd != -1 && k != tgInd) {
+            this.onXMLMinorError(
+              "Transformation " +
+                tgName +
+                " on animation with ID: " +
+                animationID +
+                " is out of order. Assuming the default order."
+            );
+          }
+        }
+
+        // push new keyframe
+        keyframes.push(new Keyframe(inst, ...global));
+      }
+
+      // create (and push) the new animation with its keyframes
+      this.animations[animationID] = new KeyframeAnimation(this, animationID, keyframes);
     }
 
-    return tgMtr;
+    return null;
   }
 
   /**
@@ -810,6 +914,74 @@ class MySceneGraph {
   }
 
   /**
+   * Parses a given node's transformations
+   * @param {object that contains transformation's info} tgInfo
+   */
+  parseNodeTransformation(tgInfo, nodeID) {
+    var tgMtr = mat4.create();
+    var tg = tgInfo.nodeName;
+
+    if (tg == "translation") {
+      let coords = this.parseCoordinates3D(
+        tgInfo,
+        "translation of node with ID: " + nodeID + "."
+      );
+      if (!Array.isArray(coords)) return coords;
+
+      mat4.translate(tgMtr, tgMtr, coords);
+    } else if (tg == "rotation") {
+      let axis = this.reader.getString(tgInfo, "axis");
+      if (axis == null)
+        return "unable to parse rotation axis of node with ID: " + nodeID + ".";
+      let angle = this.parseFloat(
+        tgInfo,
+        "angle",
+        "angle of node with ID: " + nodeID + "."
+      );
+      if (typeof angle === "string" || angle instanceof String) return angle;
+      angle *= DEGREE_TO_RAD; // need to convert to rad
+
+      switch (axis) {
+        case "x":
+          mat4.rotateX(tgMtr, tgMtr, angle);
+          break;
+        case "y":
+          mat4.rotateY(tgMtr, tgMtr, angle);
+          break;
+        case "z":
+          mat4.rotateZ(tgMtr, tgMtr, angle);
+          break;
+        default:
+          this.onXMLMinorError(
+            "unknown rotation axis: " +
+              axis +
+              " for node with ID: " +
+              nodeID +
+              ". Assuming no rotation."
+          );
+          break;
+      }
+    } else if (tg == "scale") {
+      let scales = this.parseCoordinates3DScale(
+        tgInfo,
+        "node with ID: " + nodeID,
+        1.0
+      );
+      mat4.scale(tgMtr, tgMtr, scales);
+    } else {
+      this.onXMLMinorError(
+        "unknown transformation " +
+          tg +
+          " for node with ID: " +
+          nodeID +
+          ". Ignoring it."
+      );
+    }
+
+    return tgMtr;
+  }
+
+  /**
    * Parses the <nodes> block.
    * @param {nodes block element} nodesNode
    */
@@ -859,7 +1031,7 @@ class MySceneGraph {
       } else {
         grandgrandChildren = grandChildren[transformationsIndex].children;
         for (var j = 0; j < grandgrandChildren.length; j++) {
-          var tg = this.parseNodeTransformations(grandgrandChildren[j], nodeID);
+          var tg = this.parseNodeTransformation(grandgrandChildren[j], nodeID);
           if (typeof tg === "string" || tg instanceof String) {
             this.onXMLMinorError(tg + " Ignoring it.");
           } else {
@@ -1131,6 +1303,26 @@ class MySceneGraph {
     var z = this.reader.getFloat(node, "z");
     if (!(z != null && !isNaN(z)))
       return "unable to parse z-coordinate of the " + messageError;
+
+    position.push(...[x, y, z]);
+
+    return position;
+  }
+
+  parseCoordinates3DScale(node, messageError, defaultVal = null) {
+    var position = [];
+
+    // x
+    var x = this.parseFloat(node, "sx", "sx of " + messageError, defaultVal);
+    if (!(x != null && !isNaN(x))) return x;
+
+    // y
+    var y = this.parseFloat(node, "sy", "sy of " + messageError, defaultVal);
+    if (!(y != null && !isNaN(y))) return y;
+
+    // z
+    var z = this.parseFloat(node, "sz", "sz of " + messageError, defaultVal);
+    if (!(z != null && !isNaN(z))) return z;
 
     position.push(...[x, y, z]);
 
