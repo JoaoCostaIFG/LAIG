@@ -169,6 +169,8 @@ class XMLscene extends CGFscene {
     this.interface.instGuiButtons();
 
     this.sceneInited = true;
+    // this.setUpdatePeriod(100);
+    this.setUpdatePeriod(30);
   }
 
   /**
@@ -222,5 +224,15 @@ class XMLscene extends CGFscene {
 
     this.popMatrix();
     // ---- END Background, camera and axis setup
+  }
+
+  update(time) {
+    if (!this.sceneInited)
+      return;
+
+    for (var key in this.graph.animations) {
+      let anim = this.graph.animations[key];
+      anim.update(time / 1000);
+    }
   }
 }

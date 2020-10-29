@@ -2,6 +2,9 @@ class Animation {
   constructor(scene, id) {
     this.scene = scene;
     this.id = id;
+
+    this.lastTime = Date.now() / 1000; // current time in seconds
+    this.sumT = 0;
   }
 
   update(t) {

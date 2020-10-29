@@ -154,18 +154,18 @@
     <animations>
         <animation id="animationString" >
             <keyframe instant="1.0">
-                <translation x="1.0" y="2.0" z="3.0" />
-                <rotation axis="x" angle="10.0" />
-                <rotation axis="y" angle="20.0" />
-                <rotation axis="z" angle="30.0" />
-                <scale sx="4.0" sy="5.0" sz="6.0" />
+                <translation x="0.0" y="0.0" z="0.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
             </keyframe>
-            <keyframe instant="2.0">
-                <translation x="4.0" y="9.0" z="5.7" />
-                <rotation axis="x" angle="18.0" />
-                <rotation axis="y" angle="24.0" />
-                <rotation axis="z" angle="33.0" />
-                <scale sx="5.0" sy="2.1" sz="10.0" />
+            <keyframe instant="5.0">
+                <translation x="0.0" y="100.0" z="0.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
             </keyframe>
         </animation>
     </animations>

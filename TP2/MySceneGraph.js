@@ -1470,6 +1470,8 @@ class MySceneGraph {
    * Displays the scene, processing each node, starting in the root node.
    */
   displayScene() {
+    this.animations["animationString"].apply();
     this.nodes[this.idRoot].display();
+    this.popTransformation();
   }
 }
