@@ -783,7 +783,7 @@ class MySceneGraph {
               let scales = this.parseCoordinates3DScale(
                 grandgrandChildren[k],
                 "animation with ID: " + animationID,
-                1.0
+                0.0
               );
               if (!Array.isArray(scales)) return scales;
               global[6] = scales[0];
@@ -818,7 +818,11 @@ class MySceneGraph {
       }
 
       // create (and push) the new animation with its keyframes
-      this.animations[animationID] = new KeyframeAnimation(this, animationID, keyframes);
+      this.animations[animationID] = new KeyframeAnimation(
+        this,
+        animationID,
+        keyframes
+      );
     }
 
     return null;
@@ -1019,6 +1023,7 @@ class MySceneGraph {
         nodeNames.push(grandChildren[j].nodeName);
 
       var transformationsIndex = nodeNames.indexOf("transformations");
+      var animationIndex = nodeNames.indexOf("animationref");
       var materialIndex = nodeNames.indexOf("material");
       var textureIndex = nodeNames.indexOf("texture");
       var descendantsIndex = nodeNames.indexOf("descendants");
@@ -1038,6 +1043,16 @@ class MySceneGraph {
             nodeObj.addTgMatrix(tg);
           }
         }
+      }
+
+      // Animation
+      if (animationIndex != -1) {
+        let animId = this.reader.getString(grandChildren[animationIndex], "id");
+        if (animId == null)
+          this.onXMLMinorError(
+            "Couldn't parse ID of animation for node: " + nodeID + "."
+          );
+        else nodeObj.animId = animId;
       }
 
       // Material
@@ -1153,6 +1168,23 @@ class MySceneGraph {
   nodesPostProcessing() {
     for (var key in this.nodes) {
       var obj = this.nodes[key];
+
+      /* associate animations with nodes */
+      let nodeAnimId = obj.animId;
+      if (nodeAnimId != null) {
+        let nodeAnim = this.animations[nodeAnimId];
+        if (nodeAnim == null) {
+          this.onXMLMinorError(
+            "animation with id " +
+              nodeAnimId +
+              " was referenced in node with ID " +
+              key +
+              " but was not defined. Assuming it didn't exist.."
+          );
+        } else {
+          obj.anim = nodeAnim;
+        }
+      }
 
       /* associate descendant noderef's IDs with the correct objects */
       for (var i = 0; i < obj.descendantsNode.length; ++i) {
@@ -1470,8 +1502,6 @@ class MySceneGraph {
    * Displays the scene, processing each node, starting in the root node.
    */
   displayScene() {
-    this.animations["animationString"].apply();
     this.nodes[this.idRoot].display();
-    this.popTransformation();
   }
 }

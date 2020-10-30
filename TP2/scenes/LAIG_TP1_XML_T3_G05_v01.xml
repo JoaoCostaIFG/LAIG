@@ -149,19 +149,130 @@
             <specular r="0.2" g="0.2" b="0.2" a="1.0" />
             <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
+        <material id="bulletMat">
+            <shininess value="100" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+            <emissive r="1.0" g="0.0" b="0.0" a="1.0" />
+        </material>
     </materials>
 
     <animations>
-        <animation id="animationString" >
-            <keyframe instant="1.0">
+        <animation id="flyForwardAnim" >
+            <keyframe instant="0.0">
                 <translation x="0.0" y="0.0" z="0.0" />
                 <rotation axis="x" angle="0.0" />
                 <rotation axis="y" angle="0.0" />
                 <rotation axis="z" angle="0.0" />
                 <scale sx="1.0" sy="1.0" sz="1.0" />
             </keyframe>
-            <keyframe instant="5.0">
-                <translation x="0.0" y="100.0" z="0.0" />
+            <keyframe instant="2.0">
+                <translation x="10.0" y="30.0" z="50.0" />
+                <rotation axis="x" angle="-90.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="30.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+            <keyframe instant="4.0">
+                <translation x="0.0" y="60.0" z="0.0" />
+                <rotation axis="x" angle="-180.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+            <keyframe instant="6.0">
+                <translation x="-10.0" y="30.0" z="-50.0" />
+                <rotation axis="x" angle="-270.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="-30.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+            <keyframe instant="8.0">
+                <translation x="0.0" y="0.0" z="0.0" />
+                <rotation axis="x" angle="-360.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+        </animation>
+
+        <animation id="deathStarSpinAnim" >
+            <keyframe instant="0.0">
+                <translation x="0.0" y="0.0" z="0.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+            <keyframe instant="300.0">
+                <translation x="0.0" y="0.0" z="0.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="3610.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+        </animation>
+
+        <animation id="shootingAnim" >
+            <keyframe instant="9.0">
+                <translation x="0.0" y="0.0" z="0.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+            <keyframe instant="9.5">
+                <translation x="0.0" y="0.0" z="50.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="3.0" sy="3.0" sz="3.0" />
+            </keyframe>
+            <keyframe instant="10.0">
+                <translation x="0.0" y="0.0" z="100.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+            <keyframe instant="10.001">
+                <translation x="0.0" y="0.0" z="0.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+            <keyframe instant="10.5">
+                <translation x="0.0" y="0.0" z="50.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="3.0" sy="3.0" sz="3.0" />
+            </keyframe>
+            <keyframe instant="11.0">
+                <translation x="0.0" y="0.0" z="100.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+            <keyframe instant="11.001">
+                <translation x="0.0" y="0.0" z="0.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+            <keyframe instant="11.5">
+                <translation x="0.0" y="0.0" z="50.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="3.0" sy="3.0" sz="3.0" />
+            </keyframe>
+            <keyframe instant="12.0">
+                <translation x="0.0" y="0.0" z="100.0" />
                 <rotation axis="x" angle="0.0" />
                 <rotation axis="y" angle="0.0" />
                 <rotation axis="z" angle="0.0" />
@@ -200,6 +311,8 @@
                 <rotation axis="x" angle="-90" />
             </transformations>
 
+            <animationref id="deathStarSpinAnim" />
+
             <descendants>
                 <leaf type="sphere" radius="20" slices="20" stacks="20"/>
             </descendants>
@@ -212,6 +325,8 @@
 
             <transformations>
             </transformations>
+
+            <animationref id="flyForwardAnim" />
 
             <descendants>
                 <noderef id="chassis" />
@@ -696,6 +811,7 @@
             </transformations>
 
             <descendants>
+                <noderef id="bullet" />
                 <noderef id="gunFront" />
                 <leaf type="cylinder" height="4" topRadius="0.5" bottomRadius="0.5" stacks="2" slices="10"/>
             </descendants>
@@ -744,6 +860,22 @@
             </descendants>
         </node>
 
+        <!-- BULLET -->
+        <node id="bullet">
+            <material id="bulletMat" />
+            <texture id="clear">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+            </transformations>
+
+            <animationref id="shootingAnim" />
+
+            <descendants>
+                <leaf type="cylinder" height="3" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="10"/>
+            </descendants>
+        </node>
 
         <!-- SKYBOX -->
         <node id="skybox">

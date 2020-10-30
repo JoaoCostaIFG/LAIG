@@ -9,7 +9,7 @@ class KeyframeAnimation extends Animation {
 
     this.translation = [0, 0, 0];
     this.rotation = [0, 0, 0];
-    this.scale = [1, 1, 1];
+    this.scale = [0, 0, 0];
     this.genMatrix();
   }
 

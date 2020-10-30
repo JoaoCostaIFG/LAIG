@@ -20,18 +20,26 @@ class MyNode {
     this.id = id;
     this.sceneGraph = sceneGraph;
 
+    // tgs
     this.tgMatrix = mat4.create();
 
+    // animation
+    this.animId = null;
+    this.anim = null;
+
+    // texs
     this.texId = "null";
     this.tex = null;
     this.texBehaviour = TexBehaviour.KEEP;
     this.afs = 1.0;
     this.aft = 1.0;
 
+    // mat
     this.matId = "null";
     this.mat = null;
     this.matBehaviour = MatBehaviour.KEEP;
 
+    // descendants
     this.descendantsNode = [];
     this.descendantsLeaf = [];
   }
@@ -107,6 +115,8 @@ class MyNode {
   scenePushes() {
     // transformations
     this.sceneGraph.pushTransformation(this.tgMatrix);
+    if (this.anim != null)
+      this.anim.apply();
 
     // materials
     if (this.matBehaviour == MatBehaviour.CHANGE) this.sceneGraph.pushMaterial(this.mat);
@@ -128,6 +138,8 @@ class MyNode {
     if (this.matBehaviour == MatBehaviour.CHANGE) this.sceneGraph.popMaterial();
 
     // transformations
+    if (this.anim != null)
+      this.sceneGraph.popTransformation();
     this.sceneGraph.popTransformation();
   }
 
