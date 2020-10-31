@@ -23,32 +23,43 @@ class KeyframeAnimation extends Animation {
   }
 
   interpollateTgs(actualKF, nextKF, timePerc) {
-    this.translation[0] =
-      actualKF.translation[0] +
-      timePerc * (nextKF.translation[0] - actualKF.translation[0]);
-    this.translation[1] =
-      actualKF.translation[1] +
-      timePerc * (nextKF.translation[1] - actualKF.translation[1]);
-    this.translation[2] =
-      actualKF.translation[2] +
-      timePerc * (nextKF.translation[2] - actualKF.translation[2]);
+    vec3.lerp(
+      this.translation,
+      actualKF.translation,
+      nextKF.translation,
+      timePerc
+    );
+    vec3.lerp(this.rotation, actualKF.rotation, nextKF.rotation, timePerc);
+    vec3.lerp(this.scale, actualKF.scale, nextKF.scale, timePerc);
 
-    this.rotation[0] =
-      actualKF.rotation[0] +
-      timePerc * (nextKF.rotation[0] - actualKF.rotation[0]);
-    this.rotation[1] =
-      actualKF.rotation[1] +
-      timePerc * (nextKF.rotation[1] - actualKF.rotation[1]);
-    this.rotation[2] =
-      actualKF.rotation[2] +
-      timePerc * (nextKF.rotation[2] - actualKF.rotation[2]);
-
-    this.scale[0] =
-      actualKF.scale[0] + timePerc * (nextKF.scale[0] - actualKF.scale[0]);
-    this.scale[1] =
-      actualKF.scale[1] + timePerc * (nextKF.scale[1] - actualKF.scale[1]);
-    this.scale[2] =
-      actualKF.scale[2] + timePerc * (nextKF.scale[2] - actualKF.scale[2]);
+    /*
+     *     this.translation[0] =
+     *       actualKF.translation[0] +
+     *       timePerc * (nextKF.translation[0] - actualKF.translation[0]);
+     *     this.translation[1] =
+     *       actualKF.translation[1] +
+     *       timePerc * (nextKF.translation[1] - actualKF.translation[1]);
+     *     this.translation[2] =
+     *       actualKF.translation[2] +
+     *       timePerc * (nextKF.translation[2] - actualKF.translation[2]);
+     *
+     *     this.rotation[0] =
+     *       actualKF.rotation[0] +
+     *       timePerc * (nextKF.rotation[0] - actualKF.rotation[0]);
+     *     this.rotation[1] =
+     *       actualKF.rotation[1] +
+     *       timePerc * (nextKF.rotation[1] - actualKF.rotation[1]);
+     *     this.rotation[2] =
+     *       actualKF.rotation[2] +
+     *       timePerc * (nextKF.rotation[2] - actualKF.rotation[2]);
+     *
+     *     this.scale[0] =
+     *       actualKF.scale[0] + timePerc * (nextKF.scale[0] - actualKF.scale[0]);
+     *     this.scale[1] =
+     *       actualKF.scale[1] + timePerc * (nextKF.scale[1] - actualKF.scale[1]);
+     *     this.scale[2] =
+     *       actualKF.scale[2] + timePerc * (nextKF.scale[2] - actualKF.scale[2]);
+     */
   }
 
   update(t) {
