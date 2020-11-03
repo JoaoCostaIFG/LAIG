@@ -10,7 +10,7 @@ class MySpritesheet {
       "./Shaders/MySpriteShader.frag"
     );
     this.shader.setUniformsValues({
-      uSampler2: 2,
+      uSampler2: 1,
       sheetSize: [sizeM, sizeN],
       charCoords: [0, 0],
     });
@@ -19,7 +19,7 @@ class MySpritesheet {
   activateCellMN(m, n) {
     this.shader.setUniformsValues({ charCoords: [m, n] });
     // this.scene.pushTexture(this.tex);
-    this.tex.bind(2);
+    this.tex.bind(1);
     this.scene.setActiveShader(this.shader);
     // this.scene.popTexture();
   }
