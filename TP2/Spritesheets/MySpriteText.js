@@ -39,4 +39,12 @@ class MySpriteText {
     this.scene.popMatrix();
     this.scene.setActiveShader(this.scene.defaultShader);
   }
+
+  enableNormalViz() {
+    this.rect.enableNormalViz();
+  }
+
+  disableNormalViz() {
+    this.rect.disableNormalViz();
+  }
 }

@@ -10,6 +10,9 @@ class XMLscene extends CGFscene {
     super();
 
     this.interface = myinterface;
+
+    this.activeMaterials = [];
+    this.activeTextures = [];
   }
 
   /**
@@ -227,12 +230,83 @@ class XMLscene extends CGFscene {
   }
 
   update(time) {
-    if (!this.sceneInited)
-      return;
+    if (!this.sceneInited) return;
+
+    let t = time / 1000;
 
     for (var key in this.graph.animations) {
       let anim = this.graph.animations[key];
-      anim.update(time / 1000);
+      anim.update(t);
     }
+  }
+
+  /**
+   * Pushes a transformation into scene's transformations stack
+   * @param {Transformation Matrix to be pushed into scene's tranformations stack} tg
+   */
+  pushTransformation(tg) {
+    this.pushMatrix();
+    this.multMatrix(tg);
+  }
+
+  /**
+   * Pops a transformation from scene's transformations' stack
+   */
+  popTransformation() {
+    this.popMatrix();
+  }
+
+  /**
+   * Pushes a material into materials' stack and applies it
+   * @param {Material to push into materials' stack} mat
+   */
+  pushMaterial(mat) {
+    this.activeMaterials.push(mat);
+    mat.apply();
+
+    this.applyLastTex();
+  }
+
+  /**
+   * Pops a material from scene's materials' stack & applies last material & texture
+   */
+  popMaterial() {
+    this.activeMaterials.pop();
+    var lastMatInd = this.activeMaterials.length - 1;
+    if (lastMatInd >= 0) this.activeMaterials[lastMatInd].apply();
+
+    this.applyLastTex();
+  }
+
+  /**
+   * Binds last texture from active textures' stack
+   */
+  applyLastTex() {
+    var lastTexInd = this.activeTextures.length - 1;
+    if (lastTexInd >= 0) this.activeTextures[lastTexInd].bind();
+  }
+
+  /**
+   * Pushes a texture into textures' stack & binds it
+   * @param {Texture to push into textures' stack} tex
+   */
+  pushTexture(tex) {
+    this.activeTextures.push(tex);
+    tex.bind();
+  }
+
+  /**
+   * Pops a texture from scene's testures' stack & applies last texture
+   */
+  popTexture() {
+    this.activeTextures.pop();
+    this.applyLastTex();
+  }
+
+  /**
+   * Unbinds active texture
+   */
+  unbindActiveTex() {
+    if (this.activeTexture != null) this.activeTexture.unbind();
   }
 }

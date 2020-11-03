@@ -105,8 +105,14 @@
         <texture id="headTex" path="./scenes/images/head.png" />
 
         <texture id="deathStarTex" path="./scenes/images/death_star.jpg" />
+
+        <texture id="rainbowTex" path="./scenes/rainbow.jpg" />
     </textures>
 
+    <spritesheets>
+        <spritesheet id="horseySheet" path="./scenes/horse.png" sizeM="20" sizeN="13" />
+        <!-- <spritesheet id="textSheet" path="./scenes/images/text.png" sizeM="16" sizeN="16" /> -->
+    </spritesheets>
 
     <materials>
         <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material
@@ -442,9 +448,40 @@
             </transformations>
 
             <descendants>
+                <noderef id="floatText" />
+
                 <noderef id="skybox" />
                 <noderef id="deathStar" />
                 <noderef id="x-wing" />
+            </descendants>
+        </node>
+        <node id="floatText">
+            <material id="null" />
+            <texture id="rainbowTex">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <translation x="0" y="30" z="0" />
+            </transformations>
+
+            <descendants>
+                <noderef id="horse" />
+                <leaf type="spritetext" text="U GAY"/>
+            </descendants>
+        </node>
+        <node id="horse">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <translation x="0" y="-1" z="0" />
+            </transformations>
+
+            <descendants>
+                <leaf type="spriteanim" ssid="horseySheet" startCell="0" endCell="249" duration="4" />
             </descendants>
         </node>
         <node id="deathStar">

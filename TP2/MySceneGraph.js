@@ -6,9 +6,10 @@ var VIEWS_INDEX = 1;
 var ILLUMINATION_INDEX = 2;
 var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
-var MATERIALS_INDEX = 5;
-var ANIMATIONS_INDEX = 6;
-var NODES_INDEX = 7;
+var SPRITESHEETS_INDEX = 5;
+var MATERIALS_INDEX = 6;
+var ANIMATIONS_INDEX = 7;
+var NODES_INDEX = 8;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -29,10 +30,6 @@ class MySceneGraph {
 
     this.nodes = [];
     this.idRoot = null; // The id of the root element.
-
-    this.activeMaterials = [];
-    this.activeTextures = [];
-    // this.activeAnimations = []; // TODO ?
 
     this.axisCoords = [];
     this.axisCoords["x"] = [1, 0, 0];
@@ -162,6 +159,7 @@ class MySceneGraph {
       //Parse lights block
       if ((error = this.parseLights(nodes[index])) != null) return error;
     }
+
     // <textures>
     if ((index = nodeNames.indexOf("textures")) == -1)
       return "tag <textures> missing";
@@ -171,6 +169,17 @@ class MySceneGraph {
 
       //Parse textures block
       if ((error = this.parseTextures(nodes[index])) != null) return error;
+    }
+
+    // <spritesheets>
+    if ((index = nodeNames.indexOf("spritesheets")) == -1)
+      return "tag <spritesheets> missing";
+    else {
+      if (index != SPRITESHEETS_INDEX)
+        this.onXMLMinorError("tag <spritesheets> out of order");
+
+      //Parse textures block
+      if ((error = this.parseSpritesheets(nodes[index])) != null) return error;
     }
 
     // <materials>
@@ -554,6 +563,62 @@ class MySceneGraph {
   }
 
   /**
+   * Parses the <spritesheets> block.
+   * @param {spritesheets block element} spritesheetsNode
+   */
+  parseSpritesheets(spritesheetsNode) {
+    //For each spritesheet in spritesheets block, check ID and file URL
+    let children = spritesheetsNode.children;
+
+    this.spritesheets = [];
+
+    // Any number of textures.
+    for (var i = 0; i < children.length; i++) {
+      if (children[i].nodeName != "spritesheet") {
+        this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+        continue;
+      }
+
+      // Get id of the current texture.
+      let ssID = this.reader.getString(children[i], "id");
+      if (ssID == null) return "no ID defined for spritesheet";
+
+      // Checks for repeated IDs.
+      if (this.spritesheets[ssID] != null)
+        return (
+          "ID must be unique for each spritesheet (conflict: ID = " + ssID + ")"
+        );
+
+      // Get path of the current spritesheet.
+      let ssPath = this.reader.getString(children[i], "path");
+      if (ssPath == null) return "no Path defined for spritesheet";
+
+      let sizeM = this.parseInteger(children[i], "sizeM", "not defined.");
+      if (typeof sizeM === "string" || sizeM instanceof String) return sizeM;
+      let sizeN = this.parseInteger(children[i], "sizeN", "not defined.");
+      if (typeof sizeN === "string" || sizeN instanceof String) return sizeN;
+
+      let ssTex = new CGFtexture(this.scene, ssPath);
+      if (ssTex == null)
+        return (
+          "texture with ID " +
+          textureID +
+          " failed loading. Given path is probably wrong."
+        );
+
+      this.spritesheets[ssID] = new MySpritesheet(
+        this.scene,
+        ssTex,
+        sizeM,
+        sizeN
+      );
+    }
+
+    this.log("Parsed spritesheets");
+    return null;
+  }
+
+  /**
    * Parses the <materials> node.
    * @param {materials block element} materialsNode
    */
@@ -819,7 +884,7 @@ class MySceneGraph {
 
       // create (and push) the new animation with its keyframes
       this.animations[animationID] = new KeyframeAnimation(
-        this,
+        this.scene,
         animationID,
         keyframes
       );
@@ -835,14 +900,17 @@ class MySceneGraph {
    * @param aft - texture amplification in t axis
    */
   parseLeaf(leafNode, afs = 1.0, aft = 1.0) {
-    var attributeNames = [];
-    var objType = this.reader.getString(leafNode, "type");
+    let attributeNames = [];
+    let attributeTypes = [];
+    let objType = this.reader.getString(leafNode, "type");
     switch (objType) {
       case "rectangle":
         attributeNames = ["x1", "y1", "x2", "y2"];
+        attributeTypes = ["float", "float", "float", "float"];
         break;
       case "triangle":
         attributeNames = ["x1", "y1", "x2", "y2", "x3", "y3"];
+        attributeTypes = ["float", "float", "float", "float", "float", "float"];
         break;
       case "cylinder":
         attributeNames = [
@@ -852,42 +920,58 @@ class MySceneGraph {
           "slices",
           "stacks",
         ];
+        attributeTypes = ["float", "float", "float", "int", "int"];
         break;
       case "sphere":
         attributeNames = ["radius", "slices", "stacks"];
+        attributeTypes = ["float", "int", "int"];
         break;
       case "torus":
         attributeNames = ["slices", "loops", "inner", "outer"];
+        attributeTypes = ["int", "int", "float", "float"];
+        break;
+      case "spritetext":
+        attributeNames = ["text"];
+        attributeTypes = ["str"];
+        break;
+      case "spriteanim":
+        attributeNames = ["ssid", "duration", "startCell", "endCell"];
+        attributeTypes = ["str", "float", "int", "int"];
         break;
       default:
         return "unknown leaf type: " + objType + ".";
     }
 
     // Parse remaining tag info
-    var global = [];
-    var nodeNames = [];
-    for (var j = 0; j < leafNode.attributes.length; j++) {
+    let global = [];
+    let nodeNames = [];
+    for (var j = 0; j < leafNode.attributes.length; j++)
       nodeNames.push(leafNode.attributes[j].nodeName);
-    }
+
     for (var j = 0; j < attributeNames.length; j++) {
-      var attributeIndex = nodeNames.indexOf(attributeNames[j]);
+      let attributeIndex = nodeNames.indexOf(attributeNames[j]);
 
       if (attributeIndex != -1) {
-        var aux;
-        if (attributeNames[j] == "slices" || attributeNames[j] == "stacks") {
+        let aux;
+        if (attributeTypes[j] == "int") {
           aux = this.parseInteger(
             leafNode,
             attributeNames[j],
             "leaf integer (" + attributeNames[j] + ") with type " + objType
           );
-        } else {
+          if (typeof aux === "string" || aux instanceof String) return aux;
+        } else if (attributeTypes[j] == "str") {
+          aux = this.reader.getString(leafNode, attributeNames[j]);
+          if (typeof aux == null)
+            return "Sprite text in couldn't be parsed: " + leafNode + ".";
+        } else if (attributeTypes[j] == "float") {
           aux = this.parseFloat(
             leafNode,
             attributeNames[j],
             "leaf float (" + attributeNames[j] + ") with type " + objType
           );
+          if (typeof aux === "string" || aux instanceof String) return aux;
         }
-        if (typeof aux === "string" || aux instanceof String) return aux;
 
         global.push(aux);
       } else
@@ -908,9 +992,28 @@ class MySceneGraph {
       case "sphere":
         obj = new MySphere(this.scene, ...global);
         break;
-      default:
-        // "torus":
+      case "torus":
         obj = new MyTorus(this.scene, ...global);
+        break;
+      case "spritetext":
+        obj = new MySpriteText(this.scene, ...global);
+        break;
+      case "spriteanim":
+        if (this.spritesheets[global[0]] == null) {
+          obj = null;
+        } else {
+          obj = new MySpriteAnimation(
+            this.scene,
+            this.spritesheets[global[0]],
+            ...global
+          );
+          // push animation so it can be updated
+          // TODO overlapping ID's
+          this.animations[global[0]] = obj;
+        }
+        break;
+      default:
+        obj = null;
         break;
     }
 
@@ -1013,7 +1116,7 @@ class MySceneGraph {
           "ID must be unique for each node (conflict: ID = " + nodeID + ")"
         );
 
-      var nodeObj = new MyNode(this, nodeID);
+      var nodeObj = new MyNode(this.scene, nodeID);
       this.nodes[nodeID] = nodeObj;
 
       grandChildren = children[i].children;
@@ -1147,7 +1250,11 @@ class MySceneGraph {
             var leafObj = this.parseLeaf(grandgrandChildren[j], afs, aft);
             if (typeof leafObj === "string" || leafObj instanceof String)
               return leafObj;
-            nodeObj.addDescendantLeaf(leafObj);
+            else if (leafObj == null)
+              this.onXMLMinorError(
+                "Failed instanciating leaf: " + nodeID + "."
+              );
+            else nodeObj.addDescendantLeaf(leafObj);
           } else {
             this.onXMLMinorError("unknown descendant type: " + descType + ".");
           }
@@ -1418,76 +1525,6 @@ class MySceneGraph {
   }
 
   /**
-   * Pushes a transformation into scene's transformations stack
-   * @param {Transformation Matrix to be pushed into scene's tranformations stack} tg
-   */
-  pushTransformation(tg) {
-    this.scene.pushMatrix();
-    this.scene.multMatrix(tg);
-  }
-
-  /**
-   * Pops a transformation from scene's transformations' stack
-   */
-  popTransformation() {
-    this.scene.popMatrix();
-  }
-
-  /**
-   * Binds last texture from active textures' stack
-   */
-  applyLastTex() {
-    var lastTexInd = this.activeTextures.length - 1;
-    if (lastTexInd >= 0) this.activeTextures[lastTexInd].bind();
-  }
-
-  /**
-   * Pushes a material into materials' stack and applies it
-   * @param {Material to push into materials' stack} mat
-   */
-  pushMaterial(mat) {
-    this.activeMaterials.push(mat);
-    mat.apply();
-
-    this.applyLastTex();
-  }
-
-  /**
-   * Pops a material from scene's materials' stack & applies last material & texture
-   */
-  popMaterial() {
-    this.activeMaterials.pop();
-    var lastMatInd = this.activeMaterials.length - 1;
-    if (lastMatInd >= 0) this.activeMaterials[lastMatInd].apply();
-
-    this.applyLastTex();
-  }
-
-  /**
-   * Pushes a texture into textures' stack & binds it
-   * @param {Texture to push into textures' stack} tex
-   */
-  pushTexture(tex) {
-    this.activeTextures.push(tex);
-    tex.bind();
-  }
-
-  /**
-   * Pops a texture from scene's testures' stack & applies last texture
-   */
-  popTexture() {
-    this.activeTextures.pop();
-    this.applyLastTex();
-  }
-
-  /**
-   * Unbinds active texture
-   */
-  unbindActiveTex() {
-    if (this.scene.activeTexture != null) this.scene.activeTexture.unbind();
-  }
-
-  /**
    * Toggles objects' normals
    */
   toggleObjectNormals() {
@@ -1503,7 +1540,5 @@ class MySceneGraph {
    */
   displayScene() {
     this.nodes[this.idRoot].display();
-    // this.ttt = new MySpriteText(this.scene, "UGAY");
-    // this.ttt.display();
   }
 }

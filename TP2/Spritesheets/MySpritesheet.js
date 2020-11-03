@@ -6,10 +6,11 @@ class MySpritesheet {
 
     this.shader = new CGFshader(
       this.scene.gl,
-      "./Spritesheets/MySpriteShader.vert",
-      "./Spritesheets/MySpriteShader.frag"
+      "./Shaders/MySpriteShader.vert",
+      "./Shaders/MySpriteShader.frag"
     );
     this.shader.setUniformsValues({
+      uSampler2: 2,
       sheetSize: [sizeM, sizeN],
       charCoords: [0, 0],
     });
@@ -17,11 +18,13 @@ class MySpritesheet {
 
   activateCellMN(m, n) {
     this.shader.setUniformsValues({ charCoords: [m, n] });
-    this.tex.bind();
+    // this.scene.pushTexture(this.tex);
+    this.tex.bind(2);
     this.scene.setActiveShader(this.shader);
+    // this.scene.popTexture();
   }
 
   activateCellP(p) {
-    this.activateCellMN(p % this.texSize[0], Math.floor(p / this.texSize[1]));
+    this.activateCellMN(p % this.texSize[0], Math.floor(p / this.texSize[0]));
   }
 }
