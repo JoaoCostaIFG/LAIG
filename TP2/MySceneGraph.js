@@ -1503,5 +1503,7 @@ class MySceneGraph {
    */
   displayScene() {
     this.nodes[this.idRoot].display();
+    // this.ttt = new MySpriteText(this.scene, "UGAY");
+    // this.ttt.display();
   }
 }
