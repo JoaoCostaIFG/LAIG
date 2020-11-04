@@ -462,7 +462,7 @@
             </texture>
 
             <transformations>
-                <translation x="0" y="30" z="0" />
+                <translation x="0" y="0" z="0" />
             </transformations>
 
             <descendants>

@@ -30,6 +30,10 @@ class MySpriteText {
 
   display() {
     this.scene.pushMatrix();
+    // center text
+    this.scene.translate(-this.parsedText.length / 2.0, -0.5, 0.0);
+    
+    // render text
     for (let i = 0; i < this.parsedText.length; ++i) {
       this.spriteSheet.activateCellP(this.parsedText[i]);
       this.rect.display();
