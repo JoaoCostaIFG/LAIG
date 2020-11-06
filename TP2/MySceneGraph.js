@@ -1035,13 +1035,20 @@ class MySceneGraph {
             continue;
           }
 
-          let ctrlP = this.parseCoordinates3D(ctrlPointList[i], "controlpoint of leaf.");
+          let ctrlP = this.parseCoordinates3D(
+            ctrlPointList[i],
+            "controlpoint of leaf."
+          );
           if (!Array.isArray(ctrlP)) return ctrlP;
 
           controlPoints.push(ctrlP);
         }
 
-        obj = new Patch(this.scene, ...global, controlPoints);
+        if (global[0] * global[1] != controlPoints.length) {
+          return "The number of control points specidifed in the patch is wrong.";
+        } else {
+          obj = new Patch(this.scene, ...global, controlPoints);
+        }
         break;
       default:
         obj = null;
