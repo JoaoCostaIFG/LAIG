@@ -1026,7 +1026,7 @@ class MySceneGraph {
       case "patch":
         // parse control points (list)
         let controlPoints = [];
-        let ctrlPointList = leaf.children;
+        let ctrlPointList = leafNode.children;
         for (let i = 0; i < ctrlPointList.length; ++i) {
           if (ctrlPointList[i].nodeName != "controlpoint") {
             this.onXMLMinorError(
@@ -1041,7 +1041,7 @@ class MySceneGraph {
           controlPoints.push(ctrlP);
         }
 
-        obj = new Plane(this.scene, ...global, controlPoints);
+        obj = new Patch(this.scene, ...global, controlPoints);
         break;
       default:
         obj = null;

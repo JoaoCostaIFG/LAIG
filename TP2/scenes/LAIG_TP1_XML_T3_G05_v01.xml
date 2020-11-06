@@ -473,6 +473,16 @@
                 <noderef id="horse" />
                 <leaf type="spritetext" text="U GAY"/>
                 <leaf type="plane" npartsU="4" npartsV="4"/>
+                <leaf type="patch" npointsU="4" npointsV="2" npartsU="10" npartsV="10">
+                  <controlpoint xx="3" yy="0" zz="0" />
+                  <controlpoint xx="3" yy="0" zz="3" />
+                  <controlpoint xx="3" yy="2" zz="0" />
+                  <controlpoint xx="3" yy="2" zz="3" />
+                  <controlpoint xx="0" yy="2" zz="0" />
+                  <controlpoint xx="0" yy="2" zz="3" />
+                  <controlpoint xx="0" yy="0" zz="0" />
+                  <controlpoint xx="0" yy="0" zz="3" />
+                </leaf>
             </descendants>
         </node>
         <node id="horse">
