@@ -28,6 +28,10 @@
             <from x="0" y="20" z="70" />
             <to x="0" y="0" z="0" />
         </perspective>
+        <perspective id="originCam" near="0.1" far="500" angle="45">
+            <from x="0" y="0" z="5" />
+            <to x="0" y="0" z="0" />
+        </perspective>
         <ortho id="orthoCam" near="0.1" far="500" left="-50" right="50" top="50" bottom="-50">
             <from x="50" y="20" z="60" />
             <to x="5" y="0" z="0" />

@@ -47,6 +47,8 @@ class MySceneGraph {
      * If any error occurs, the reader calls onXMLError on this object, with an error message
      */
     this.reader.open("scenes/" + filename, this);
+
+    this.a = new Plane(this.scene, 10, 10);
   }
 
   /*
@@ -1539,6 +1541,7 @@ class MySceneGraph {
    * Displays the scene, processing each node, starting in the root node.
    */
   displayScene() {
-    this.nodes[this.idRoot].display();
+    this.a.display();
+    // this.nodes[this.idRoot].display();
   }
 }
