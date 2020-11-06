@@ -15,10 +15,6 @@ class Plane extends CGFobject {
     this.nurbsObj = new CGFnurbsObject(scene, npartsU, npartsV, nurbsSurf);
   }
 
-  initBuffers() {
-    this.primitiveType = this.scene.gl.TRIANGLES;
-  }
-
   genControlPoints() {
     // var controlPoints = [];
 
