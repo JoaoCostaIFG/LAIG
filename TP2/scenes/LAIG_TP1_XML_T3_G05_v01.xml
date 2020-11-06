@@ -472,6 +472,7 @@
             <descendants>
                 <noderef id="horse" />
                 <leaf type="spritetext" text="U GAY"/>
+                <leaf type="plane" npartsU="4" npartsV="4"/>
             </descendants>
         </node>
         <node id="horse">

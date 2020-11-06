@@ -47,8 +47,6 @@ class MySceneGraph {
      * If any error occurs, the reader calls onXMLError on this object, with an error message
      */
     this.reader.open("scenes/" + filename, this);
-
-    this.a = new Plane(this.scene, 10, 10);
   }
 
   /*
@@ -940,6 +938,14 @@ class MySceneGraph {
         attributeNames = ["ssid", "duration", "startCell", "endCell"];
         attributeTypes = ["str", "float", "int", "int"];
         break;
+      case "plane":
+        attributeNames = ["npartsU", "npartsV"];
+        attributeTypes = ["int", "int"];
+        break;
+      case "patch":
+        attributeNames = ["npointsU", "npointsV", "npartsU", "npartsV"];
+        attributeTypes = ["int", "int", "int", "int"];
+        break;
       default:
         return "unknown leaf type: " + objType + ".";
     }
@@ -1013,6 +1019,29 @@ class MySceneGraph {
           // TODO overlapping ID's
           this.animations[global[0]] = obj;
         }
+        break;
+      case "plane":
+        obj = new Plane(this.scene, ...global);
+        break;
+      case "patch":
+        // parse control points (list)
+        let controlPoints = [];
+        let ctrlPointList = leaf.children;
+        for (let i = 0; i < ctrlPointList.length; ++i) {
+          if (ctrlPointList[i].nodeName != "controlpoint") {
+            this.onXMLMinorError(
+              "unknown tag <" + ctrlPointList[i].nodeName + "> inside leaf."
+            );
+            continue;
+          }
+
+          let ctrlP = this.parseCoordinates3D(ctrlPointList[i], "controlpoint of leaf.");
+          if (!Array.isArray(ctrlP)) return ctrlP;
+
+          controlPoints.push(ctrlP);
+        }
+
+        obj = new Plane(this.scene, ...global, controlPoints);
         break;
       default:
         obj = null;
@@ -1431,17 +1460,20 @@ class MySceneGraph {
     var position = [];
 
     // x
-    var x = this.reader.getFloat(node, "x");
+    let x = this.reader.getFloat(node, "x");
+    if (!(x != null && !isNaN(x))) x = this.reader.getFloat(node, "xx");
     if (!(x != null && !isNaN(x)))
       return "unable to parse x-coordinate of the " + messageError;
 
     // y
-    var y = this.reader.getFloat(node, "y");
+    let y = this.reader.getFloat(node, "y");
+    if (!(y != null && !isNaN(y))) y = this.reader.getFloat(node, "yy");
     if (!(y != null && !isNaN(y)))
       return "unable to parse y-coordinate of the " + messageError;
 
     // z
-    var z = this.reader.getFloat(node, "z");
+    let z = this.reader.getFloat(node, "z");
+    if (!(z != null && !isNaN(z))) z = this.reader.getFloat(node, "zz");
     if (!(z != null && !isNaN(z)))
       return "unable to parse z-coordinate of the " + messageError;
 
@@ -1541,7 +1573,6 @@ class MySceneGraph {
    * Displays the scene, processing each node, starting in the root node.
    */
   displayScene() {
-    this.a.display();
-    // this.nodes[this.idRoot].display();
+    this.nodes[this.idRoot].display();
   }
 }
