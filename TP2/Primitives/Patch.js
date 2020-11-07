@@ -1,4 +1,6 @@
 class Patch extends CGFobject {
+  static weight = 1.0;
+
   constructor(scene, npointsU, npointsV, npartsU, npartsV, controlPoints) {
     super(scene);
 
@@ -17,11 +19,10 @@ class Patch extends CGFobject {
     for (let u = 0; u < npointsU; ++u) {
       parsedPoints[u] = [];
       for (let v = 0; v < npointsV; ++v) {
-        parsedPoints[u][v] = [...controlPoints[u * npointsV + v], 1.0];
+        parsedPoints[u][v] = [...controlPoints[u * npointsV + v], Patch.weight];
       }
     }
 
-    console.log(parsedPoints);
     return parsedPoints;
   }
 
