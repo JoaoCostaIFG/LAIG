@@ -947,6 +947,10 @@ class MySceneGraph {
         attributeNames = ["npointsU", "npointsV", "npartsU", "npartsV"];
         attributeTypes = ["int", "int", "int", "int"];
         break;
+      case "defbarrel":
+        attributeNames = ["base", "middle", "height", "slices", "stacks"];
+        attributeTypes = ["float", "float", "float", "int", "int"];
+        break;
       default:
         return "unknown leaf type: " + objType + ".";
     }
@@ -1050,6 +1054,9 @@ class MySceneGraph {
         } else {
           obj = new Patch(this.scene, ...global, controlPoints);
         }
+        break;
+      case "defbarrel":
+        obj = new Defbarrel(this.scene, ...global);
         break;
       default:
         obj = null;
