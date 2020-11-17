@@ -14,35 +14,35 @@ class Defbarrel extends CGFobject {
   }
 
   genControlPoints(base, middle, height) {
-    let h = (4 / 3) * base;
-    let hMiddle = (4 / 3) * middle;
-    let H = (4 / 3) * (middle - base);
-    let tg30 = (Math.sqrt(3) / 3);
+    let h = (4.0 / 3) * base;
+    let hMiddle = (4.0 / 3) * middle;
+    let H = (4.0 / 3) * (middle - base);
+    let tg30 = (1.0 / Math.sqrt(3));
 
     return [
       [
-        [-base, 0, 0, 1],
-        [-base, h, 0, 1],
-        [base, h, 0, 1],
-        [base, 0, 0, 1],
+        [-base,       0,        0,                  1],
+        [-base,       h,        0,                  1],
+        [base,        h,        0,                  1],
+        [base,        0,        0,                  1],
       ],
       [
-        [-base - H, 0, H / tg30, 1],
-        [-base - H, hMiddle, H / tg30, 1],
-        [base + H,  hMiddle, H / tg30, 1],
-        [base + H,  0, H / tg30, 1],
+        [-base - H,   0,        H / tg30,           1],
+        [-base - H,   hMiddle,  H / tg30,           1],
+        [base + H,    hMiddle,  H / tg30,           1],
+        [base + H,    0,        H / tg30,           1],
       ],
       [
-        [-base - H, 0, height - H / tg30, 1],
-        [-base - H, hMiddle, height - H / tg30, 1],
-        [base + H,  hMiddle, height - H / tg30, 1],
-        [base + H,  0, height - H / tg30, 1],
+        [-base - H,   0,        height - H / tg30,  1],
+        [-base - H,   hMiddle,  height - H / tg30,  1],
+        [base + H,    hMiddle,  height - H / tg30,  1],
+        [base + H,    0,        height - H / tg30,  1],
       ],
       [
-        [-base, 0, height, 1],
-        [-base, h, height, 1],
-        [base, h, height, 1],
-        [base, 0, height, 1],
+        [-base,       0,        height,             1],
+        [-base,       h,        height,             1],
+        [base,        h,        height,             1],
+        [base,        0,        height,             1],
       ],
     ];
   }
