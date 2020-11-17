@@ -89,33 +89,34 @@
 
 
     <textures>
-        <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
-        <texture id="skybox_back" path="./scenes/images/skybox/back.png" />
-        <texture id="skybox_front" path="./scenes/images/skybox/front.png" />
-        <texture id="skybox_left" path="./scenes/images/skybox/left.png" />
-        <texture id="skybox_right" path="./scenes/images/skybox/right.png" />
-        <texture id="skybox_top" path="./scenes/images/skybox/top.png" />
-        <texture id="skybox_bottom" path="./scenes/images/skybox/bottom.png" />
+      <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
+      <texture id="skybox_back" path="./scenes/images/skybox/back.png" />
+      <texture id="skybox_front" path="./scenes/images/skybox/front.png" />
+      <texture id="skybox_left" path="./scenes/images/skybox/left.png" />
+      <texture id="skybox_right" path="./scenes/images/skybox/right.png" />
+      <texture id="skybox_top" path="./scenes/images/skybox/top.png" />
+      <texture id="skybox_bottom" path="./scenes/images/skybox/bottom.png" />
 
-        <texture id="xwingChassisTex" path="./scenes/images/x-wing_chassis.png" />
-        <texture id="xwingNoseTex" path="./scenes/images/x-wing_nose.png" />
-        <texture id="centerWindowTex" path="./scenes/images/centerWindow.png" />
+      <texture id="xwingChassisTex" path="./scenes/images/x-wing_chassis.png" />
+      <texture id="xwingNoseTex" path="./scenes/images/x-wing_nose.png" />
+      <texture id="centerWindowTex" path="./scenes/images/centerWindow.png" />
 
-        <texture id="turbineTex" path="./scenes/images/turbine.png" />
-        <texture id="turbineTubeTex" path="./scenes/images/turbineTube.png" />
-        <texture id="heliceTex" path="./scenes/images/helice.png" />
-        <texture id="gunTex" path="./scenes/images/gunTex.png" />
+      <texture id="turbineTex" path="./scenes/images/turbine.png" />
+      <texture id="turbineTubeTex" path="./scenes/images/turbineTube.png" />
+      <texture id="heliceTex" path="./scenes/images/helice.png" />
+      <texture id="gunTex" path="./scenes/images/gunTex.png" />
+      <texture id="nebulaTex" path="./scenes/images/nebula.png" />
 
-        <texture id="headTex" path="./scenes/images/head.png" />
+      <texture id="headTex" path="./scenes/images/head.png" />
 
-        <texture id="deathStarTex" path="./scenes/images/death_star.jpg" />
+      <texture id="deathStarTex" path="./scenes/images/death_star.jpg" />
 
-        <texture id="rainbowTex" path="./scenes/rainbow.jpg" />
+      <texture id="rainbowTex" path="./scenes/images/rainbow.jpg" />
     </textures>
 
     <spritesheets>
-        <spritesheet id="horseySheet" path="./scenes/horse.png" sizeM="20" sizeN="13" />
-        <!-- <spritesheet id="textSheet" path="./scenes/images/text.png" sizeM="16" sizeN="16" /> -->
+      <spritesheet id="horseySheet" path="./scenes/images/horse.png" sizeM="20" sizeN="13" />
+      <!-- <spritesheet id="textSheet" path="./scenes/images/text.png" sizeM="16" sizeN="16" /> -->
     </spritesheets>
 
     <materials>
@@ -169,6 +170,13 @@
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
             <emissive r="1.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="nebulaMat">
+            <shininess value="10" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+            <emissive r="1.0" g="1.0" b="1.0" a="1.0" />
         </material>
     </materials>
 
@@ -656,6 +664,20 @@
             </texture>
 
             <transformations>
+            </transformations>
+
+            <descendants>
+                <noderef id="pilotHead" />
+                <noderef id="nebula" />
+            </descendants>
+        </node>
+        <node id="pilotHead">
+            <material id="null" />
+            <texture id="headTex">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
                 <translation x="0.0" y="0.8" z="-2.0" />
                 <rotation axis="x" angle="-90" />
             </transformations>
@@ -844,7 +866,37 @@
                 <leaf type="torus" inner="0.2" outer="1.0" slices="20" loops="20" />
             </descendants>
         </node>
+        <node id="nebula">
+            <material id="nebulaMat" />
+            <texture id="nebulaTex">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
 
+            <transformations>
+                <translation x="1.6" y="0.2" z="-2.65" />
+                <rotation axis="y" angle="180" />
+                <rotation axis="x" angle="-10" />
+            </transformations>
+
+            <descendants>
+              <leaf type="patch" npointsU="3" npointsV="4" npartsU="10" npartsV="10">
+                <controlpoint xx="3" yy="0" zz="0" />
+                <controlpoint xx="3" yy="2.5" zz="2" />
+                <controlpoint xx="3" yy="0" zz="4" />
+                <controlpoint xx="3" yy="2.5" zz="6" />
+
+                <controlpoint xx="1.5" yy="0.5" zz="0" />
+                <controlpoint xx="1.5" yy="0" zz="2" />
+                <controlpoint xx="1.5" yy="0.5" zz="4" />
+                <controlpoint xx="1.5" yy="0" zz="6" />
+
+                <controlpoint xx="0" yy="0" zz="0" />
+                <controlpoint xx="0" yy="2.5" zz="2" />
+                <controlpoint xx="0" yy="0" zz="4" />
+                <controlpoint xx="0" yy="2.5" zz="6" />
+              </leaf>
+            </descendants>
+        </node>
 
         <!-- WINGS -->
         <node id="wingTopLeft">
@@ -1142,10 +1194,12 @@
 
             <transformations>
                 <translation x="0.0" y="0.0" z="-100.0" />
+                <rotation axis="z" angle="180" />
+                <rotation axis="x" angle="90" />
             </transformations>
 
             <descendants>
-                <leaf type="rectangle" x1="-100" y1="-100" x2="100" y2="100" />
+                <noderef id="skyboxPlane" />
             </descendants>
         </node>
         <node id="skyboxFront">
@@ -1157,11 +1211,11 @@
             <transformations>
                 <translation x="0.0" y="0.0" z="100.0" />
                 <rotation axis="y" angle="180" />
-                <rotation axis="z" angle="180" />
+                <rotation axis="x" angle="90" />
             </transformations>
 
             <descendants>
-                <leaf type="rectangle" x1="-100" y1="-100" x2="100" y2="100" />
+                <noderef id="skyboxPlane" />
             </descendants>
         </node>
         <node id="skyboxTop">
@@ -1171,13 +1225,12 @@
             </texture>
 
             <transformations>
-                <translation x="0.0" y="0.0" z="200.0" />
-                <rotation axis="x" angle="90" />
-                <translation x="0.0" y="-200.0" z="-100.0" />
+                <translation x="0.0" y="100.0" z="0.0" />
+                <rotation axis="z" angle="180" />
             </transformations>
 
             <descendants>
-                <leaf type="rectangle" x1="-100" y1="-100" x2="100" y2="100" />
+                <noderef id="skyboxPlane" />
             </descendants>
         </node>
         <node id="skyboxBottom">
@@ -1188,11 +1241,11 @@
 
             <transformations>
                 <translation x="0.0" y="-100.0" z="0.0" />
-                <rotation axis="x" angle="-90" />
+                <rotation axis="y" angle="180" />
             </transformations>
 
             <descendants>
-                <leaf type="rectangle" x1="-100" y1="-100" x2="100" y2="100" />
+                <noderef id="skyboxPlane" />
             </descendants>
         </node>
         <node id="skyboxLeft">
@@ -1203,12 +1256,12 @@
 
             <transformations>
                 <translation x="100.0" y="0.0" z="0.0" />
-                <rotation axis="y" angle="-90" />
+                <rotation axis="x" angle="180" />
                 <rotation axis="z" angle="90" />
             </transformations>
 
             <descendants>
-                <leaf type="rectangle" x1="-100" y1="-100" x2="100" y2="100" />
+                <noderef id="skyboxPlane" />
             </descendants>
         </node>
         <node id="skyboxRight">
@@ -1219,12 +1272,26 @@
 
             <transformations>
                 <translation x="-100.0" y="0.0" z="0.0" />
-                <rotation axis="y" angle="-90" />
+                <rotation axis="x" angle="180" />
                 <rotation axis="z" angle="-90" />
             </transformations>
 
             <descendants>
-                <leaf type="rectangle" x1="-100" y1="100" x2="100" y2="-100" />
+                <noderef id="skyboxPlane" />
+            </descendants>
+        </node>
+        <node id="skyboxPlane">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <scale sx="200" sy="1" sz="200" />
+            </transformations>
+
+            <descendants>
+                <leaf type="plane" npartsU="10" npartsV="10" />
             </descendants>
         </node>
 
