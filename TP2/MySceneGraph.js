@@ -47,7 +47,6 @@ class MySceneGraph {
      * If any error occurs, the reader calls onXMLError on this object, with an error message
      */
     this.reader.open("scenes/" + filename, this);
-    this.a = new Defbarrel(this.scene, 0.25, 0.5, 1, 20, 20);
   }
 
   /*
@@ -1608,7 +1607,6 @@ class MySceneGraph {
    * Displays the scene, processing each node, starting in the root node.
    */
   displayScene() {
-    // this.nodes[this.idRoot].display();
-    this.a.display();
+    this.nodes[this.idRoot].display();
   }
 }
