@@ -354,23 +354,6 @@
             </keyframe>
         </animation>
 
-        <animation id="deathStarSpinAnim" >
-            <keyframe instant="0.0">
-                <translation x="0.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="300.0">
-                <translation x="0.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="3610.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-        </animation>
-
         <animation id="shootingAnim" >
             <keyframe instant="5.0">
                 <translation x="0.0" y="0.0" z="0.0" />
@@ -436,6 +419,40 @@
                 <scale sx="1.0" sy="1.0" sz="1.0" />
             </keyframe>
         </animation>
+
+        <animation id="deathStarSpinAnim" >
+            <keyframe instant="0.0">
+                <translation x="0.0" y="0.0" z="0.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+            <keyframe instant="300.0">
+                <translation x="0.0" y="0.0" z="0.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="3610.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+        </animation>
+
+        <animation id="horseAnim" >
+            <keyframe instant="0.0">
+                <translation x="0.0" y="0.0" z="0.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+            <keyframe instant="200.0">
+                <translation x="-100.0" y="-100.0" z="-100.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="3610.0" />
+                <rotation axis="z" angle="3610.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+        </animation>
     </animations>
 
     <nodes>
@@ -452,47 +469,72 @@
             </transformations>
 
             <descendants>
-                <noderef id="floatText" />
-
+                <noderef id="horse" />
                 <noderef id="skybox" />
                 <noderef id="deathStar" />
                 <noderef id="x-wing" />
             </descendants>
         </node>
-        <node id="floatText">
+        <node id="horse">
             <material id="null" />
             <texture id="rainbowTex">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
-                <translation x="0" y="0" z="0" />
+                <translation x="50" y="30" z="40" />
+            </transformations>
+
+            <animationref id="horseAnim" />
+
+            <descendants>
+                <noderef id="horseInner" />
+                <noderef id="horse2" />
+            </descendants>
+        </node>
+        <node id="horse2">
+            <material id="null" />
+            <texture id="rainbowTex">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <rotation axis="y" angle="180" />
             </transformations>
 
             <descendants>
-                <noderef id="horse" />
-                <leaf type="spritetext" text="U GAY"/>
-                <leaf type="plane" npartsU="4" npartsV="4"/>
-                <leaf type="patch" npointsU="2" npointsV="2" npartsU="10" npartsV="10">
-                  <controlpoint xx="7" yy="0" zz="0" />
-                  <controlpoint xx="7" yy="0" zz="7" />
-                  <controlpoint xx="7" yy="1" zz="0" />
-                  <controlpoint xx="7" yy="1" zz="7" />
-                </leaf>
+                <noderef id="horseInner" />
             </descendants>
         </node>
-        <node id="horse">
+        <node id="horseInner">
+            <material id="null" />
+            <texture id="rainbowTex">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <rotation axis="y" angle="90" />
+                <scale sx="10" sy="10" sz="1" />
+                <translation x="-0.5" y="0" z="0" />
+            </transformations>
+
+            <descendants>
+                <noderef id="floatText" />
+                <leaf type="spriteanim" ssid="horseySheet" startCell="0" endCell="249" duration="4" />
+            </descendants>
+        </node>
+        <node id="floatText">
             <material id="null" />
             <texture id="null">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
 
             <transformations>
-                <translation x="0" y="-1" z="0" />
+                <translation x="0.5" y="-0.5" z="0" />
             </transformations>
 
             <descendants>
-                <leaf type="spriteanim" ssid="horseySheet" startCell="0" endCell="249" duration="4" />
+                <leaf type="spritetext" text="Horse"/>
             </descendants>
         </node>
         <node id="deathStar">
@@ -1024,6 +1066,7 @@
             <descendants>
                 <noderef id="gunFrontRings" />
                 <leaf type="cylinder" height="5" topRadius="0.2" bottomRadius="0.2" stacks="2" slices="10"/>
+                <leaf type="defbarrel" base="0.2" middle="0.3" height="4" slices="20" stacks="10" />
             </descendants>
         </node>
         <node id="gunFrontRings">

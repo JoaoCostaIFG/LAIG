@@ -10,17 +10,17 @@ class MySpritesheet {
       "./Shaders/MySpriteShader.frag"
     );
 
-    this.scene.setActiveShader(this.shader);
+    this.scene.setActiveShaderSimple(this.shader);
     this.shader.setUniformsValues({
       uSampler2: 1,
       sheetSize: [sizeM, sizeN],
       charCoords: [0, 0],
     });
-    this.scene.setActiveShader(this.scene.defaultShader);
+    this.scene.setActiveShaderSimple(this.scene.defaultShader);
   }
 
   activateCellMN(m, n) {
-    this.scene.setActiveShader(this.shader);
+    this.scene.setActiveShaderSimple(this.shader);
     this.shader.setUniformsValues({ charCoords: [m, n] });
     // this.scene.pushTexture(this.tex);
     this.tex.bind(1);
