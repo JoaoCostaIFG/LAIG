@@ -1040,7 +1040,7 @@ class MySceneGraph {
             continue;
           }
 
-          let ctrlP = this.parseCoordinates3D(
+          let ctrlP = this.parseCoordinates3D_2(
             ctrlPointList[i],
             "controlpoint of leaf."
           );
@@ -1476,19 +1476,39 @@ class MySceneGraph {
 
     // x
     let x = this.reader.getFloat(node, "x");
-    if (!(x != null && !isNaN(x))) x = this.reader.getFloat(node, "xx");
     if (!(x != null && !isNaN(x)))
       return "unable to parse x-coordinate of the " + messageError;
 
     // y
     let y = this.reader.getFloat(node, "y");
-    if (!(y != null && !isNaN(y))) y = this.reader.getFloat(node, "yy");
     if (!(y != null && !isNaN(y)))
       return "unable to parse y-coordinate of the " + messageError;
 
     // z
     let z = this.reader.getFloat(node, "z");
-    if (!(z != null && !isNaN(z))) z = this.reader.getFloat(node, "zz");
+    if (!(z != null && !isNaN(z)))
+      return "unable to parse z-coordinate of the " + messageError;
+
+    position.push(...[x, y, z]);
+
+    return position;
+  }
+
+  parseCoordinates3D_2(node, messageError) {
+    var position = [];
+
+    // x
+    let x = this.reader.getFloat(node, "xx");
+    if (!(x != null && !isNaN(x)))
+      return "unable to parse x-coordinate of the " + messageError;
+
+    // y
+    let y = this.reader.getFloat(node, "yy");
+    if (!(y != null && !isNaN(y)))
+      return "unable to parse y-coordinate of the " + messageError;
+
+    // z
+    let z = this.reader.getFloat(node, "zz");
     if (!(z != null && !isNaN(z)))
       return "unable to parse z-coordinate of the " + messageError;
 
