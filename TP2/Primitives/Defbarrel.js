@@ -21,28 +21,28 @@ class Defbarrel extends CGFobject {
 
     return [
       [
-        [-base,       0,        0,                  1],
-        [-base,       h,        0,                  1],
-        [base,        h,        0,                  1],
         [base,        0,        0,                  1],
-      ],
-      [
-        [-base - H,   0,        H / tg30,           1],
-        [-base - H,   hMiddle,  H / tg30,           1],
-        [base + H,    hMiddle,  H / tg30,           1],
         [base + H,    0,        H / tg30,           1],
-      ],
-      [
-        [-base - H,   0,        height - H / tg30,  1],
-        [-base - H,   hMiddle,  height - H / tg30,  1],
-        [base + H,    hMiddle,  height - H / tg30,  1],
         [base + H,    0,        height - H / tg30,  1],
+        [base,        0,        height,             1],
       ],
       [
-        [-base,       0,        height,             1],
-        [-base,       h,        height,             1],
+        [base,        h,        0,                  1],
+        [base + H,    hMiddle,  H / tg30,           1],
+        [base + H,    hMiddle,  height - H / tg30,  1],
         [base,        h,        height,             1],
-        [base,        0,        height,             1],
+      ],
+      [
+        [-base,       h,        0,                  1],
+        [-base - H,   hMiddle,  H / tg30,           1],
+        [-base - H,   hMiddle,  height - H / tg30,  1],
+        [-base,       h,        height,             1],
+      ],
+      [
+        [-base,       0,        0,                  1],
+        [-base - H,   0,        H / tg30,           1],
+        [-base - H,   0,        height - H / tg30,  1],
+        [-base,       0,        height,             1],
       ],
     ];
   }
