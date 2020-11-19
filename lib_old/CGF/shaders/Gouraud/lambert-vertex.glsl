@@ -23,6 +23,7 @@ void main() {
 	float lambertTerm = dot(N, -L);
 
 	vFinalColor = uMaterialDiffuse * uLightDiffuse * lambertTerm;
+	vFinalColor.a = 1.0;
 
 	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
 }

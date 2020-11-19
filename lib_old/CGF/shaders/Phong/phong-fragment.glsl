@@ -46,6 +46,7 @@ void main() {
     }
 
 	vec4 finalColor = Ia + Id + Is;
+     finalColor.a = 1.0;
 
      fragColor = finalColor;
 }
