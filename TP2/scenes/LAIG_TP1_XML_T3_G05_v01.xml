@@ -90,6 +90,8 @@
 
     <textures>
       <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
+      <texture id="testTex" path="./scenes/test.jpg" />
+
       <texture id="skybox_back" path="./scenes/images/skybox/back.png" />
       <texture id="skybox_front" path="./scenes/images/skybox/front.png" />
       <texture id="skybox_left" path="./scenes/images/skybox/left.png" />
@@ -587,7 +589,7 @@
                 <noderef id="wingBotLeft" />
                 <noderef id="wingBotRight" />
             </descendants>
-        </node>
+        </node> 
 
         <!-- CHASSIS -->
         <node id="chassis">
@@ -880,20 +882,20 @@
 
             <descendants>
               <leaf type="patch" npointsU="3" npointsV="4" npartsU="10" npartsV="10">
-                <controlpoint xx="3" yy="0" zz="0" />
-                <controlpoint xx="3" yy="2.5" zz="2" />
-                <controlpoint xx="3" yy="0" zz="4" />
-                <controlpoint xx="3" yy="2.5" zz="6" />
+                <controlpoint x="0" y="2.5" z="6" />
+                <controlpoint x="0" y="0" z="4" />
+                <controlpoint x="0" y="2.5" z="2" />
+                <controlpoint x="0" y="0" z="0" />
+                
+                <controlpoint x="1.5" y="0" z="6" />
+                <controlpoint x="1.5" y="0.5" z="4" />
+                <controlpoint x="1.5" y="0" z="2" />
+                <controlpoint x="1.5" y="0.5" z="0" />
 
-                <controlpoint xx="1.5" yy="0.5" zz="0" />
-                <controlpoint xx="1.5" yy="0" zz="2" />
-                <controlpoint xx="1.5" yy="0.5" zz="4" />
-                <controlpoint xx="1.5" yy="0" zz="6" />
-
-                <controlpoint xx="0" yy="0" zz="0" />
-                <controlpoint xx="0" yy="2.5" zz="2" />
-                <controlpoint xx="0" yy="0" zz="4" />
-                <controlpoint xx="0" yy="2.5" zz="6" />
+                <controlpoint x="3" y="2.5" z="6" />
+                <controlpoint x="3" y="0" z="4" />
+                <controlpoint x="3" y="2.5" z="2" />
+                <controlpoint x="3" y="0" z="0" />
               </leaf>
             </descendants>
         </node>
