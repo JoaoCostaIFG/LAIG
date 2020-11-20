@@ -15,17 +15,31 @@ class MySpritesheet {
       sheetSize: [sizeM, sizeN],
       charCoords: [0, 0],
     });
+
+    this.activatedTex = false;
   }
 
   activateCellMN(m, n) {
     this.scene.setActiveShaderSimple(this.shader);
     this.shader.setUniformsValues({ charCoords: [m, n] });
-    // this.scene.pushTexture(this.tex);
+
+    if (this.scene.activeTexture == null) { // we need 2 textures
+      this.activatedTex = true;
+      this.scene.defaultTex.bind();
+    }
     this.tex.bind(1);
-    // this.scene.popTexture();
   }
 
   activateCellP(p) {
     this.activateCellMN(p % this.texSize[0], Math.floor(p / this.texSize[0]));
+  }
+
+  deactivate() {
+    if (this.activatedTex) {
+      this.activatedTex = false;
+      this.scene.defaultTex.unbind();
+    }
+    this.tex.unbind(1);
+    this.scene.setActiveShader(this.scene.defaultShader);
   }
 }

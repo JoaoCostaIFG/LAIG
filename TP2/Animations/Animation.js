@@ -1,10 +1,11 @@
-class Animation {
-  constructor(scene, id) {
-    this.scene = scene;
-    this.id = id;
+class Animation { /* abstract class */
+  constructor(keyframeI, keyframeF) {
+    if (this.constructor == Animation) {
+      throw new Error("Can't instantiate abstract class!");
+    }
 
-    this.lastTime = Date.now() / 1000; // current time in seconds
-    this.sumT = 0;
+    this.keyframeI = keyframeI;
+    this.keyframeF = keyframeF;
   }
 
   update(t) {

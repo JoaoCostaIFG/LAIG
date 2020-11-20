@@ -1,8 +1,10 @@
-class MySpriteAnimation extends Animation {
-  // TODO EXTAENDE CFGOBJ (also spriteText) ?
-
+class MySpriteAnimation {
   constructor(scene, spriteSheet, id, duration, startCell, endCell) {
-    super(scene, id);
+    this.scene = scene;
+    this.id = id;
+    this.lastTime = Date.now() / 1000; // current time in seconds
+    this.sumT = 0;
+
     this.spriteSheet = spriteSheet;
     this.rect = new MyRectangle(this.scene, 0, 0, 1, 1);
 
@@ -38,10 +40,14 @@ class MySpriteAnimation extends Animation {
     this.spriteSheet.activateCellP(this.currCell);
   }
 
+  unapply() {
+    this.spriteSheet.deactivate();
+  }
+
   display() {
     this.apply();
     this.rect.display();
-    this.scene.setActiveShader(this.scene.defaultShader);
+    this.unapply();
   }
 
   enableNormalViz() {

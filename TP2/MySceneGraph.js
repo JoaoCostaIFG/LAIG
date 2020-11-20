@@ -882,6 +882,12 @@ class MySceneGraph {
         keyframes.push(new Keyframe(inst, ...global));
       }
 
+      // sort keyframes
+      keyframes.sort((a, b) => {
+        return a.instant - b.instant;
+      });
+      for (let i = 0; i < keyframes.length - 1; ++i)
+        keyframes[i].next = keyframes[i + 1];
       // create (and push) the new animation with its keyframes
       this.animations[animationID] = new KeyframeAnimation(
         this.scene,

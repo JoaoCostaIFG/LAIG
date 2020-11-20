@@ -28,25 +28,17 @@ class MySpriteText {
 
   display() {
     this.scene.pushMatrix();
-
-    let activatedTex = false;
-    if (this.scene.activeTexture == null) {
-      activatedTex = true;
-      this.scene.defaultTex.bind();
-    }
-
     // center text
     this.scene.translate(-this.parsedText.length / 2.0, -0.5, 0.0);
+
     // render text
     for (let i = 0; i < this.parsedText.length; ++i) {
       this.spriteSheet.activateCellP(this.parsedText[i]);
       this.rect.display();
       this.scene.translate(1.0, 0.0, 0.0);
     }
-    this.scene.setActiveShader(this.scene.defaultShader);
+    this.spriteSheet.deactivate();
 
-    if (activatedTex)
-      this.scene.defaultTex.unbind();
     this.scene.popMatrix();
   }
 

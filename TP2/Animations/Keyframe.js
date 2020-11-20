@@ -4,5 +4,6 @@ class Keyframe {
     this.translation = [tx, ty, tz];
     this.rotation = [rx, ry, rz];
     this.scale = [sx, sy, sz];
+    this.nextKF = null;
   }
 }
