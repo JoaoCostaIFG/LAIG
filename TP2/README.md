@@ -15,12 +15,15 @@
 - Uses at least one instance of all the primitives (including the new ones).
 - Has multiple cameras, lights, materials and textures.
 - Scene:
-  - A skybox with a colored Star War's X-Wing ship model and death star.
+  - A skybox with colored Star War's X-Wing and tie-fighter ship models and
+    death star.
   - The word "Horse" (_spritetext_ primitive) with a running horse animation.
   - [Link to the Scene](./scenes/LAIG_TP1_XML_T3_G05_v01.xml)
 - Animations:
   - The X-Wing performs a 'barrel roll' maneuver and shoots two projectiles
     three times.
+  - The tie-fighter flies forward and is shot by the X-Wing, losing part of its
+    right wing.
   - The death star spins.
   - The text floats around with the running horse animation.
 - Extras :

@@ -1,1711 +1,1527 @@
+<?xml version="1.0"?>
 <lsf>
-    <initials>
-        <reference length="2" />
-        <!-- axis length; "0" means no axis displayed -->
-        <root id="root" />
-        <!-- identifier of root node of the scene graph; this node -->
-        <!-- must be defined in one of the following NODE declarations -->
-    </initials>
-    <views default="defaultCam">
-        <!-- at least one of the following type of cameras must be declared -->
-        <perspective id="defaultCam" near="0.1" far="500" angle="45">
-            <from x="200" y="50" z="-80" />
-            <to x="0" y="0" z="30" />
-        </perspective>
-        <perspective id="cam1" near="0.1" far="500" angle="45">
-            <from x="50" y="20" z="60" />
-            <to x="0" y="-2" z="0" />
-        </perspective>
-        <perspective id="cam2" near="0.1" far="500" angle="45">
-            <from x="-50" y="20" z="-60" />
-            <to x="0" y="-1" z="0" />
-        </perspective>
-        <perspective id="cam3" near="0.1" far="500" angle="45">
-            <from x="0" y="40" z="-40" />
-            <to x="0" y="0" z="0" />
-        </perspective>
-        <perspective id="cam4" near="0.1" far="500" angle="45">
-            <from x="0" y="20" z="70" />
-            <to x="0" y="0" z="0" />
-        </perspective>
-        <perspective id="originCam" near="0.1" far="500" angle="45">
-            <from x="0" y="0" z="5" />
-            <to x="0" y="0" z="0" />
-        </perspective>
-        <ortho id="orthoCam" near="0.1" far="500" left="-50" right="50" top="50" bottom="-50">
-            <from x="50" y="20" z="60" />
-            <to x="5" y="0" z="0" />
-            <up x="0" y="1" z="0" /><!-- optional, default 0,1,0 -->
-        </ortho>
-        <perspective id="faceCam" near="0.1" far="500" angle="45">
-            <from x="0" y="4.4" z="13.4" />
-            <to x="0" y="4.4" z="0" />
-        </perspective>
-    </views>
-
-    <illumination>
-        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />           <!-- global ambient -->
-        <background r="0.1" g="0.7" b="1.0" a="1.0" />        <!-- background color -->
-    </illumination>
-
-
-    <lights>
-        <light id="backLight">
-            <enable value="1" />
-            <position x="0" y="20" z="-10" w="1.0" /><!-- light position; w=1: point light; w=0: directional light -->
-            <ambient r="0" g="0" b="0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-        </light>
-        <light id="frontLight">
-            <enable value="1" />
-            <position x="0" y="20" z="30" w="1.0" />
-            <ambient r="0" g="0" b="0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-        </light>
-        <light id="bottomLight">
-            <enable value="1" />
-            <position x="0" y="-20" z="30" w="1.0" />
-            <ambient r="0" g="0" b="0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-        </light>
-        <light id="redSpecularLight">
-            <enable value="0" />
-            <position x="0.0" y="30" z="0.0" w="1.0" />
-            <ambient r="0" g="0" b="0" a="1.0" />
-            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
-            <specular r="1.0" g="0.0" b="0.0" a="1.0" />
-        </light>
-        <light id="redSpecularLightBottom">
-            <enable value="0" />
-            <position x="0.0" y="-30" z="0.0" w="1.0" />
-            <ambient r="0" g="0" b="0" a="1.0" />
-            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
-            <specular r="1.0" g="0.0" b="0.0" a="1.0" />
-        </light>
-    </lights>
-
-
-    <textures>
-      <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
-      <texture id="testTex" path="./scenes/test.jpg" />
-
-      <texture id="skybox_back" path="./scenes/images/skybox/back.png" />
-      <texture id="skybox_front" path="./scenes/images/skybox/front.png" />
-      <texture id="skybox_left" path="./scenes/images/skybox/left.png" />
-      <texture id="skybox_right" path="./scenes/images/skybox/right.png" />
-      <texture id="skybox_top" path="./scenes/images/skybox/top.png" />
-      <texture id="skybox_bottom" path="./scenes/images/skybox/bottom.png" />
-
-      <texture id="xwingChassisTex" path="./scenes/images/x-wing_chassis.png" />
-      <texture id="xwingNoseTex" path="./scenes/images/x-wing_nose.png" />
-      <texture id="centerWindowTex" path="./scenes/images/centerWindow.png" />
-
-      <texture id="turbineTex" path="./scenes/images/turbine.png" />
-      <texture id="turbineTubeTex" path="./scenes/images/turbineTube.png" />
-      <texture id="heliceTex" path="./scenes/images/helice.png" />
-      <texture id="gunTex" path="./scenes/images/gunTex.png" />
-      <texture id="nebulaTex" path="./scenes/images/nebula.png" />
-
-      <texture id="tieBallTex" path="./scenes/images/tie_ball.png" />
-      <texture id="tieWingTex" path="./scenes/images/tie_wing.png" />
-
-      <texture id="headTex" path="./scenes/images/head.png" />
-
-      <texture id="deathStarTex" path="./scenes/images/death_star.jpg" />
-
-      <texture id="rainbowTex" path="./scenes/images/rainbow.jpg" />
-    </textures>
-
-    <spritesheets>
-      <spritesheet id="horseySheet" path="./scenes/images/horse.png" sizeM="20" sizeN="13" />
-      <!-- <spritesheet id="textSheet" path="./scenes/images/text.png" sizeM="16" sizeN="16" /> -->
-    </spritesheets>
-
-    <materials>
-        <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material
+  <initials>
+    <reference length="2"/>
+    <!-- axis length; "0" means no axis displayed -->
+    <root id="root"/>
+    <!-- identifier of root node of the scene graph; this node -->
+    <!-- must be defined in one of the following NODE declarations -->
+  </initials>
+  <views default="defaultCam">
+    <!-- at least one of the following type of cameras must be declared -->
+    <perspective id="defaultCam" near="0.1" far="500" angle="45">
+      <from x="200" y="50" z="-80"/>
+      <to x="0" y="0" z="30"/>
+    </perspective>
+    <perspective id="cam1" near="0.1" far="500" angle="45">
+      <from x="50" y="20" z="60"/>
+      <to x="0" y="-2" z="0"/>
+    </perspective>
+    <perspective id="cam2" near="0.1" far="500" angle="45">
+      <from x="-50" y="20" z="-60"/>
+      <to x="0" y="-1" z="0"/>
+    </perspective>
+    <perspective id="cam3" near="0.1" far="500" angle="45">
+      <from x="0" y="40" z="-40"/>
+      <to x="0" y="0" z="0"/>
+    </perspective>
+    <perspective id="cam4" near="0.1" far="500" angle="45">
+      <from x="0" y="20" z="70"/>
+      <to x="0" y="0" z="0"/>
+    </perspective>
+    <perspective id="originCam" near="0.1" far="500" angle="45">
+      <from x="0" y="0" z="5"/>
+      <to x="0" y="0" z="0"/>
+    </perspective>
+    <ortho id="orthoCam" near="0.1" far="500" left="-50" right="50" top="50" bottom="-50">
+      <from x="50" y="20" z="60"/>
+      <to x="5" y="0" z="0"/>
+      <up x="0" y="1" z="0"/>
+      <!-- optional, default 0,1,0 -->
+    </ortho>
+    <perspective id="faceCam" near="0.1" far="500" angle="45">
+      <from x="0" y="4.4" z="13.4"/>
+      <to x="0" y="4.4" z="0"/>
+    </perspective>
+  </views>
+  <illumination>
+    <!-- global ambient -->
+    <ambient r="0.2" g="0.2" b="0.2" a="1.0"/>
+    <!-- background color -->
+    <background r="0.1" g="0.7" b="1.0" a="1.0"/>
+  </illumination>
+  <lights>
+    <light id="backLight">
+      <enable value="1"/>
+      <position x="0" y="20" z="-10" w="1.0"/>
+      <!-- light position; w=1: point light; w=0: directional light -->
+      <ambient r="0" g="0" b="0" a="1.0"/>
+      <diffuse r="1.0" g="1.0" b="1.0" a="1.0"/>
+      <specular r="1.0" g="1.0" b="1.0" a="1.0"/>
+    </light>
+    <light id="frontLight">
+      <enable value="1"/>
+      <position x="0" y="20" z="30" w="1.0"/>
+      <ambient r="0" g="0" b="0" a="1.0"/>
+      <diffuse r="1.0" g="1.0" b="1.0" a="1.0"/>
+      <specular r="1.0" g="1.0" b="1.0" a="1.0"/>
+    </light>
+    <light id="bottomLight">
+      <enable value="1"/>
+      <position x="0" y="-20" z="30" w="1.0"/>
+      <ambient r="0" g="0" b="0" a="1.0"/>
+      <diffuse r="1.0" g="1.0" b="1.0" a="1.0"/>
+      <specular r="1.0" g="1.0" b="1.0" a="1.0"/>
+    </light>
+    <light id="tie-FighterLight">
+      <enable value="0"/>
+      <position x="50" y="500" z="50" w="0.0"/>
+      <ambient r="0" g="0" b="0" a="1.0"/>
+      <diffuse r="1.0" g="1.0" b="1.0" a="1.0"/>
+      <specular r="1.0" g="1.0" b="1.0" a="1.0"/>
+    </light>
+    <light id="redSpecularLight">
+      <enable value="0"/>
+      <position x="0.0" y="30" z="0.0" w="1.0"/>
+      <ambient r="0" g="0" b="0" a="1.0"/>
+      <diffuse r="0.0" g="0.0" b="0.0" a="1.0"/>
+      <specular r="1.0" g="0.0" b="0.0" a="1.0"/>
+    </light>
+    <light id="redSpecularLightBottom">
+      <enable value="0"/>
+      <position x="0.0" y="-30" z="0.0" w="1.0"/>
+      <ambient r="0" g="0" b="0" a="1.0"/>
+      <diffuse r="0.0" g="0.0" b="0.0" a="1.0"/>
+      <specular r="1.0" g="0.0" b="0.0" a="1.0"/>
+    </light>
+  </lights>
+  <textures>
+    <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
+    <texture id="testTex" path="./scenes/test.jpg"/>
+    <texture id="skybox_back" path="./scenes/images/skybox/back.png"/>
+    <texture id="skybox_front" path="./scenes/images/skybox/front.png"/>
+    <texture id="skybox_left" path="./scenes/images/skybox/left.png"/>
+    <texture id="skybox_right" path="./scenes/images/skybox/right.png"/>
+    <texture id="skybox_top" path="./scenes/images/skybox/top.png"/>
+    <texture id="skybox_bottom" path="./scenes/images/skybox/bottom.png"/>
+    <texture id="xwingChassisTex" path="./scenes/images/x-wing_chassis.png"/>
+    <texture id="xwingNoseTex" path="./scenes/images/x-wing_nose.png"/>
+    <texture id="centerWindowTex" path="./scenes/images/centerWindow.png"/>
+    <texture id="turbineTex" path="./scenes/images/turbine.png"/>
+    <texture id="turbineTubeTex" path="./scenes/images/turbineTube.png"/>
+    <texture id="heliceTex" path="./scenes/images/helice.png"/>
+    <texture id="gunTex" path="./scenes/images/gunTex.png"/>
+    <texture id="nebulaTex" path="./scenes/images/nebula.png"/>
+    <texture id="tieBallTex" path="./scenes/images/tie_ball.png"/>
+    <texture id="tieWingTex" path="./scenes/images/tie_wing.png"/>
+    <texture id="headTex" path="./scenes/images/head.png"/>
+    <texture id="deathStarTex" path="./scenes/images/death_star.jpg"/>
+    <texture id="rainbowTex" path="./scenes/images/rainbow.jpg"/>
+  </textures>
+  <spritesheets>
+    <spritesheet id="horseySheet" path="./scenes/images/horse.png" sizeM="20" sizeN="13"/>
+    <!-- <spritesheet id="textSheet" path="./scenes/images/text.png" sizeM="16" sizeN="16" /> -->
+  </spritesheets>
+  <materials>
+    <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material
          requires a distinct "id". At least one material should be present. -->
-        <material id="metalMaterial">
-            <shininess value="10.0" />
-            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
-        </material>
-        <material id="skyboxMaterial">
-            <shininess value="0.2" />
-            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
-            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-            <emissive r="0.7" g="0.8" b="0.69" a="1.0" />
-        </material>
-        <material id="windowMaterial">
-            <shininess value="100" />
-            <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
-            <diffuse r="0.3" g="0.3" b="0.3" a="1.0" />
-            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
-            <emissive r="0.1" g="0.1" b="0.1" a="1.0" />
-        </material>
-        <material id="greenRingMat">
-            <shininess value="100" />
-            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
-            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-            <emissive r="0.71" g="0.85" b="0.56" a="1.0" />
-        </material>
-        <material id="turbineRingMat">
-            <shininess value="100" />
-            <ambient r="0.23" g="0.23" b="0.23" a="1.0" />
-            <diffuse r="0.23" g="0.23" b="0.23" a="1.0" />
-            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-            <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
-        </material>
-        <material id="deathStarMat">
-            <shininess value="100" />
-            <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
-            <diffuse r="0.2" g="0.2" b="0.2" a="1.0" />
-            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
-            <emissive r="0.0" g="0.0" b="0.0" a="1.0" />
-        </material>
-        <material id="bulletMat">
-            <shininess value="100" />
-            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
-            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-            <emissive r="1.0" g="0.0" b="0.0" a="1.0" />
-        </material>
-        <material id="nebulaMat">
-            <shininess value="10" />
-            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
-            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
-            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-            <emissive r="1.0" g="1.0" b="1.0" a="1.0" />
-        </material>
-    </materials>
-
-    <animations>
-        <animation id="flyForwardAnim" >
-            <keyframe instant="0.0">
-                <translation x="0.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="0.167">
-                <translation x="2.0" y="1.36" z="10.35" />
-                <rotation axis="x" angle="-15.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="3.33" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="0.333">
-                <translation x="4.0" y="5.36" z="20.0" />
-                <rotation axis="x" angle="-30.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="6.67" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="0.5">
-                <translation x="6.0" y="11.72" z="28.28" />
-                <rotation axis="x" angle="-45.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="10.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="0.667">
-                <translation x="8.0" y="20.0" z="34.64" />
-                <rotation axis="x" angle="-60.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="13.33" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="0.833">
-                <translation x="10.0" y="29.65" z="38.64" />
-                <rotation axis="x" angle="-75.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="16.67" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="1.0">
-                <translation x="12.0" y="40.0" z="40.0" />
-                <rotation axis="x" angle="-90.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="20.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-
-            <keyframe instant="1.167">
-                <translation x="10.0" y="50.35" z="38.64" />
-                <rotation axis="x" angle="-105.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="16.67" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="1.333">
-                <translation x="8.0" y="60.0" z="34.64" />
-                <rotation axis="x" angle="-120.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="13.33" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="1.5">
-                <translation x="6.0" y="68.28" z="28.28" />
-                <rotation axis="x" angle="-135.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="10.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="1.667">
-                <translation x="4.0" y="74.64" z="20.0" />
-                <rotation axis="x" angle="-150.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="6.67" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="1.833">
-                <translation x="2.0" y="78.64" z="10.35" />
-                <rotation axis="x" angle="-165.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="3.33" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="2.0">
-                <translation x="0.0" y="80.0" z="0.0" />
-                <rotation axis="x" angle="-180.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-
-            <keyframe instant="2.167">
-                <translation x="-2.0" y="78.64" z="-10.35" />
-                <rotation axis="x" angle="-195.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="-3.33" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="2.333">
-                <translation x="-4.0" y="74.64" z="-20.0" />
-                <rotation axis="x" angle="-210.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="-6.67" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="2.5">
-                <translation x="-6.0" y="68.28" z="-28.28" />
-                <rotation axis="x" angle="-225.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="-10.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="2.667">
-                <translation x="-8.0" y="60.0" z="-34.64" />
-                <rotation axis="x" angle="-240.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="-13.33" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="2.833">
-                <translation x="-10.0" y="50.35" z="-38.64" />
-                <rotation axis="x" angle="-255.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="-16.67" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="3.0">
-                <translation x="-12.0" y="40.0" z="-40.0" />
-                <rotation axis="x" angle="-270.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="-20" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-
-            <keyframe instant="3.167">
-                <translation x="-10.0" y="29.65" z="-38.64" />
-                <rotation axis="x" angle="-285.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="-16.67" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="3.333">
-                <translation x="-8.0" y="20.0" z="-34.64" />
-                <rotation axis="x" angle="-300.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="-13.33" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="3.5">
-                <translation x="-6.0" y="11.72" z="-28.28" />
-                <rotation axis="x" angle="-315.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="-10.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="3.667">
-                <translation x="-4.0" y="5.36" z="-20.0" />
-                <rotation axis="x" angle="-330.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="-6.67" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="3.833">
-                <translation x="-2.0" y="1.36" z="-10.35" />
-                <rotation axis="x" angle="-345.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="-3.33" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="4.0">
-                <translation x="0.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="-360.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-        </animation>
-            
-        <animation id="shootingAnim" >
-            <keyframe instant="5.0">
-                <translation x="0.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="5.5">
-                <translation x="0.0" y="0.0" z="50.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="3.0" sy="3.0" sz="3.0" />
-            </keyframe>
-            <keyframe instant="6.0">
-                <translation x="0.0" y="0.0" z="100.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="6.001">
-                <translation x="0.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="6.5">
-                <translation x="0.0" y="0.0" z="50.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="3.0" sy="3.0" sz="3.0" />
-            </keyframe>
-            <keyframe instant="7.0">
-                <translation x="0.0" y="0.0" z="100.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="7.001">
-                <translation x="0.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="7.5">
-                <translation x="0.0" y="0.0" z="50.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="3.0" sy="3.0" sz="3.0" />
-            </keyframe>
-            <keyframe instant="8.0">
-                <translation x="0.0" y="0.0" z="100.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="8.1">
-                <translation x="0.0" y="0.0" z="999.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-        </animation>
-
-        <animation id="deathStarSpinAnim" >
-            <keyframe instant="0.0">
-                <translation x="0.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="300.0">
-                <translation x="0.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="3610.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-        </animation>
-
-        <animation id="horseAnim" >
-            <keyframe instant="0.0">
-                <translation x="0.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="200.0">
-                <translation x="-100.0" y="-100.0" z="100.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="3610.0" />
-                <rotation axis="z" angle="3610.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-        </animation>
-        <animation id="tie-fighterAnim" >
-            <keyframe instant="0.0">
-                <translation x="0.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="3.0">
-                <translation x="0.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="7.0">
-                <translation x="0.0" y="0.0" z="140.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-        </animation>
-        <animation id="tie-fighterHitAnim" >
-            <keyframe instant="0.0">
-                <translation x="0.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="5.2">
-                <translation x="0.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="1.0" sy="1.0" sz="1.0" />
-            </keyframe>
-            <keyframe instant="5.21">
-                <translation x="0.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="0.0" />
-                <rotation axis="y" angle="0.0" />
-                <rotation axis="z" angle="0.0" />
-                <scale sx="0.0" sy="0.0" sz="0.0" />
-            </keyframe>
-        </animation>
-    </animations>
-
-    <nodes>
-        <node id="root">
-            <!-- next two lines are mandatory -->
-            <material id="metalMaterial" /><!-- this superimposes the material received from parent node id="null" maintains material from parent node -->
-
-            <texture id="clear"><!-- declared texture superimposes the texture received from parent node id="null" maintains texture from parent node id="clear" clears texture declaration received from parent node -->
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <!-- geom. transf. are optional and may be repeated, in any order, as necessary: -->
-            <transformations>
-            </transformations>
-
-            <descendants>
-                <noderef id="horse" />
-                <noderef id="skybox" />
-                <noderef id="deathStar" />
-                <noderef id="x-wing" />
-                <noderef id="tie-fighter" />
-            </descendants>
-        </node>
-
-        <!-- TIE-FIGHTER -->
-        <node id="tie-fighter">
-            <material id="metalMaterial" />
-            <texture id="tieBallTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="80" y="0" z="70" />
-                <rotation  axis="y" angle="-90" />
-            </transformations>
-            <animationref id="tie-fighterAnim"/>
-
-            <descendants>
-                <noderef id="tie-fighter-ball" />
-                <noderef id="tie-fighter-armLeft" />
-                <noderef id="tie-fighter-armRight" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-ball">
-            <material id="metalMaterial" />
-            <texture id="tieBallTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <rotation axis="x" angle="-90" />
-            </transformations>
-
-            <descendants>
-                <leaf type="sphere" radius="5" slices="20" stacks="20"/>
-            </descendants>
-        </node>
-        <node id="tie-fighter-armLeft">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-            
-            <transformations>
-                <rotation axis="y" angle="90" />
-            </transformations>
-
-            <descendants>
-                <noderef id="tie-fighter-arm" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-armRight">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <rotation axis="y" angle="-90" />
-            </transformations>
-
-            <descendants>
-                <noderef id="tie-fighter-arm" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-arm">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0" y="0" z="-4" />
-            </transformations>
-
-            <descendants>
-                <noderef id="tie-fighter-wing" />
-                <noderef id="tie-fighter-armAxis" />
-                <leaf type="defbarrel" base="1" middle="3" height="16" slices="20" stacks="10" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-armBroken">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0" y="0" z="-4" />
-            </transformations>
-
-            <descendants>
-                <noderef id="tie-fighter-wingBroken" />
-                <noderef id="tie-fighter-armAxis" />
-                <leaf type="defbarrel" base="1" middle="3" height="16" slices="20" stacks="10" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-armAxis">
-            <material id="null" />
-            <texture id="xwingChassisTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0" y="0" z="4" />
-            </transformations>
-
-            <descendants>
-                <noderef id="tie-fighter-armAxisTop" />
-                <noderef id="tie-fighter-armAxisBot" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-armAxisTop">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0" y="3.7" z="0" />
-                <rotation axis="x" angle="16" />
-            </transformations>
-
-            <descendants>
-              <noderef id="tie-fighter-armAxisBar" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-armAxisBot">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0" y="-3.7" z="0" />
-                <rotation axis="x" angle="-16" />
-            </transformations>
-
-            <descendants>
-              <noderef id="tie-fighter-armAxisBar" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-armAxisBar">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-            </transformations>
-
-            <descendants>
-                <leaf type="cylinder" height="9.0" topRadius="0.8" bottomRadius="0.8" stacks="4" slices="6"/>
-            </descendants>
-        </node>
-        <node id="tie-fighter-wing">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0" y="0" z="16" />
-            </transformations>
-
-            <descendants>
-                <noderef id="tie-fighter-wingSeq" />
-                <noderef id="tie-fighter-wingSeq2" />
-                <noderef id="tie-fighter-wingSeq3" />
-                <noderef id="tie-fighter-wingSeq4" />
-                <noderef id="tie-fighter-wingSeq5" />
-                <noderef id="tie-fighter-wingSeq6" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-wingBroken">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0" y="0" z="16" />
-            </transformations>
-
-            <descendants>
-                <noderef id="tie-fighter-wingSeq" />
-                <noderef id="tie-fighter-wingSeq2" />
-                <noderef id="tie-fighter-wingSeq3" />
-                <noderef id="tie-fighter-wingSeq4" />
-                <noderef id="tie-fighter-wingSeq5Broken" />
-                <noderef id="tie-fighter-wingSeq6Broken" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-wingSeq6Broken">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-            
-            <animationref id="tie-fighterHitAnim"/>
-            
-            <transformations>
-            </transformations>
-
-            <descendants>
-                <noderef id="tie-fighter-wingSeq6" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-wingSeq6">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <rotation axis="z" angle="60" />
-            </transformations>
-
-            <descendants>
-                <noderef id="tie-fighter-wingSeq5" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-wingSeq5Broken">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-            <animationref id="tie-fighterHitAnim"/>
-            
-            <transformations>
-            </transformations>
-
-            <descendants>
-                <noderef id="tie-fighter-wingSeq5" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-wingSeq5">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-            <animationref id="tie-fighterHitAnim"/>
-            <transformations>
-                <rotation axis="z" angle="60" />
-            </transformations>
-
-            <descendants>
-                <noderef id="tie-fighter-wingSeq4" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-wingSeq4">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <rotation axis="z" angle="60" />
-            </transformations>
-
-            <descendants>
-                <noderef id="tie-fighter-wingSeq3" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-wingSeq3">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <rotation axis="z" angle="60" />
-            </transformations>
-
-            <descendants>
-                <noderef id="tie-fighter-wingSeq2" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-wingSeq2">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <rotation axis="z" angle="60" />
-            </transformations>
-
-            <descendants>
-                <noderef id="tie-fighter-wingSeq" />
-            </descendants>
-        </node>
-        <node id="tie-fighter-wingSeq">
-            <material id="null" />
-            <texture id="tieWingTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <scale sx="20" sy="20" sz="1" />
-            </transformations>
-
-            <descendants>
-                <noderef id="doubleSidedTriangleEqui" />
-            </descendants>
-        </node>
-
-        <!-- HORSE -->
-        <node id="horse">
-            <material id="null" />
-            <texture id="rainbowTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="50" y="30" z="-40" />
-            </transformations>
-
-            <animationref id="horseAnim" />
-
-            <descendants>
-                <noderef id="horseInner" />
-                <noderef id="horseBack" />
-            </descendants>
-        </node>
-        <node id="horseBack">
-            <material id="null" />
-            <texture id="rainbowTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <rotation axis="y" angle="180" />
-            </transformations>
-
-            <descendants>
-                <noderef id="horseInner" />
-            </descendants>
-        </node>
-        <node id="horseInner">
-            <material id="null" />
-            <texture id="rainbowTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <rotation axis="y" angle="90" />
-                <scale sx="10" sy="10" sz="1" />
-                <translation x="-0.5" y="0" z="0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="floatText" />
-                <leaf type="spriteanim" ssid="horseySheet" startCell="0" endCell="249" duration="4" />
-            </descendants>
-        </node>
-        <node id="floatText">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0.5" y="-0.5" z="0" />
-            </transformations>
-
-            <descendants>
-                <leaf type="spritetext" text="Horse"/>
-            </descendants>
-        </node>
-
-        <!-- DEATHSTAR -->
-        <node id="deathStar">
-            <material id="deathStarMat" />
-            <texture id="deathStarTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="-50" y="60" z="-60" />
-                <rotation axis="x" angle="-90" />
-            </transformations>
-
-            <animationref id="deathStarSpinAnim" />
-
-            <descendants>
-                <leaf type="sphere" radius="20" slices="20" stacks="20"/>
-            </descendants>
-        </node>
-
-        <!-- X-WING -->
-        <node id="x-wing">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-            </transformations>
-
-            <animationref id="flyForwardAnim" />
-
-            <descendants>
-                <noderef id="chassis" />
-                <noderef id="cockpit" />
-
-                <noderef id="turbineTopLeft" />
-                <noderef id="turbineTopRight" />
-                <noderef id="turbineBotLeft" />
-                <noderef id="turbineBotRight" />
-
-                <noderef id="wingTopLeft" />
-                <noderef id="wingTopRight" />
-                <noderef id="wingBotLeft" />
-                <noderef id="wingBotRight" />
-            </descendants>
-        </node> 
-
-        <!-- CHASSIS -->
-        <node id="chassis">
-            <material id="null" />
-            <texture id="xwingChassisTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <scale sx="1" sy="0.9" sz="1" />
-                <rotation axis="z" angle="30" />
-            </transformations>
-
-            <descendants>
-                <leaf type="cylinder" height="10.0" topRadius="5.0" bottomRadius="5.0" stacks="4" slices="6"/>
-                <noderef id="nose" />
-            </descendants>
-        </node>
-        <node id="nose">
-            <material id="null" />
-            <texture id="xwingNoseTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0.0" y="0.0" z="10.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="noseEnd" />
-                <leaf type="cylinder" height="24.0" topRadius="1.5" bottomRadius="5.0" stacks="4" slices="6"/>
-            </descendants>
-        </node>
-        <node id="noseEnd">
-            <material id="null" />
-            <texture id="xwingChassisTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0.0" y="0.0" z="24.0" />
-                <rotation axis="z" angle="-30" />
-                <scale sx="1.0" sy="0.8" sz="1.0" />
-            </transformations>
-
-            <descendants>
-                <leaf type="cylinder" height="2.0" topRadius="1.0" bottomRadius="2.5" stacks="4" slices="6"/>
-            </descendants>
-        </node>
-
-
-        <!-- COCKPIT -->
-        <node id="cockpit">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0.0" y="3.8" z="14.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="cockpitWindowCenter" />
-                <noderef id="cockpitWindowLeft" />
-                <noderef id="cockpitWindowRight" />
-                <noderef id="pilot" />
-            </descendants>
-        </node>
-        <node id="pilot">
-            <material id="null" />
-            <texture id="headTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-            </transformations>
-
-            <descendants>
-                <noderef id="pilotHead" />
-                <noderef id="nebula" />
-            </descendants>
-        </node>
-        <node id="pilotHead">
-            <material id="null" />
-            <texture id="headTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0.0" y="0.8" z="-2.0" />
-                <rotation axis="x" angle="-90" />
-            </transformations>
-
-            <descendants>
-                <leaf type="sphere" radius="0.8" slices="10" stacks="10"/>
-            </descendants>
-        </node>
-        <node id="cockpitWindowCenter">
-            <material id="windowMaterial" />
-            <texture id="centerWindowTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <rotation axis="x" angle="-45" />
-                <scale sx="5" sy="5" sz="1" />
-            </transformations>
-
-            <descendants>
-                <noderef id="doubleSidedRectangle" />
-            </descendants>
-        </node>
-        <node id="cockpitWindowLeft">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="2.5" y="0.0" z="0.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="cockpitSideWindow" />
-            </descendants>
-        </node>
-        <node id="cockpitWindowRight">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="-2.5" y="0.0" z="0.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="cockpitSideWindow" />
-            </descendants>
-        </node>
-        <node id="cockpitSideWindow">
-            <material id="windowMaterial" />
-            <texture id="centerWindowTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0.0" y="1.8" z="-1.8" />
-                <rotation axis="y" angle="90" />
-                <rotation axis="z" angle="-135" />
-                <scale sx="5" sy="5" sz="1" />
-            </transformations>
-
-            <descendants>
-                <noderef id="doubleSidedTriangle" />
-            </descendants>
-        </node>
-
-
-        <!-- TURBINES -->
-        <node id="turbineTopLeft">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="4.5" y="4.2" z="0.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="turbine" />
-            </descendants>
-        </node>
-        <node id="turbineTopRight">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="-4.5" y="4.2" z="0.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="turbine" />
-            </descendants>
-        </node>
-        <node id="turbineBotLeft">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="4.5" y="-4.2" z="0.0" />
-                <rotation axis="z" angle="180" />
-            </transformations>
-
-            <descendants>
-                <noderef id="turbine" />
-            </descendants>
-        </node>
-        <node id="turbineBotRight">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="-4.5" y="-4.2" z="0.0" />
-                <rotation axis="z" angle="180" />
-            </transformations>
-
-            <descendants>
-                <noderef id="turbine" />
-            </descendants>
-        </node>
-        <node id="turbine">
-            <material id="null" />
-            <texture id="turbineTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-              <translation x="0.0" y="0.0" z="3.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="turbineHelice" />
-                <noderef id="turbineComponent" />
-                <leaf type="cylinder" height="7.0" topRadius="2.0" bottomRadius="2.0" stacks="2" slices="15"/>
-            </descendants>
-        </node>
-        <node id="turbineHelice">
-            <material id="null" />
-            <texture id="heliceTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-              <translation x="0" y="0" z="7.0" />
-              <scale sx="1" sy="1" sz="0.05" />
-            </transformations>
-
-            <descendants>
-                <leaf type="sphere" radius="2.0" slices="20" stacks="20"/>
-            </descendants>
-        </node>
-        <node id="turbineComponent">
-            <material id="turbineRingMat" />
-            <texture id="turbineTubeTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0" y="0.8" z="-5.0" />
-            </transformations>
-
-            <descendants>
-                <leaf type="cylinder" height="5.0" topRadius="1.0" bottomRadius="1.0" stacks="2" slices="15"/>
-                <noderef id="turbineComponentRing" />
-            </descendants>
-        </node>
-        <node id="turbineComponentRing">
-            <material id="turbineRingMat" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-            </transformations>
-
-            <descendants>
-                <leaf type="torus" inner="0.2" outer="1.0" slices="20" loops="20" />
-            </descendants>
-        </node>
-        <node id="nebula">
-            <material id="nebulaMat" />
-            <texture id="nebulaTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="1.6" y="0.2" z="-2.65" />
-                <rotation axis="y" angle="180" />
-                <rotation axis="x" angle="-10" />
-            </transformations>
-
-            <descendants>
-              <leaf type="patch" npointsU="3" npointsV="4" npartsU="10" npartsV="10">
-                <controlpoint x="0" y="2.5" z="6" />
-                <controlpoint x="0" y="0" z="4" />
-                <controlpoint x="0" y="2.5" z="2" />
-                <controlpoint x="0" y="0" z="0" />
-                
-                <controlpoint x="1.5" y="0" z="6" />
-                <controlpoint x="1.5" y="0.5" z="4" />
-                <controlpoint x="1.5" y="0" z="2" />
-                <controlpoint x="1.5" y="0.5" z="0" />
-
-                <controlpoint x="3" y="2.5" z="6" />
-                <controlpoint x="3" y="0" z="4" />
-                <controlpoint x="3" y="2.5" z="2" />
-                <controlpoint x="3" y="0" z="0" />
-              </leaf>
-            </descendants>
-        </node>
-
-        <!-- WINGS -->
-        <node id="wingTopLeft">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="12.2" y="4.3" z="0.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="wingBaseTopLeft" />
-            </descendants>
-        </node>
-        <node id="wingTopRight">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="-12.2" y="4.3" z="0.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="wingBaseTopRight" />
-            </descendants>
-        </node>
-        <node id="wingBotLeft">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="12.2" y="-4.3" z="0.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="wingBaseBotLeft" />
-            </descendants>
-        </node>
-        <node id="wingBotRight">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="-12.2" y="-4.3" z="0.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="wingBaseBotRight" />
-            </descendants>
-        </node>
-
-        <!-- WINGBASE -->
-        <node id="wingBaseTopLeft">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <rotation axis="z" angle="20" />
-            </transformations>
-
-            <descendants>
-                <noderef id="wing" />
-                <noderef id="gunTopLeft" />
-            </descendants>
-        </node>
-        <node id="wingBaseTopRight">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <rotation axis="z" angle="-20" />
-            </transformations>
-
-            <descendants>
-                <noderef id="wing" />
-                <noderef id="gunTopRight" />
-            </descendants>
-        </node>
-        <node id="wingBaseBotLeft">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <rotation axis="z" angle="-20" />
-            </transformations>
-
-            <descendants>
-                <noderef id="wing" />
-                <noderef id="gunBotLeft" />
-            </descendants>
-        </node>
-        <node id="wingBaseBotRight">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <rotation axis="z" angle="20" />
-            </transformations>
-
-            <descendants>
-                <noderef id="wing" />
-                <noderef id="gunBotRight" />
-            </descendants>
-        </node>
-        <node id="wing">
-            <material id="null" />
-            <texture id="xwingChassisTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <scale sx="12" sy="0.3" sz="1" />
-                <rotation axis="z" angle="45" />
-            </transformations>
-
-            <descendants>
-                <leaf type="cylinder" height="10.0" topRadius="1.0" bottomRadius="1.0" stacks="4" slices="4"/>
-            </descendants>
-        </node>
-
-        <!-- GUN -->
-        <node id="gunTopLeft">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="7.0" y="0.4" z="8.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="gun" />
-            </descendants>
-        </node>
-        <node id="gunTopRight">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="-7.0" y="0.4" z="8.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="gun" />
-            </descendants>
-        </node>
-        <node id="gunBotLeft">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="7.0" y="-0.4" z="8.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="gun" />
-            </descendants>
-        </node>
-        <node id="gunBotRight">
-            <material id="null" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="-7.0" y="-0.4" z="8.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="gun" />
-            </descendants>
-        </node>
-        <node id="gun">
-            <material id="null" />
-            <texture id="gunTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-            </transformations>
-
-            <descendants>
-                <noderef id="bullet" />
-                <noderef id="gunFront" />
-                <leaf type="cylinder" height="4" topRadius="0.5" bottomRadius="0.5" stacks="2" slices="10"/>
-            </descendants>
-        </node>
-        <node id="gunFront">
-            <material id="null" />
-            <texture id="gunTex">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0.0" y="0.0" z="4.0" />
-            </transformations>
-
-            <descendants>
-                <noderef id="gunFrontRings" />
-                <leaf type="cylinder" height="5" topRadius="0.2" bottomRadius="0.2" stacks="2" slices="10"/>
-                <leaf type="defbarrel" base="0.2" middle="0.3" height="4" slices="20" stacks="10" />
-            </descendants>
-        </node>
-        <node id="gunFrontRings">
-            <material id="greenRingMat" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-            </transformations>
-
-            <descendants>
-                <noderef id="gunFrontRingSmall" />
-                <leaf type="torus" inner="0.2" outer="1.0" slices="20" loops="20" />
-            </descendants>
-        </node>
-        <node id="gunFrontRingSmall">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0.0" y="0.0" z="2.0" />
-            </transformations>
-
-            <descendants>
-                <leaf type="torus" inner="0.2" outer="0.5" slices="20" loops="20" />
-            </descendants>
-        </node>
-
-        <!-- BULLET -->
-        <node id="bullet">
-            <material id="bulletMat" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-            </transformations>
-
-            <animationref id="shootingAnim" />
-
-            <descendants>
-                <leaf type="cylinder" height="3" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="10"/>
-            </descendants>
-        </node>
-
-        <!-- SKYBOX -->
-        <node id="skybox">
-            <material id="skyboxMaterial" />
-            <texture id="clear">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-            </transformations>
-
-            <descendants>
-                <noderef id="skyboxBack" />
-                <noderef id="skyboxFront" />
-                <noderef id="skyboxTop" /> 
-                <noderef id="skyboxBottom" />
-                <noderef id="skyboxLeft" /> 
-                <noderef id="skyboxRight" />
-            </descendants>
-        </node>
-        <node id="skyboxBack">
-            <material id="null" />
-            <texture id="skybox_back">
-                <amplification afs="200.0" aft="200.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0.0" y="0.0" z="-100.0" />
-                <rotation axis="z" angle="180" />
-                <rotation axis="x" angle="90" />
-            </transformations>
-
-            <descendants>
-                <noderef id="skyboxPlane" />
-            </descendants>
-        </node>
-        <node id="skyboxFront">
-            <material id="null" />
-            <texture id="skybox_front">
-                <amplification afs="200.0" aft="200.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0.0" y="0.0" z="100.0" />
-                <rotation axis="y" angle="180" />
-                <rotation axis="x" angle="90" />
-            </transformations>
-
-            <descendants>
-                <noderef id="skyboxPlane" />
-            </descendants>
-        </node>
-        <node id="skyboxTop">
-            <material id="null" />
-            <texture id="skybox_top">
-                <amplification afs="200.0" aft="200.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0.0" y="100.0" z="0.0" />
-                <rotation axis="z" angle="180" />
-            </transformations>
-
-            <descendants>
-                <noderef id="skyboxPlane" />
-            </descendants>
-        </node>
-        <node id="skyboxBottom">
-            <material id="null" />
-            <texture id="skybox_bottom">
-                <amplification afs="200.0" aft="200.0" />
-            </texture>
-
-            <transformations>
-                <translation x="0.0" y="-100.0" z="0.0" />
-                <rotation axis="y" angle="180" />
-            </transformations>
-
-            <descendants>
-                <noderef id="skyboxPlane" />
-            </descendants>
-        </node>
-        <node id="skyboxLeft">
-            <material id="null" />
-            <texture id="skybox_left">
-                <amplification afs="200.0" aft="200.0" />
-            </texture>
-
-            <transformations>
-                <translation x="100.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="180" />
-                <rotation axis="z" angle="90" />
-            </transformations>
-
-            <descendants>
-                <noderef id="skyboxPlane" />
-            </descendants>
-        </node>
-        <node id="skyboxRight">
-            <material id="null" />
-            <texture id="skybox_right">
-                <amplification afs="200.0" aft="200.0" />
-            </texture>
-
-            <transformations>
-                <translation x="-100.0" y="0.0" z="0.0" />
-                <rotation axis="x" angle="180" />
-                <rotation axis="z" angle="-90" />
-            </transformations>
-
-            <descendants>
-                <noderef id="skyboxPlane" />
-            </descendants>
-        </node>
-        <node id="skyboxPlane">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-                <scale sx="200" sy="1" sz="200" />
-            </transformations>
-
-            <descendants>
-                <leaf type="plane" npartsU="10" npartsV="10" />
-            </descendants>
-        </node>
-
-
-        <!-- EXTRA PRIMITIVES -->
-        <node id="doubleSidedRectangle">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-            </transformations>
-
-            <descendants>
-                <leaf type="rectangle" x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
-                <leaf type="rectangle" x1="-0.5" y1="0.5" x2="0.5" y2="-0.5" />
-            </descendants>
-        </node>
-        <node id="doubleSidedTriangle">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-            </transformations>
-
-            <descendants>
-                <leaf type="triangle" x1="0" y1="0" x2="1" y2="0" x3="0" y3="1" />
-                <leaf type="triangle" x1="0" y1="0" x2="0" y2="1" x3="1" y3="0" />
-            </descendants>
-        </node>
-        <node id="doubleSidedTriangleEqui">
-            <material id="null" />
-            <texture id="null">
-                <amplification afs="1.0" aft="1.0" />
-            </texture>
-
-            <transformations>
-            </transformations>
-
-            <descendants>
-                <leaf type="triangle" x1="0" y1="0" x2="1" y2="0" x3="0.5" y3="0.866" />
-                <leaf type="triangle" x1="0" y1="0" x2="0.5" y2="0.866" x3="1" y3="0" />
-            </descendants>
-        </node>
-    </nodes>
+    <material id="metalMaterial">
+      <shininess value="10.0"/>
+      <ambient r="1.0" g="1.0" b="1.0" a="1.0"/>
+      <diffuse r="1.0" g="1.0" b="1.0" a="1.0"/>
+      <specular r="1.0" g="1.0" b="1.0" a="1.0"/>
+      <emissive r="0.0" g="0.0" b="0.0" a="1.0"/>
+    </material>
+    <material id="skyboxMaterial">
+      <shininess value="0.2"/>
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0"/>
+      <diffuse r="0.0" g="0.0" b="0.0" a="1.0"/>
+      <specular r="0.0" g="0.0" b="0.0" a="1.0"/>
+      <emissive r="0.7" g="0.8" b="0.69" a="1.0"/>
+    </material>
+    <material id="windowMaterial">
+      <shininess value="100"/>
+      <ambient r="0.1" g="0.1" b="0.1" a="1.0"/>
+      <diffuse r="0.3" g="0.3" b="0.3" a="1.0"/>
+      <specular r="0.8" g="0.8" b="0.8" a="1.0"/>
+      <emissive r="0.1" g="0.1" b="0.1" a="1.0"/>
+    </material>
+    <material id="greenRingMat">
+      <shininess value="100"/>
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0"/>
+      <diffuse r="0.0" g="0.0" b="0.0" a="1.0"/>
+      <specular r="0.0" g="0.0" b="0.0" a="1.0"/>
+      <emissive r="0.71" g="0.85" b="0.56" a="1.0"/>
+    </material>
+    <material id="turbineRingMat">
+      <shininess value="100"/>
+      <ambient r="0.23" g="0.23" b="0.23" a="1.0"/>
+      <diffuse r="0.23" g="0.23" b="0.23" a="1.0"/>
+      <specular r="0.0" g="0.0" b="0.0" a="1.0"/>
+      <emissive r="0.0" g="0.0" b="0.0" a="1.0"/>
+    </material>
+    <material id="deathStarMat">
+      <shininess value="100"/>
+      <ambient r="0.2" g="0.2" b="0.2" a="1.0"/>
+      <diffuse r="0.2" g="0.2" b="0.2" a="1.0"/>
+      <specular r="0.2" g="0.2" b="0.2" a="1.0"/>
+      <emissive r="0.0" g="0.0" b="0.0" a="1.0"/>
+    </material>
+    <material id="bulletMat">
+      <shininess value="100"/>
+      <ambient r="0.0" g="0.0" b="0.0" a="1.0"/>
+      <diffuse r="0.0" g="0.0" b="0.0" a="1.0"/>
+      <specular r="0.0" g="0.0" b="0.0" a="1.0"/>
+      <emissive r="1.0" g="0.0" b="0.0" a="1.0"/>
+    </material>
+    <material id="nebulaMat">
+      <shininess value="10"/>
+      <ambient r="0.5" g="0.5" b="0.5" a="1.0"/>
+      <diffuse r="0.0" g="0.0" b="0.0" a="1.0"/>
+      <specular r="0.0" g="0.0" b="0.0" a="1.0"/>
+      <emissive r="1.0" g="1.0" b="1.0" a="1.0"/>
+    </material>
+  </materials>
+  <animations>
+    <animation id="flyForwardAnim">
+      <keyframe instant="0.0">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="0.167">
+        <translation x="2.0" y="1.36" z="10.35"/>
+        <rotation axis="x" angle="-15.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="3.33"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="0.333">
+        <translation x="4.0" y="5.36" z="20.0"/>
+        <rotation axis="x" angle="-30.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="6.67"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="0.5">
+        <translation x="6.0" y="11.72" z="28.28"/>
+        <rotation axis="x" angle="-45.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="10.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="0.667">
+        <translation x="8.0" y="20.0" z="34.64"/>
+        <rotation axis="x" angle="-60.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="13.33"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="0.833">
+        <translation x="10.0" y="29.65" z="38.64"/>
+        <rotation axis="x" angle="-75.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="16.67"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="1.0">
+        <translation x="12.0" y="40.0" z="40.0"/>
+        <rotation axis="x" angle="-90.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="20.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="1.167">
+        <translation x="10.0" y="50.35" z="38.64"/>
+        <rotation axis="x" angle="-105.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="16.67"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="1.333">
+        <translation x="8.0" y="60.0" z="34.64"/>
+        <rotation axis="x" angle="-120.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="13.33"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="1.5">
+        <translation x="6.0" y="68.28" z="28.28"/>
+        <rotation axis="x" angle="-135.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="10.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="1.667">
+        <translation x="4.0" y="74.64" z="20.0"/>
+        <rotation axis="x" angle="-150.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="6.67"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="1.833">
+        <translation x="2.0" y="78.64" z="10.35"/>
+        <rotation axis="x" angle="-165.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="3.33"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="2.0">
+        <translation x="0.0" y="80.0" z="0.0"/>
+        <rotation axis="x" angle="-180.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="2.167">
+        <translation x="-2.0" y="78.64" z="-10.35"/>
+        <rotation axis="x" angle="-195.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="-3.33"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="2.333">
+        <translation x="-4.0" y="74.64" z="-20.0"/>
+        <rotation axis="x" angle="-210.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="-6.67"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="2.5">
+        <translation x="-6.0" y="68.28" z="-28.28"/>
+        <rotation axis="x" angle="-225.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="-10.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="2.667">
+        <translation x="-8.0" y="60.0" z="-34.64"/>
+        <rotation axis="x" angle="-240.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="-13.33"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="2.833">
+        <translation x="-10.0" y="50.35" z="-38.64"/>
+        <rotation axis="x" angle="-255.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="-16.67"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="3.0">
+        <translation x="-12.0" y="40.0" z="-40.0"/>
+        <rotation axis="x" angle="-270.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="-20"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="3.167">
+        <translation x="-10.0" y="29.65" z="-38.64"/>
+        <rotation axis="x" angle="-285.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="-16.67"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="3.333">
+        <translation x="-8.0" y="20.0" z="-34.64"/>
+        <rotation axis="x" angle="-300.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="-13.33"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="3.5">
+        <translation x="-6.0" y="11.72" z="-28.28"/>
+        <rotation axis="x" angle="-315.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="-10.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="3.667">
+        <translation x="-4.0" y="5.36" z="-20.0"/>
+        <rotation axis="x" angle="-330.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="-6.67"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="3.833">
+        <translation x="-2.0" y="1.36" z="-10.35"/>
+        <rotation axis="x" angle="-345.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="-3.33"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="4.0">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="-360.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+    </animation>
+    <animation id="shootingAnim">
+      <keyframe instant="5.0">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="5.5">
+        <translation x="0.0" y="0.0" z="50.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="3.0" sy="3.0" sz="3.0"/>
+      </keyframe>
+      <keyframe instant="6.0">
+        <translation x="0.0" y="0.0" z="100.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="6.001">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="6.5">
+        <translation x="0.0" y="0.0" z="50.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="3.0" sy="3.0" sz="3.0"/>
+      </keyframe>
+      <keyframe instant="7.0">
+        <translation x="0.0" y="0.0" z="100.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="7.001">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="7.5">
+        <translation x="0.0" y="0.0" z="50.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="3.0" sy="3.0" sz="3.0"/>
+      </keyframe>
+      <keyframe instant="8.0">
+        <translation x="0.0" y="0.0" z="100.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="8.1">
+        <translation x="0.0" y="0.0" z="999.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+    </animation>
+    <animation id="deathStarSpinAnim">
+      <keyframe instant="0.0">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="300.0">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="3610.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+    </animation>
+    <animation id="horseAnim">
+      <keyframe instant="0.0">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="200.0">
+        <translation x="-100.0" y="-100.0" z="100.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="3610.0"/>
+        <rotation axis="z" angle="3610.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+    </animation>
+    <animation id="tie-fighterAnim">
+      <keyframe instant="0.0">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="3.0">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="7.0">
+        <translation x="0.0" y="0.0" z="140.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+    </animation>
+    <animation id="tie-fighterHitAnim">
+      <keyframe instant="0.0">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="5.2">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="5.21">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="0.0" sy="0.0" sz="0.0"/>
+      </keyframe>
+    </animation>
+  </animations>
+  <nodes>
+    <node id="root">
+      <!-- next two lines are mandatory -->
+      <material id="metalMaterial"/>
+      <!-- this superimposes the material received from parent node id="null" maintains material from parent node -->
+      <texture id="clear">
+        <!-- declared texture superimposes the texture received from parent node id="null" maintains texture from parent node id="clear" clears texture declaration received from parent node -->
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <!-- geom. transf. are optional and may be repeated, in any order, as necessary: -->
+      <transformations>
+            </transformations>
+      <descendants>
+        <noderef id="horse"/>
+        <noderef id="skybox"/>
+        <noderef id="deathStar"/>
+        <noderef id="x-wing"/>
+        <noderef id="tie-fighter"/>
+      </descendants>
+    </node>
+    <!-- TIE-FIGHTER -->
+    <node id="tie-fighter">
+      <material id="metalMaterial"/>
+      <texture id="tieBallTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="80" y="0" z="70"/>
+        <rotation axis="y" angle="-90"/>
+      </transformations>
+      <animationref id="tie-fighterAnim"/>
+      <descendants>
+        <noderef id="tie-fighter-ball"/>
+        <noderef id="tie-fighter-armLeft"/>
+        <noderef id="tie-fighter-armRight"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-ball">
+      <material id="metalMaterial"/>
+      <texture id="tieBallTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="x" angle="-90"/>
+      </transformations>
+      <descendants>
+        <leaf type="sphere" radius="5" slices="20" stacks="20"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-armLeft">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="y" angle="90"/>
+      </transformations>
+      <descendants>
+        <noderef id="tie-fighter-arm"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-armRight">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="y" angle="-90"/>
+      </transformations>
+      <descendants>
+        <noderef id="tie-fighter-armBroken"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-armBroken">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0" y="0" z="-4"/>
+      </transformations>
+      <descendants>
+        <noderef id="tie-fighter-wingBroken"/>
+        <noderef id="tie-fighter-armAxis"/>
+        <leaf type="defbarrel" base="1" middle="3" height="16" slices="20" stacks="10"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-arm">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0" y="0" z="-4"/>
+      </transformations>
+      <descendants>
+        <noderef id="tie-fighter-wing"/>
+        <noderef id="tie-fighter-armAxis"/>
+        <leaf type="defbarrel" base="1" middle="3" height="16" slices="20" stacks="10"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-armAxis">
+      <material id="null"/>
+      <texture id="xwingChassisTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0" y="0" z="4"/>
+      </transformations>
+      <descendants>
+        <noderef id="tie-fighter-armAxisTop"/>
+        <noderef id="tie-fighter-armAxisBot"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-armAxisTop">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0" y="3.7" z="0"/>
+        <rotation axis="x" angle="16"/>
+      </transformations>
+      <descendants>
+        <noderef id="tie-fighter-armAxisBar"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-armAxisBot">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0" y="-3.7" z="0"/>
+        <rotation axis="x" angle="-16"/>
+      </transformations>
+      <descendants>
+        <noderef id="tie-fighter-armAxisBar"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-armAxisBar">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+            </transformations>
+      <descendants>
+        <leaf type="cylinder" height="9.0" topRadius="0.8" bottomRadius="0.8" stacks="4" slices="6"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-wingBroken">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0" y="0" z="16"/>
+      </transformations>
+      <descendants>
+        <noderef id="tie-fighter-wingSeq"/>
+        <noderef id="tie-fighter-wingSeq2"/>
+        <noderef id="tie-fighter-wingSeq3"/>
+        <noderef id="tie-fighter-wingSeq4Broken"/>
+        <noderef id="tie-fighter-wingSeq5Broken"/>
+        <noderef id="tie-fighter-wingSeq6"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-wingSeq5Broken">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <animationref id="tie-fighterHitAnim"/>
+      <transformations>
+            </transformations>
+      <descendants>
+        <noderef id="tie-fighter-wingSeq5"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-wingSeq4Broken">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <animationref id="tie-fighterHitAnim"/>
+      <transformations>
+            </transformations>
+      <descendants>
+        <noderef id="tie-fighter-wingSeq4"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-wing">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0" y="0" z="16"/>
+      </transformations>
+      <descendants>
+        <noderef id="tie-fighter-wingSeq"/>
+        <noderef id="tie-fighter-wingSeq2"/>
+        <noderef id="tie-fighter-wingSeq3"/>
+        <noderef id="tie-fighter-wingSeq4"/>
+        <noderef id="tie-fighter-wingSeq5"/>
+        <noderef id="tie-fighter-wingSeq6"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-wingSeq6">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="z" angle="60"/>
+      </transformations>
+      <descendants>
+        <noderef id="tie-fighter-wingSeq5"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-wingSeq5">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="z" angle="60"/>
+      </transformations>
+      <descendants>
+        <noderef id="tie-fighter-wingSeq4"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-wingSeq4">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="z" angle="60"/>
+      </transformations>
+      <descendants>
+        <noderef id="tie-fighter-wingSeq3"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-wingSeq3">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="z" angle="60"/>
+      </transformations>
+      <descendants>
+        <noderef id="tie-fighter-wingSeq2"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-wingSeq2">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="z" angle="60"/>
+      </transformations>
+      <descendants>
+        <noderef id="tie-fighter-wingSeq"/>
+      </descendants>
+    </node>
+    <node id="tie-fighter-wingSeq">
+      <material id="null"/>
+      <texture id="tieWingTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <scale sx="20" sy="20" sz="1"/>
+      </transformations>
+      <descendants>
+        <noderef id="doubleSidedTriangleEqui"/>
+      </descendants>
+    </node>
+    <!-- HORSE -->
+    <node id="horse">
+      <material id="null"/>
+      <texture id="rainbowTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="50" y="30" z="-40"/>
+      </transformations>
+      <animationref id="horseAnim"/>
+      <descendants>
+        <noderef id="horseInner"/>
+        <noderef id="horseBack"/>
+      </descendants>
+    </node>
+    <node id="horseBack">
+      <material id="null"/>
+      <texture id="rainbowTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="y" angle="180"/>
+      </transformations>
+      <descendants>
+        <noderef id="horseInner"/>
+      </descendants>
+    </node>
+    <node id="horseInner">
+      <material id="null"/>
+      <texture id="rainbowTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="y" angle="90"/>
+        <scale sx="10" sy="10" sz="1"/>
+        <translation x="-0.5" y="0" z="0"/>
+      </transformations>
+      <descendants>
+        <noderef id="floatText"/>
+        <leaf type="spriteanim" ssid="horseySheet" startCell="0" endCell="249" duration="4"/>
+      </descendants>
+    </node>
+    <node id="floatText">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.5" y="-0.5" z="0"/>
+      </transformations>
+      <descendants>
+        <leaf type="spritetext" text="Horse"/>
+      </descendants>
+    </node>
+    <!-- DEATHSTAR -->
+    <node id="deathStar">
+      <material id="deathStarMat"/>
+      <texture id="deathStarTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="-50" y="60" z="-60"/>
+        <rotation axis="x" angle="-90"/>
+      </transformations>
+      <animationref id="deathStarSpinAnim"/>
+      <descendants>
+        <leaf type="sphere" radius="20" slices="20" stacks="20"/>
+      </descendants>
+    </node>
+    <!-- X-WING -->
+    <node id="x-wing">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+            </transformations>
+      <animationref id="flyForwardAnim"/>
+      <descendants>
+        <noderef id="chassis"/>
+        <noderef id="cockpit"/>
+        <noderef id="turbineTopLeft"/>
+        <noderef id="turbineTopRight"/>
+        <noderef id="turbineBotLeft"/>
+        <noderef id="turbineBotRight"/>
+        <noderef id="wingTopLeft"/>
+        <noderef id="wingTopRight"/>
+        <noderef id="wingBotLeft"/>
+        <noderef id="wingBotRight"/>
+      </descendants>
+    </node>
+    <!-- CHASSIS -->
+    <node id="chassis">
+      <material id="null"/>
+      <texture id="xwingChassisTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <scale sx="1" sy="0.9" sz="1"/>
+        <rotation axis="z" angle="30"/>
+      </transformations>
+      <descendants>
+        <leaf type="cylinder" height="10.0" topRadius="5.0" bottomRadius="5.0" stacks="4" slices="6"/>
+        <noderef id="nose"/>
+      </descendants>
+    </node>
+    <node id="nose">
+      <material id="null"/>
+      <texture id="xwingNoseTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="0.0" z="10.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="noseEnd"/>
+        <leaf type="cylinder" height="24.0" topRadius="1.5" bottomRadius="5.0" stacks="4" slices="6"/>
+      </descendants>
+    </node>
+    <node id="noseEnd">
+      <material id="null"/>
+      <texture id="xwingChassisTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="0.0" z="24.0"/>
+        <rotation axis="z" angle="-30"/>
+        <scale sx="1.0" sy="0.8" sz="1.0"/>
+      </transformations>
+      <descendants>
+        <leaf type="cylinder" height="2.0" topRadius="1.0" bottomRadius="2.5" stacks="4" slices="6"/>
+      </descendants>
+    </node>
+    <!-- COCKPIT -->
+    <node id="cockpit">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="3.8" z="14.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="cockpitWindowCenter"/>
+        <noderef id="cockpitWindowLeft"/>
+        <noderef id="cockpitWindowRight"/>
+        <noderef id="pilot"/>
+      </descendants>
+    </node>
+    <node id="pilot">
+      <material id="null"/>
+      <texture id="headTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+            </transformations>
+      <descendants>
+        <noderef id="pilotHead"/>
+        <noderef id="nebula"/>
+      </descendants>
+    </node>
+    <node id="pilotHead">
+      <material id="null"/>
+      <texture id="headTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="0.8" z="-2.0"/>
+        <rotation axis="x" angle="-90"/>
+      </transformations>
+      <descendants>
+        <leaf type="sphere" radius="0.8" slices="10" stacks="10"/>
+      </descendants>
+    </node>
+    <node id="cockpitWindowCenter">
+      <material id="windowMaterial"/>
+      <texture id="centerWindowTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="x" angle="-45"/>
+        <scale sx="5" sy="5" sz="1"/>
+      </transformations>
+      <descendants>
+        <noderef id="doubleSidedRectangle"/>
+      </descendants>
+    </node>
+    <node id="cockpitWindowLeft">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="2.5" y="0.0" z="0.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="cockpitSideWindow"/>
+      </descendants>
+    </node>
+    <node id="cockpitWindowRight">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="-2.5" y="0.0" z="0.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="cockpitSideWindow"/>
+      </descendants>
+    </node>
+    <node id="cockpitSideWindow">
+      <material id="windowMaterial"/>
+      <texture id="centerWindowTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="1.8" z="-1.8"/>
+        <rotation axis="y" angle="90"/>
+        <rotation axis="z" angle="-135"/>
+        <scale sx="5" sy="5" sz="1"/>
+      </transformations>
+      <descendants>
+        <noderef id="doubleSidedTriangle"/>
+      </descendants>
+    </node>
+    <!-- TURBINES -->
+    <node id="turbineTopLeft">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="4.5" y="4.2" z="0.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="turbine"/>
+      </descendants>
+    </node>
+    <node id="turbineTopRight">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="-4.5" y="4.2" z="0.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="turbine"/>
+      </descendants>
+    </node>
+    <node id="turbineBotLeft">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="4.5" y="-4.2" z="0.0"/>
+        <rotation axis="z" angle="180"/>
+      </transformations>
+      <descendants>
+        <noderef id="turbine"/>
+      </descendants>
+    </node>
+    <node id="turbineBotRight">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="-4.5" y="-4.2" z="0.0"/>
+        <rotation axis="z" angle="180"/>
+      </transformations>
+      <descendants>
+        <noderef id="turbine"/>
+      </descendants>
+    </node>
+    <node id="turbine">
+      <material id="null"/>
+      <texture id="turbineTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="0.0" z="3.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="turbineHelice"/>
+        <noderef id="turbineComponent"/>
+        <leaf type="cylinder" height="7.0" topRadius="2.0" bottomRadius="2.0" stacks="2" slices="15"/>
+      </descendants>
+    </node>
+    <node id="turbineHelice">
+      <material id="null"/>
+      <texture id="heliceTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0" y="0" z="7.0"/>
+        <scale sx="1" sy="1" sz="0.05"/>
+      </transformations>
+      <descendants>
+        <leaf type="sphere" radius="2.0" slices="20" stacks="20"/>
+      </descendants>
+    </node>
+    <node id="turbineComponent">
+      <material id="turbineRingMat"/>
+      <texture id="turbineTubeTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0" y="0.8" z="-5.0"/>
+      </transformations>
+      <descendants>
+        <leaf type="cylinder" height="5.0" topRadius="1.0" bottomRadius="1.0" stacks="2" slices="15"/>
+        <noderef id="turbineComponentRing"/>
+      </descendants>
+    </node>
+    <node id="turbineComponentRing">
+      <material id="turbineRingMat"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+            </transformations>
+      <descendants>
+        <leaf type="torus" inner="0.2" outer="1.0" slices="20" loops="20"/>
+      </descendants>
+    </node>
+    <node id="nebula">
+      <material id="nebulaMat"/>
+      <texture id="nebulaTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="1.6" y="0.2" z="-2.65"/>
+        <rotation axis="y" angle="180"/>
+        <rotation axis="x" angle="-10"/>
+      </transformations>
+      <descendants>
+        <leaf type="patch" npointsU="3" npointsV="4" npartsU="10" npartsV="10">
+          <controlpoint x="0" y="2.5" z="6"/>
+          <controlpoint x="0" y="0" z="4"/>
+          <controlpoint x="0" y="2.5" z="2"/>
+          <controlpoint x="0" y="0" z="0"/>
+          <controlpoint x="1.5" y="0" z="6"/>
+          <controlpoint x="1.5" y="0.5" z="4"/>
+          <controlpoint x="1.5" y="0" z="2"/>
+          <controlpoint x="1.5" y="0.5" z="0"/>
+          <controlpoint x="3" y="2.5" z="6"/>
+          <controlpoint x="3" y="0" z="4"/>
+          <controlpoint x="3" y="2.5" z="2"/>
+          <controlpoint x="3" y="0" z="0"/>
+        </leaf>
+      </descendants>
+    </node>
+    <!-- WINGS -->
+    <node id="wingTopLeft">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="12.2" y="4.3" z="0.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="wingBaseTopLeft"/>
+      </descendants>
+    </node>
+    <node id="wingTopRight">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="-12.2" y="4.3" z="0.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="wingBaseTopRight"/>
+      </descendants>
+    </node>
+    <node id="wingBotLeft">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="12.2" y="-4.3" z="0.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="wingBaseBotLeft"/>
+      </descendants>
+    </node>
+    <node id="wingBotRight">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="-12.2" y="-4.3" z="0.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="wingBaseBotRight"/>
+      </descendants>
+    </node>
+    <!-- WINGBASE -->
+    <node id="wingBaseTopLeft">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="z" angle="20"/>
+      </transformations>
+      <descendants>
+        <noderef id="wing"/>
+        <noderef id="gunTopLeft"/>
+      </descendants>
+    </node>
+    <node id="wingBaseTopRight">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="z" angle="-20"/>
+      </transformations>
+      <descendants>
+        <noderef id="wing"/>
+        <noderef id="gunTopRight"/>
+      </descendants>
+    </node>
+    <node id="wingBaseBotLeft">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="z" angle="-20"/>
+      </transformations>
+      <descendants>
+        <noderef id="wing"/>
+        <noderef id="gunBotLeft"/>
+      </descendants>
+    </node>
+    <node id="wingBaseBotRight">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="z" angle="20"/>
+      </transformations>
+      <descendants>
+        <noderef id="wing"/>
+        <noderef id="gunBotRight"/>
+      </descendants>
+    </node>
+    <node id="wing">
+      <material id="null"/>
+      <texture id="xwingChassisTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <scale sx="12" sy="0.3" sz="1"/>
+        <rotation axis="z" angle="45"/>
+      </transformations>
+      <descendants>
+        <leaf type="cylinder" height="10.0" topRadius="1.0" bottomRadius="1.0" stacks="4" slices="4"/>
+      </descendants>
+    </node>
+    <!-- GUN -->
+    <node id="gunTopLeft">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="7.0" y="0.4" z="8.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="gun"/>
+      </descendants>
+    </node>
+    <node id="gunTopRight">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="-7.0" y="0.4" z="8.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="gun"/>
+      </descendants>
+    </node>
+    <node id="gunBotLeft">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="7.0" y="-0.4" z="8.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="gun"/>
+      </descendants>
+    </node>
+    <node id="gunBotRight">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="-7.0" y="-0.4" z="8.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="gun"/>
+      </descendants>
+    </node>
+    <node id="gun">
+      <material id="null"/>
+      <texture id="gunTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+            </transformations>
+      <descendants>
+        <noderef id="bullet"/>
+        <noderef id="gunFront"/>
+        <leaf type="cylinder" height="4" topRadius="0.5" bottomRadius="0.5" stacks="2" slices="10"/>
+      </descendants>
+    </node>
+    <node id="gunFront">
+      <material id="null"/>
+      <texture id="gunTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="0.0" z="4.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="gunFrontRings"/>
+        <leaf type="cylinder" height="5" topRadius="0.2" bottomRadius="0.2" stacks="2" slices="10"/>
+        <leaf type="defbarrel" base="0.2" middle="0.3" height="4" slices="20" stacks="10"/>
+      </descendants>
+    </node>
+    <node id="gunFrontRings">
+      <material id="greenRingMat"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+            </transformations>
+      <descendants>
+        <noderef id="gunFrontRingSmall"/>
+        <leaf type="torus" inner="0.2" outer="1.0" slices="20" loops="20"/>
+      </descendants>
+    </node>
+    <node id="gunFrontRingSmall">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="0.0" z="2.0"/>
+      </transformations>
+      <descendants>
+        <leaf type="torus" inner="0.2" outer="0.5" slices="20" loops="20"/>
+      </descendants>
+    </node>
+    <!-- BULLET -->
+    <node id="bullet">
+      <material id="bulletMat"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+            </transformations>
+      <animationref id="shootingAnim"/>
+      <descendants>
+        <leaf type="cylinder" height="3" topRadius="0.2" bottomRadius="0.2" stacks="1" slices="10"/>
+      </descendants>
+    </node>
+    <!-- SKYBOX -->
+    <node id="skybox">
+      <material id="skyboxMaterial"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+            </transformations>
+      <descendants>
+        <noderef id="skyboxBack"/>
+        <noderef id="skyboxFront"/>
+        <noderef id="skyboxTop"/>
+        <noderef id="skyboxBottom"/>
+        <noderef id="skyboxLeft"/>
+        <noderef id="skyboxRight"/>
+      </descendants>
+    </node>
+    <node id="skyboxBack">
+      <material id="null"/>
+      <texture id="skybox_back">
+        <amplification afs="200.0" aft="200.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="0.0" z="-100.0"/>
+        <rotation axis="z" angle="180"/>
+        <rotation axis="x" angle="90"/>
+      </transformations>
+      <descendants>
+        <noderef id="skyboxPlane"/>
+      </descendants>
+    </node>
+    <node id="skyboxFront">
+      <material id="null"/>
+      <texture id="skybox_front">
+        <amplification afs="200.0" aft="200.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="0.0" z="100.0"/>
+        <rotation axis="y" angle="180"/>
+        <rotation axis="x" angle="90"/>
+      </transformations>
+      <descendants>
+        <noderef id="skyboxPlane"/>
+      </descendants>
+    </node>
+    <node id="skyboxTop">
+      <material id="null"/>
+      <texture id="skybox_top">
+        <amplification afs="200.0" aft="200.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="100.0" z="0.0"/>
+        <rotation axis="z" angle="180"/>
+      </transformations>
+      <descendants>
+        <noderef id="skyboxPlane"/>
+      </descendants>
+    </node>
+    <node id="skyboxBottom">
+      <material id="null"/>
+      <texture id="skybox_bottom">
+        <amplification afs="200.0" aft="200.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="-100.0" z="0.0"/>
+        <rotation axis="y" angle="180"/>
+      </transformations>
+      <descendants>
+        <noderef id="skyboxPlane"/>
+      </descendants>
+    </node>
+    <node id="skyboxLeft">
+      <material id="null"/>
+      <texture id="skybox_left">
+        <amplification afs="200.0" aft="200.0"/>
+      </texture>
+      <transformations>
+        <translation x="100.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="180"/>
+        <rotation axis="z" angle="90"/>
+      </transformations>
+      <descendants>
+        <noderef id="skyboxPlane"/>
+      </descendants>
+    </node>
+    <node id="skyboxRight">
+      <material id="null"/>
+      <texture id="skybox_right">
+        <amplification afs="200.0" aft="200.0"/>
+      </texture>
+      <transformations>
+        <translation x="-100.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="180"/>
+        <rotation axis="z" angle="-90"/>
+      </transformations>
+      <descendants>
+        <noderef id="skyboxPlane"/>
+      </descendants>
+    </node>
+    <node id="skyboxPlane">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <scale sx="200" sy="1" sz="200"/>
+      </transformations>
+      <descendants>
+        <leaf type="plane" npartsU="10" npartsV="10"/>
+      </descendants>
+    </node>
+    <!-- EXTRA PRIMITIVES -->
+    <node id="doubleSidedRectangle">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+            </transformations>
+      <descendants>
+        <leaf type="rectangle" x1="-0.5" y1="-0.5" x2="0.5" y2="0.5"/>
+        <leaf type="rectangle" x1="-0.5" y1="0.5" x2="0.5" y2="-0.5"/>
+      </descendants>
+    </node>
+    <node id="doubleSidedTriangle">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+            </transformations>
+      <descendants>
+        <leaf type="triangle" x1="0" y1="0" x2="1" y2="0" x3="0" y3="1"/>
+        <leaf type="triangle" x1="0" y1="0" x2="0" y2="1" x3="1" y3="0"/>
+      </descendants>
+    </node>
+    <node id="doubleSidedTriangleEqui">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+            </transformations>
+      <descendants>
+        <leaf type="triangle" x1="0" y1="0" x2="1" y2="0" x3="0.5" y3="0.866"/>
+        <leaf type="triangle" x1="0" y1="0" x2="0.5" y2="0.866" x3="1" y3="0"/>
+      </descendants>
+    </node>
+  </nodes>
 </lsf>
