@@ -74,12 +74,19 @@ class KeyframeAnimation extends Animation {
     // calculate segment
     if (this.sumT > this.keyframeF.instant) {
       // segment ended
-      this.keyframeI = this.keyframeF;
-      if (this.keyframeF.nextKF == null) {
-        // animation ended
-        this.setFinalPos(this.keyframeF);
-        return;
-      } else this.keyframeF = this.keyframeF.nextKF;
+      for (
+        ;
+        this.sumT > this.keyframeF.instant;
+        this.keyframeF = this.keyframeF.nextKF
+      ) {
+        if (this.keyframeF.nextKF == null) {
+          // animation ended
+          this.setFinalPos(this.keyframeF);
+          return;
+        }
+        this.keyframeI = this.keyframeF;
+      }
+
       this.currKFDuration = this.keyframeF.instant - this.keyframeI.instant;
     }
 

@@ -109,6 +109,9 @@
       <texture id="gunTex" path="./scenes/images/gunTex.png" />
       <texture id="nebulaTex" path="./scenes/images/nebula.png" />
 
+      <texture id="tieBallTex" path="./scenes/images/tie_ball.png" />
+      <texture id="tieWingTex" path="./scenes/images/tie_wing.png" />
+
       <texture id="headTex" path="./scenes/images/head.png" />
 
       <texture id="deathStarTex" path="./scenes/images/death_star.jpg" />
@@ -486,10 +489,249 @@
             </transformations>
 
             <descendants>
-                <!-- <noderef id="horse" /> -->
-                <!-- <noderef id="skybox" /> -->
-                <!-- <noderef id="deathStar" /> -->
-                <!-- <noderef id="x-wing" /> -->
+                <noderef id="horse" />
+                <noderef id="skybox" />
+                <noderef id="deathStar" />
+                <noderef id="x-wing" />
+                <noderef id="tie-fighter" />
+            </descendants>
+        </node>
+
+        <!-- TIE-FIGHTER -->
+        <node id="tie-fighter">
+            <material id="metalMaterial" />
+            <texture id="tieBallTex">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <translation x="50" y="-30" z="50" />
+            </transformations>
+
+            <descendants>
+                <noderef id="tie-fighter-ball" />
+                <noderef id="tie-fighter-armLeft" />
+                <noderef id="tie-fighter-armRight" />
+            </descendants>
+        </node>
+        <node id="tie-fighter-ball">
+            <material id="metalMaterial" />
+            <texture id="tieBallTex">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <rotation axis="x" angle="-90" />
+            </transformations>
+
+            <descendants>
+                <leaf type="sphere" radius="5" slices="20" stacks="20"/>
+            </descendants>
+        </node>
+        <node id="tie-fighter-armLeft">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <rotation axis="y" angle="90" />
+            </transformations>
+
+            <descendants>
+                <noderef id="tie-fighter-arm" />
+            </descendants>
+        </node>
+        <node id="tie-fighter-armRight">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <rotation axis="y" angle="-90" />
+            </transformations>
+
+            <descendants>
+                <noderef id="tie-fighter-arm" />
+            </descendants>
+        </node>
+        <node id="tie-fighter-arm">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <translation x="0" y="0" z="-4" />
+            </transformations>
+
+            <descendants>
+                <noderef id="tie-fighter-wing" />
+                <noderef id="tie-fighter-armAxis" />
+                <leaf type="defbarrel" base="1" middle="3" height="16" slices="20" stacks="10" />
+            </descendants>
+        </node>
+        <node id="tie-fighter-armAxis">
+            <material id="null" />
+            <texture id="xwingChassisTex">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <translation x="0" y="0" z="4" />
+            </transformations>
+
+            <descendants>
+                <noderef id="tie-fighter-armAxisTop" />
+                <noderef id="tie-fighter-armAxisBot" />
+            </descendants>
+        </node>
+        <node id="tie-fighter-armAxisTop">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <translation x="0" y="3.7" z="0" />
+                <rotation axis="x" angle="16" />
+            </transformations>
+
+            <descendants>
+              <noderef id="tie-fighter-armAxisBar" />
+            </descendants>
+        </node>
+        <node id="tie-fighter-armAxisBot">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <translation x="0" y="-3.7" z="0" />
+                <rotation axis="x" angle="-16" />
+            </transformations>
+
+            <descendants>
+              <noderef id="tie-fighter-armAxisBar" />
+            </descendants>
+        </node>
+        <node id="tie-fighter-armAxisBar">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+            </transformations>
+
+            <descendants>
+                <leaf type="cylinder" height="9.0" topRadius="0.8" bottomRadius="0.8" stacks="4" slices="6"/>
+            </descendants>
+        </node>
+        <node id="tie-fighter-wing">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <translation x="0" y="0" z="16" />
+            </transformations>
+
+            <descendants>
+                <noderef id="tie-fighter-wingSeq" />
+                <noderef id="tie-fighter-wingSeq2" />
+                <noderef id="tie-fighter-wingSeq3" />
+                <noderef id="tie-fighter-wingSeq4" />
+                <noderef id="tie-fighter-wingSeq5" />
+                <noderef id="tie-fighter-wingSeq6" />
+            </descendants>
+        </node>
+
+        <node id="tie-fighter-wingSeq6">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <rotation axis="z" angle="60" />
+            </transformations>
+
+            <descendants>
+                <noderef id="tie-fighter-wingSeq5" />
+            </descendants>
+        </node>
+        <node id="tie-fighter-wingSeq5">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <rotation axis="z" angle="60" />
+            </transformations>
+
+            <descendants>
+                <noderef id="tie-fighter-wingSeq4" />
+            </descendants>
+        </node>
+        <node id="tie-fighter-wingSeq4">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <rotation axis="z" angle="60" />
+            </transformations>
+
+            <descendants>
+                <noderef id="tie-fighter-wingSeq3" />
+            </descendants>
+        </node>
+        <node id="tie-fighter-wingSeq3">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <rotation axis="z" angle="60" />
+            </transformations>
+
+            <descendants>
+                <noderef id="tie-fighter-wingSeq2" />
+            </descendants>
+        </node>
+        <node id="tie-fighter-wingSeq2">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <rotation axis="z" angle="60" />
+            </transformations>
+
+            <descendants>
+                <noderef id="tie-fighter-wingSeq" />
+            </descendants>
+        </node>
+        <node id="tie-fighter-wingSeq">
+            <material id="null" />
+            <texture id="tieWingTex">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <scale sx="20" sy="20" sz="1" />
+            </transformations>
+
+            <descendants>
+                <noderef id="doubleSidedTriangleEqui" />
             </descendants>
         </node>
 
@@ -501,7 +743,7 @@
             </texture>
 
             <transformations>
-                <translation x="50" y="30" z="40" />
+                <translation x="50" y="30" z="-40" />
             </transformations>
 
             <animationref id="horseAnim" />
@@ -1338,6 +1580,20 @@
             <descendants>
                 <leaf type="triangle" x1="0" y1="0" x2="1" y2="0" x3="0" y3="1" />
                 <leaf type="triangle" x1="0" y1="0" x2="0" y2="1" x3="1" y3="0" />
+            </descendants>
+        </node>
+        <node id="doubleSidedTriangleEqui">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+            </transformations>
+
+            <descendants>
+                <leaf type="triangle" x1="0" y1="0" x2="1" y2="0" x3="0.5" y3="0.866" />
+                <leaf type="triangle" x1="0" y1="0" x2="0.5" y2="0.866" x3="1" y3="0" />
             </descendants>
         </node>
     </nodes>
