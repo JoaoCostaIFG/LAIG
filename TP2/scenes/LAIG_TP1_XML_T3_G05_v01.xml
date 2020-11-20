@@ -486,12 +486,14 @@
             </transformations>
 
             <descendants>
-                <noderef id="horse" />
-                <noderef id="skybox" />
-                <noderef id="deathStar" />
-                <noderef id="x-wing" />
+                <!-- <noderef id="horse" /> -->
+                <!-- <noderef id="skybox" /> -->
+                <!-- <noderef id="deathStar" /> -->
+                <!-- <noderef id="x-wing" /> -->
             </descendants>
         </node>
+
+        <!-- HORSE -->
         <node id="horse">
             <material id="null" />
             <texture id="rainbowTex">
@@ -506,10 +508,10 @@
 
             <descendants>
                 <noderef id="horseInner" />
-                <noderef id="horse2" />
+                <noderef id="horseBack" />
             </descendants>
         </node>
-        <node id="horse2">
+        <node id="horseBack">
             <material id="null" />
             <texture id="rainbowTex">
                 <amplification afs="1.0" aft="1.0" />
@@ -554,6 +556,8 @@
                 <leaf type="spritetext" text="Horse"/>
             </descendants>
         </node>
+
+        <!-- DEATHSTAR -->
         <node id="deathStar">
             <material id="deathStarMat" />
             <texture id="deathStarTex">
@@ -571,6 +575,8 @@
                 <leaf type="sphere" radius="20" slices="20" stacks="20"/>
             </descendants>
         </node>
+
+        <!-- X-WING -->
         <node id="x-wing">
             <material id="null" />
             <texture id="clear">
