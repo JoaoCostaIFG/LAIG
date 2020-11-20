@@ -502,7 +502,7 @@
                 <translation x="50" y="30" z="40" />
             </transformations>
 
-            <!-- <animationref id="horseAnim" /> -->
+            <animationref id="horseAnim" />
 
             <descendants>
                 <noderef id="horseInner" />
@@ -565,7 +565,7 @@
                 <rotation axis="x" angle="-90" />
             </transformations>
 
-            <!-- <animationref id="deathStarSpinAnim" /> -->
+            <animationref id="deathStarSpinAnim" />
 
             <descendants>
                 <leaf type="sphere" radius="20" slices="20" stacks="20"/>

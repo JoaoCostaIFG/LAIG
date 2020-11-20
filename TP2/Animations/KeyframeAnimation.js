@@ -16,7 +16,8 @@ class KeyframeAnimation extends Animation {
 
     this.seg = 0;
     this.isDone = this.keyframes.length <= 0; // don't do anything if we don't have KF
-    this.currKFDuration = 0.0;
+    if (this.keyframeF != null && this.keyframeI != null)
+      this.currKFDuration = this.keyframeF.instant - this.keyframeI.instant;
   }
 
   genMatrix() {
@@ -28,59 +29,64 @@ class KeyframeAnimation extends Animation {
     mat4.scale(this.tgMatrix, this.tgMatrix, this.scale);
   }
 
-  interpollateTgs(actualKF, nextKF, timePerc) {
+  interpollateTgs(timePerc) {
     vec3.lerp(
       this.translation,
-      actualKF.translation,
-      nextKF.translation,
+      this.keyframeI.translation,
+      this.keyframeF.translation,
       timePerc
     );
-    vec3.lerp(this.rotation, actualKF.rotation, nextKF.rotation, timePerc);
-    vec3.lerp(this.scale, actualKF.scale, nextKF.scale, timePerc);
+    vec3.lerp(
+      this.rotation,
+      this.keyframeI.rotation,
+      this.keyframeF.rotation,
+      timePerc
+    );
+    vec3.lerp(this.scale, this.keyframeI.scale, this.keyframeF.scale, timePerc);
   }
 
-  setFinalPos() {
+  setFinalPos(finalKF) {
+    this.isDone = true;
     // set final position (no more key frames)
     this.tgMatrix = mat4.create();
-    mat4.translate(this.tgMatrix, this.tgMatrix, this.lastKF.translation);
-    mat4.rotateX(this.tgMatrix, this.tgMatrix, this.lastKF.rotation[0]);
-    mat4.rotateY(this.tgMatrix, this.tgMatrix, this.lastKF.rotation[1]);
-    mat4.rotateZ(this.tgMatrix, this.tgMatrix, this.lastKF.rotation[2]);
-    mat4.scale(this.tgMatrix, this.tgMatrix, this.lastKF.scale);
+    mat4.translate(this.tgMatrix, this.tgMatrix, finalKF.translation);
+    mat4.rotateX(this.tgMatrix, this.tgMatrix, finalKF.rotation[0]);
+    mat4.rotateY(this.tgMatrix, this.tgMatrix, finalKF.rotation[1]);
+    mat4.rotateZ(this.tgMatrix, this.tgMatrix, finalKF.rotation[2]);
+    mat4.scale(this.tgMatrix, this.tgMatrix, finalKF.scale);
   }
 
   update(t) {
     // check if animation ended
     if (this.isDone) return;
 
-    if (this.sumT > this.lastKF.instant) {
-      this.isDone = true;
-      this.setFinalPos();
-      return;
-    }
-
     // update time values
     this.sumT += t - this.lastTime; // += deltaTime
     this.lastTime = t;
     // go away if animation hasn't started
     if (this.sumT < this.keyframeI.instant) return;
+    if (this.keyframeF == null) {
+      // reachable if there's only 1 keyframe
+      this.setFinalPos(this.keyframeI);
+      return;
+    }
 
     // calculate segment
-    let gotNewSeg = false;
     if (this.sumT > this.keyframeF.instant) {
-      gotNewSeg = true;
+      // segment ended
       this.keyframeI = this.keyframeF;
-      if (this.keyframeF.nextKF == null) return;
-      else this.keyframeF = this.keyframeF.nextKF;
-    }
-    if (gotNewSeg)
+      if (this.keyframeF.nextKF == null) {
+        // animation ended
+        this.setFinalPos(this.keyframeF);
+        return;
+      } else this.keyframeF = this.keyframeF.nextKF;
       this.currKFDuration = this.keyframeF.instant - this.keyframeI.instant;
+    }
 
     // time percentage
     let timePerc = (this.sumT - this.keyframeI.instant) / this.currKFDuration;
-
     // update transformation matrix
-    this.interpollateTgs(this.keyframeI, this.keyframeF, timePerc);
+    this.interpollateTgs(timePerc);
     this.genMatrix();
   }
 

@@ -1,11 +1,12 @@
-class Animation { /* abstract class */
+class Animation {
+  /* abstract class */
   constructor(keyframeI, keyframeF) {
     if (this.constructor == Animation) {
       throw new Error("Can't instantiate abstract class!");
     }
 
-    this.keyframeI = keyframeI;
-    this.keyframeF = keyframeF;
+    this.keyframeI = keyframeI == undefined ? null : keyframeI;
+    this.keyframeF = keyframeF == undefined ? null : keyframeF;
   }
 
   update(t) {

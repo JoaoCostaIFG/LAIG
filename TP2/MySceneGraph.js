@@ -887,7 +887,13 @@ class MySceneGraph {
         return a.instant - b.instant;
       });
       for (let i = 0; i < keyframes.length - 1; ++i)
-        keyframes[i].next = keyframes[i + 1];
+        keyframes[i].nextKF = keyframes[i + 1];
+      if (keyframes.length == 0)
+        this.onXMLMinorError(
+          "Keyframe animation, " +
+            animationID +
+            ", has no keyframes. Its objects will be invisible."
+        );
       // create (and push) the new animation with its keyframes
       this.animations[animationID] = new KeyframeAnimation(
         this.scene,
