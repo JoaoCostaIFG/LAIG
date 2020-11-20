@@ -1,4 +1,4 @@
-# LAIG 2020/2021 - TP1
+# LAIG 2020/2021 - TP2
 
 ## Group T03-G05
 
@@ -12,14 +12,25 @@
 ## Project information
 
 - Detailed scene.
-- Uses at least one instance of all the primitives.
+- Uses at least one instance of all the primitives (including the new ones).
 - Has multiple cameras, lights, materials and textures.
-- Scene
+- Scene:
   - A skybox with a colored Star War's X-Wing ship model and death star.
+  - The word "Horse" (_spritetext_ primitive) with a running horse animation.
   - [Link to the Scene](./scenes/LAIG_TP1_XML_T3_G05_v01.xml)
-- Extra interface controls for better debugging: show/hide vertexes' normals
-  and show/hide light objects.
-- Cameras reset to initial position upon switching between them.
+- Animations:
+  - The X-Wing performs a 'barrel roll' maneuver and shoots two projectiles
+    three times.
+  - The death star spins.
+  - The text floats around with the running horse animation.
+- Extras :
+  - Extra interface controls for better debugging: show/hide vertexes' normals
+    and show/hide light objects.
+  - Cameras reset to initial position upon switching between them.
+  - Default texture that is applied when no texture is applied and one is requested.
+  - Sprite sheets are bound to a different _uSampler_, which allows an object
+    to show its texture on the transparent spots of the sprite. This helps simulate
+    transparency by using the parents texture when **null** is used.
 
 ---
 

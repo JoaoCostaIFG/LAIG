@@ -12,13 +12,13 @@ const MatBehaviour = {
 /**
  * MyNode
  * @constructor
- * @param sceneGraph - Scene's Graph
+ * @param scene - Scene's Graph
  * @param id - Node ID
  */
 class MyNode {
-  constructor(sceneGraph, id) {
+  constructor(scene, id) {
     this.id = id;
-    this.sceneGraph = sceneGraph;
+    this.scene = scene;
 
     // tgs
     this.tgMatrix = mat4.create();
@@ -114,17 +114,17 @@ class MyNode {
    */
   scenePushes() {
     // transformations
-    this.sceneGraph.pushTransformation(this.tgMatrix);
+    this.scene.pushTransformation(this.tgMatrix);
     if (this.anim != null)
       this.anim.apply();
 
     // materials
-    if (this.matBehaviour == MatBehaviour.CHANGE) this.sceneGraph.pushMaterial(this.mat);
+    if (this.matBehaviour == MatBehaviour.CHANGE) this.scene.pushMaterial(this.mat);
 
     // textures
     if (this.texBehaviour == TexBehaviour.CHANGE)
-      this.sceneGraph.pushTexture(this.tex);
-    else if (this.texBehaviour == TexBehaviour.CLEAR) this.sceneGraph.unbindActiveTex();
+      this.scene.pushTexture(this.tex);
+    else if (this.texBehaviour == TexBehaviour.CLEAR) this.scene.unbindActiveTex();
   }
 
  /**
@@ -132,15 +132,15 @@ class MyNode {
  */
   scenePops() {
     // textures
-    if (this.texBehaviour == TexBehaviour.CHANGE) this.sceneGraph.popTexture();
+    if (this.texBehaviour == TexBehaviour.CHANGE) this.scene.popTexture();
 
     // materials
-    if (this.matBehaviour == MatBehaviour.CHANGE) this.sceneGraph.popMaterial();
+    if (this.matBehaviour == MatBehaviour.CHANGE) this.scene.popMaterial();
 
     // transformations
     if (this.anim != null)
-      this.sceneGraph.popTransformation();
-    this.sceneGraph.popTransformation();
+      this.scene.popTransformation();
+    this.scene.popTransformation();
   }
 
   /**

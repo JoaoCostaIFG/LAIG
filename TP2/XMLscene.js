@@ -66,6 +66,10 @@ class XMLscene extends CGFscene {
     this.selectedCamera = -1;
     this.lastCamera = -1;
     this.cameraList = {};
+
+    this.defaultTex = new CGFtexture(this, "./scenes/test.jpg"); // missing texture
+    this.textSheet = new CGFtexture(this, "./scenes/text.png"); // spritesheet for text
+    this.textSheetSize = [16, 16];
   }
 
   /**
@@ -283,7 +287,10 @@ class XMLscene extends CGFscene {
    */
   applyLastTex() {
     var lastTexInd = this.activeTextures.length - 1;
-    if (lastTexInd >= 0) this.activeTextures[lastTexInd].bind();
+    if (lastTexInd >= 0)
+      this.activeTextures[lastTexInd].bind();
+    else
+      this.defaultTex.bind();
   }
 
   /**

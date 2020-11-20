@@ -5,12 +5,10 @@ class MySpriteText {
     this.parseText();
     this.rect = new MyRectangle(this.scene, 0, 0, 1, 1);
 
-    let textSheet = new CGFtexture(this.scene, "./scenes/images/text.png");
-    let textSheetSize = [16, 16];
     this.spriteSheet = new MySpritesheet(
       this.scene,
-      textSheet,
-      ...textSheetSize
+      this.scene.textSheet,
+      ...this.scene.textSheetSize
     );
   }
 
@@ -30,18 +28,26 @@ class MySpriteText {
 
   display() {
     this.scene.pushMatrix();
+
+    let activatedTex = false;
+    if (this.scene.activeTexture == null) {
+      activatedTex = true;
+      this.scene.defaultTex.bind();
+    }
+
     // center text
     this.scene.translate(-this.parsedText.length / 2.0, -0.5, 0.0);
-    
     // render text
     for (let i = 0; i < this.parsedText.length; ++i) {
       this.spriteSheet.activateCellP(this.parsedText[i]);
       this.rect.display();
       this.scene.translate(1.0, 0.0, 0.0);
     }
-
-    this.scene.popMatrix();
     this.scene.setActiveShader(this.scene.defaultShader);
+
+    if (activatedTex)
+      this.scene.defaultTex.unbind();
+    this.scene.popMatrix();
   }
 
   enableNormalViz() {
