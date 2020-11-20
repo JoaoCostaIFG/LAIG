@@ -366,7 +366,7 @@
                 <scale sx="1.0" sy="1.0" sz="1.0" />
             </keyframe>
         </animation>
-
+            
         <animation id="shootingAnim" >
             <keyframe instant="5.0">
                 <translation x="0.0" y="0.0" z="0.0" />
@@ -466,11 +466,57 @@
                 <scale sx="1.0" sy="1.0" sz="1.0" />
             </keyframe>
             <keyframe instant="200.0">
-                <translation x="-100.0" y="-100.0" z="-100.0" />
+                <translation x="-100.0" y="-100.0" z="100.0" />
                 <rotation axis="x" angle="0.0" />
                 <rotation axis="y" angle="3610.0" />
                 <rotation axis="z" angle="3610.0" />
                 <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+        </animation>
+        <animation id="tie-fighterAnim" >
+            <keyframe instant="0.0">
+                <translation x="0.0" y="0.0" z="0.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+            <keyframe instant="3.0">
+                <translation x="0.0" y="0.0" z="0.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+            <keyframe instant="7.0">
+                <translation x="0.0" y="0.0" z="140.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+        </animation>
+        <animation id="tie-fighterHitAnim" >
+            <keyframe instant="0.0">
+                <translation x="0.0" y="0.0" z="0.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+            <keyframe instant="5.2">
+                <translation x="0.0" y="0.0" z="0.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="1.0" sy="1.0" sz="1.0" />
+            </keyframe>
+            <keyframe instant="5.21">
+                <translation x="0.0" y="0.0" z="0.0" />
+                <rotation axis="x" angle="0.0" />
+                <rotation axis="y" angle="0.0" />
+                <rotation axis="z" angle="0.0" />
+                <scale sx="0.0" sy="0.0" sz="0.0" />
             </keyframe>
         </animation>
     </animations>
@@ -505,8 +551,10 @@
             </texture>
 
             <transformations>
-                <translation x="50" y="-30" z="50" />
+                <translation x="80" y="0" z="70" />
+                <rotation  axis="y" angle="-90" />
             </transformations>
+            <animationref id="tie-fighterAnim"/>
 
             <descendants>
                 <noderef id="tie-fighter-ball" />
@@ -533,7 +581,7 @@
             <texture id="null">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
-
+            
             <transformations>
                 <rotation axis="y" angle="90" />
             </transformations>
@@ -568,6 +616,22 @@
 
             <descendants>
                 <noderef id="tie-fighter-wing" />
+                <noderef id="tie-fighter-armAxis" />
+                <leaf type="defbarrel" base="1" middle="3" height="16" slices="20" stacks="10" />
+            </descendants>
+        </node>
+        <node id="tie-fighter-armBroken">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+
+            <transformations>
+                <translation x="0" y="0" z="-4" />
+            </transformations>
+
+            <descendants>
+                <noderef id="tie-fighter-wingBroken" />
                 <noderef id="tie-fighter-armAxis" />
                 <leaf type="defbarrel" base="1" middle="3" height="16" slices="20" stacks="10" />
             </descendants>
@@ -649,7 +713,40 @@
                 <noderef id="tie-fighter-wingSeq6" />
             </descendants>
         </node>
+        <node id="tie-fighter-wingBroken">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
 
+            <transformations>
+                <translation x="0" y="0" z="16" />
+            </transformations>
+
+            <descendants>
+                <noderef id="tie-fighter-wingSeq" />
+                <noderef id="tie-fighter-wingSeq2" />
+                <noderef id="tie-fighter-wingSeq3" />
+                <noderef id="tie-fighter-wingSeq4" />
+                <noderef id="tie-fighter-wingSeq5Broken" />
+                <noderef id="tie-fighter-wingSeq6Broken" />
+            </descendants>
+        </node>
+        <node id="tie-fighter-wingSeq6Broken">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+            
+            <animationref id="tie-fighterHitAnim"/>
+            
+            <transformations>
+            </transformations>
+
+            <descendants>
+                <noderef id="tie-fighter-wingSeq6" />
+            </descendants>
+        </node>
         <node id="tie-fighter-wingSeq6">
             <material id="null" />
             <texture id="null">
@@ -664,12 +761,26 @@
                 <noderef id="tie-fighter-wingSeq5" />
             </descendants>
         </node>
+        <node id="tie-fighter-wingSeq5Broken">
+            <material id="null" />
+            <texture id="null">
+                <amplification afs="1.0" aft="1.0" />
+            </texture>
+            <animationref id="tie-fighterHitAnim"/>
+            
+            <transformations>
+            </transformations>
+
+            <descendants>
+                <noderef id="tie-fighter-wingSeq5" />
+            </descendants>
+        </node>
         <node id="tie-fighter-wingSeq5">
             <material id="null" />
             <texture id="null">
                 <amplification afs="1.0" aft="1.0" />
             </texture>
-
+            <animationref id="tie-fighterHitAnim"/>
             <transformations>
                 <rotation axis="z" angle="60" />
             </transformations>
