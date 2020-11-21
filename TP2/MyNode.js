@@ -46,7 +46,7 @@ class MyNode {
 
   /**
    * Multiplies matrix passed in function's arguments
-   * @param tg - transformation matrix to multiply 
+   * @param tg - transformation matrix to multiply
    */
   addTgMatrix(tg) {
     mat4.multiply(this.tgMatrix, this.tgMatrix, tg);
@@ -63,12 +63,9 @@ class MyNode {
     this.afs = afs;
     this.aft = aft;
 
-    if (this.texId == "null")
-      this.texBehaviour = TexBehaviour.KEEP;
-    else if (this.texId == "clear")
-      this.texBehaviour = TexBehaviour.CLEAR;
-    else
-      this.texBehaviour = TexBehaviour.CHANGE;
+    if (this.texId == "null") this.texBehaviour = TexBehaviour.KEEP;
+    else if (this.texId == "clear") this.texBehaviour = TexBehaviour.CLEAR;
+    else this.texBehaviour = TexBehaviour.CHANGE;
   }
 
   /**
@@ -78,10 +75,8 @@ class MyNode {
   setMaterial(matId) {
     this.matId = matId;
 
-    if (this.matId == "null")
-      this.matBehaviour = MatBehaviour.KEEP;
-    else
-      this.matBehaviour = MatBehaviour.CHANGE;
+    if (this.matId == "null") this.matBehaviour = MatBehaviour.KEEP;
+    else this.matBehaviour = MatBehaviour.CHANGE;
   }
 
   /**
@@ -115,21 +110,22 @@ class MyNode {
   scenePushes() {
     // transformations
     this.scene.pushTransformation(this.tgMatrix);
-    if (this.anim != null)
-      this.anim.apply();
+    if (this.anim != null) this.anim.apply();
 
     // materials
-    if (this.matBehaviour == MatBehaviour.CHANGE) this.scene.pushMaterial(this.mat);
+    if (this.matBehaviour == MatBehaviour.CHANGE)
+      this.scene.pushMaterial(this.mat);
 
     // textures
     if (this.texBehaviour == TexBehaviour.CHANGE)
       this.scene.pushTexture(this.tex);
-    else if (this.texBehaviour == TexBehaviour.CLEAR) this.scene.unbindActiveTex();
+    else if (this.texBehaviour == TexBehaviour.CLEAR)
+      this.scene.unbindActiveTex();
   }
 
- /**
- * Pops transformations & materials & textures into scene's stacks
- */
+  /**
+   * Pops transformations & materials & textures into scene's stacks
+   */
   scenePops() {
     // textures
     if (this.texBehaviour == TexBehaviour.CHANGE) this.scene.popTexture();
@@ -138,8 +134,7 @@ class MyNode {
     if (this.matBehaviour == MatBehaviour.CHANGE) this.scene.popMaterial();
 
     // transformations
-    if (this.anim != null)
-      this.scene.popTransformation();
+    if (this.anim != null) this.scene.popTransformation();
     this.scene.popTransformation();
   }
 

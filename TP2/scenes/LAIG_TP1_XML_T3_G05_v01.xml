@@ -181,6 +181,13 @@
       <specular r="0.0" g="0.0" b="0.0" a="1.0"/>
       <emissive r="1.0" g="1.0" b="1.0" a="1.0"/>
     </material>
+    <material id="rainbowMat">
+      <shininess value="10"/>
+      <ambient r="1.0" g="1.0" b="1.0" a="1.0"/>
+      <diffuse r="1.0" g="1.0" b="1.0" a="1.0"/>
+      <specular r="1.0" g="1.0" b="1.0" a="1.0"/>
+      <emissive r="1.0" g="1.0" b="1.0" a="1.0"/>
+    </material>
   </materials>
   <animations>
     <animation id="flyForwardAnim">
@@ -794,7 +801,7 @@
     </node>
     <!-- HORSE -->
     <node id="horse">
-      <material id="null"/>
+      <material id="rainbowMat"/>
       <texture id="rainbowTex">
         <amplification afs="1.0" aft="1.0"/>
       </texture>
@@ -809,7 +816,7 @@
     </node>
     <node id="horseBack">
       <material id="null"/>
-      <texture id="rainbowTex">
+      <texture id="null">
         <amplification afs="1.0" aft="1.0"/>
       </texture>
       <transformations>
@@ -821,7 +828,7 @@
     </node>
     <node id="horseInner">
       <material id="null"/>
-      <texture id="rainbowTex">
+      <texture id="null">
         <amplification afs="1.0" aft="1.0"/>
       </texture>
       <transformations>
@@ -831,7 +838,20 @@
       </transformations>
       <descendants>
         <noderef id="floatText"/>
+        <noderef id="horseInnerPlane"/>
         <leaf type="spriteanim" ssid="horseySheet" startCell="0" endCell="249" duration="4"/>
+      </descendants>
+    </node>
+    <node id="horseInnerPlane">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0" y="0" z="-0.1"/>
+      </transformations>
+      <descendants>
+        <leaf type="rectangle" x1="0" y1="0" x2="1" y2="1"/>
       </descendants>
     </node>
     <node id="floatText">
@@ -843,7 +863,20 @@
         <translation x="0.5" y="-0.5" z="0"/>
       </transformations>
       <descendants>
+        <noderef id="floatTextPlane"/>
         <leaf type="spritetext" text="Horse"/>
+      </descendants>
+    </node>
+    <node id="floatTextPlane">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="5.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0" y="-0.5" z="-0.1"/>
+      </transformations>
+      <descendants>
+        <leaf type="rectangle" x1="-2.5" y1="0" x2="2.5" y2="1"/>
       </descendants>
     </node>
     <!-- DEATHSTAR -->

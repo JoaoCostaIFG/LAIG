@@ -550,12 +550,15 @@ class MySceneGraph {
       if (texturePath == null) return "no Path defined for texture";
 
       this.textures[textureID] = new CGFtexture(this.scene, texturePath);
-      if (this.textures[textureID] == null)
-        return (
-          "texture with ID " +
-          textureID +
-          " failed loading. Given path is probably wrong."
-        );
+      // TODO this doesn't work
+      /*
+       * if (this.textures[textureID] == null)
+       *   return (
+       *     "texture with ID " +
+       *     textureID +
+       *     " failed loading. Given path is probably wrong."
+       *   );
+       */
     }
 
     this.log("Parsed textures");
@@ -783,7 +786,7 @@ class MySceneGraph {
 
         /* tx, ty, tz, rx, ry, rz, sx, sy, sz */
         let global = [0, 0, 0, 0, 0, 0, 1, 1, 1];
-        // TODO list of bools to check if all tgs are given
+        let presentTg = [false, false, false, false, false];
 
         let grandgrandChildren = grandChildren[j].children;
         for (let k = 0; k < grandgrandChildren.length; ++k) {
@@ -800,6 +803,7 @@ class MySceneGraph {
               global[0] = coords[0];
               global[1] = coords[1];
               global[2] = coords[2];
+              presentTg[0] = true; // translation is present
               break;
             case "rotation":
               let axis = this.reader.getString(grandgrandChildren[k], "axis");
@@ -823,14 +827,17 @@ class MySceneGraph {
                 case "x":
                   tgInd = 1;
                   global[3] = angle;
+                  presentTg[1] = true; // rotX is present
                   break;
                 case "y":
                   tgInd = 2;
                   global[4] = angle;
+                  presentTg[2] = true; // rotY is present
                   break;
                 case "z":
                   tgInd = 3;
                   global[5] = angle;
+                  presentTg[3] = true; // rotZ is present
                   break;
                 default:
                   this.onXMLMinorError(
@@ -854,6 +861,7 @@ class MySceneGraph {
               global[6] = scales[0];
               global[7] = scales[1];
               global[8] = scales[2];
+              presentTg[4] = true; // scale is present
               break;
             default:
               this.onXMLMinorError(
@@ -866,8 +874,8 @@ class MySceneGraph {
               break;
           }
 
-          // queixar de transformacoes fora de ordem
           if (tgInd != -1 && k != tgInd) {
+            // queixar de transformacoes fora de ordem
             this.onXMLMinorError(
               "Transformation " +
                 tgName +
@@ -876,6 +884,24 @@ class MySceneGraph {
                 " is out of order. Assuming the default order."
             );
           }
+        }
+
+        // queixar de transformacoes missing
+        let missing = "";
+        if (!presentTg[0]) missing += "translation, ";
+        if (!presentTg[1]) missing += "rotation x, ";
+        if (!presentTg[2]) missing += "rotation y, ";
+        if (!presentTg[3]) missing += "rotation z, ";
+        if (!presentTg[4]) missing += "scale, ";
+
+        if (missing != "") {
+          this.onXMLMinorError(
+            "Animation with ID: " +
+              animationID +
+              " is missing transformations: " +
+              missing.slice(0, -2) +
+              ". Assuming default values for those."
+          );
         }
 
         // push new keyframe
@@ -1381,9 +1407,11 @@ class MySceneGraph {
               nodeTexId +
               " was referenced in node with id " +
               key +
-              " but was not defined. Assuming 'null' texture."
+              " but was not defined. Giving it missing texture."
           );
-          obj.texBehaviour = TexBehaviour.KEEP;
+          // " but was not defined. Assuming 'null' texture."
+          // obj.texBehaviour = TexBehaviour.KEEP;
+          obj.tex = this.scene.defaultTex;
         } else {
           obj.tex = this.textures[nodeTexId];
         }

@@ -7,19 +7,17 @@ uniform mat4 uPMatrix;
 uniform mat4 uNMatrix;
 
 varying vec2 vTextureCoord;
-varying vec2 vTextureCoord2;
 
 uniform vec2 sheetSize;
 uniform vec2 charCoords;
 
 void main() {
   vTextureCoord = aTextureCoord;
-  vTextureCoord2 = aTextureCoord;
 
-  vTextureCoord2.x += charCoords.x;
-  vTextureCoord2.y += charCoords.y;
-  vTextureCoord2.x /= sheetSize.x;
-  vTextureCoord2.y /= sheetSize.y;
+  vTextureCoord.x += charCoords.x;
+  vTextureCoord.y += charCoords.y;
+  vTextureCoord.x /= sheetSize.x;
+  vTextureCoord.y /= sheetSize.y;
 
   gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
 }

@@ -69,6 +69,7 @@ class XMLscene extends CGFscene {
     this.cameraList = {};
 
     this.defaultTex = new CGFtexture(this, "./scenes/test.jpg"); // missing texture
+    this.defaultTex.bind();
     this.textSheet = new CGFtexture(this, "./scenes/text.png"); // spritesheet for text
     this.textSheetSize = [16, 16];
   }
@@ -261,6 +262,15 @@ class XMLscene extends CGFscene {
   }
 
   /**
+   * Applies last material from active materials' stack
+   */
+  applyLastMat() {
+    var lastMatInd = this.activeMaterials.length - 1;
+    if (lastMatInd >= 0) this.activeMaterials[lastMatInd].apply();
+    this.applyLastTex();
+  }
+
+  /**
    * Pushes a material into materials' stack and applies it
    * @param {Material to push into materials' stack} mat
    */
@@ -268,7 +278,8 @@ class XMLscene extends CGFscene {
     this.activeMaterials.push(mat);
     mat.apply();
 
-    this.applyLastTex();
+    // only reapply last tex if material doesn't come with one
+    if (mat.texture == null) this.applyLastTex();
   }
 
   /**
@@ -288,7 +299,7 @@ class XMLscene extends CGFscene {
   applyLastTex() {
     var lastTexInd = this.activeTextures.length - 1;
     if (lastTexInd >= 0) this.activeTextures[lastTexInd].bind();
-    else this.defaultTex.bind();
+    else this.unbindActiveTex(); // get rid of our tex if there isn't any more
   }
 
   /**

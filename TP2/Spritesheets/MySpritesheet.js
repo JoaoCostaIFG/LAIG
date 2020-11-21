@@ -10,24 +10,21 @@ class MySpritesheet {
       "./Shaders/MySpriteShader.frag"
     );
 
+    // this.mat = new CGFappearance(this.scene);
+    // this.mat.setTexture(texture); // default material with spritesheet as texture
+
     this.shader.setUniformsValues({
-      uSampler2: 1,
       sheetSize: [sizeM, sizeN],
       charCoords: [0, 0],
     });
-
-    this.activatedTex = false;
   }
 
   activateCellMN(m, n) {
     this.scene.setActiveShaderSimple(this.shader);
     this.shader.setUniformsValues({ charCoords: [m, n] });
 
-    if (this.scene.activeTexture == null) { // we need 2 textures
-      this.activatedTex = true;
-      this.scene.defaultTex.bind();
-    }
-    this.tex.bind(1);
+    // this.mat.apply();
+    this.tex.bind();
   }
 
   activateCellP(p) {
@@ -35,11 +32,9 @@ class MySpritesheet {
   }
 
   deactivate() {
-    if (this.activatedTex) {
-      this.activatedTex = false;
-      this.scene.defaultTex.unbind();
-    }
-    this.tex.unbind(1);
+    // this.tex.unbind();
+    // this.scene.applyLastMat();
+    this.scene.applyLastTex();
     this.scene.setActiveShader(this.scene.defaultShader);
   }
 }
