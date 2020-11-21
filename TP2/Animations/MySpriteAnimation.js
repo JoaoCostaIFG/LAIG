@@ -1,7 +1,7 @@
 class MySpriteAnimation {
-  constructor(scene, spriteSheet, id, duration, startCell, endCell) {
+  constructor(scene, spriteSheet, duration, startCell, endCell) {
     this.scene = scene;
-    this.id = id;
+
     this.lastTime = Date.now() / 1000; // current time in seconds
     this.sumT = 0;
 

@@ -13,6 +13,7 @@ class XMLscene extends CGFscene {
 
     this.activeMaterials = [];
     this.activeTextures = [];
+    this.updatables = []; // the objects that need to be updated each frame
   }
 
   /**
@@ -238,10 +239,9 @@ class XMLscene extends CGFscene {
 
     let t = time / 1000;
 
-    for (var key in this.graph.animations) {
-      let anim = this.graph.animations[key];
-      anim.update(t);
-    }
+    this.updatables.forEach((updatable) => {
+      updatable.update(t);
+    });
   }
 
   /**
@@ -287,10 +287,8 @@ class XMLscene extends CGFscene {
    */
   applyLastTex() {
     var lastTexInd = this.activeTextures.length - 1;
-    if (lastTexInd >= 0)
-      this.activeTextures[lastTexInd].bind();
-    else
-      this.defaultTex.bind();
+    if (lastTexInd >= 0) this.activeTextures[lastTexInd].bind();
+    else this.defaultTex.bind();
   }
 
   /**

@@ -900,6 +900,8 @@ class MySceneGraph {
         animationID,
         keyframes
       );
+
+      this.scene.updatables.push(this.animations[animationID]);
     }
 
     return null;
@@ -1029,11 +1031,11 @@ class MySceneGraph {
           obj = new MySpriteAnimation(
             this.scene,
             this.spritesheets[global[0]],
-            ...global
+            ...global.slice(1)
           );
+
           // push animation so it can be updated
-          // TODO overlapping ID's
-          this.animations[global[0]] = obj;
+          this.scene.updatables.push(obj);
         }
         break;
       case "plane":
@@ -1060,11 +1062,23 @@ class MySceneGraph {
           controlPoints.push(ctrlP);
         }
 
-        if (global[0] * global[1] != controlPoints.length) {
-          return "The number of control points specidifed in the patch is wrong.";
-        } else {
-          obj = new Patch(this.scene, ...global, controlPoints);
+        if (global[0] * global[1] > controlPoints.length) {
+          return (
+            "Note enough control points were specified. Specified " +
+            controlPoints.length +
+            " expected " +
+            global[0] * global[1]
+          );
+        } else if (global[0] * global[1] < controlPoints.length) {
+          this.onXMLMinorError(
+            "There are more control points specified than will be used. Specified " +
+              controlPoints.length +
+              " expected " +
+              global[0] * global[1]
+          );
         }
+
+        obj = new Patch(this.scene, ...global, controlPoints);
         break;
       case "defbarrel":
         obj = new Defbarrel(this.scene, ...global);
