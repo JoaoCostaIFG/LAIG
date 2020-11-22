@@ -30,10 +30,8 @@
   - Extra interface controls for better debugging: show/hide vertexes' normals
     and show/hide light objects.
   - Cameras reset to initial position upon switching between them.
-  - Default texture that is applied when no texture is applied and one is requested.
-  - Sprite sheets are bound to a different _uSampler_, which allows an object
-    to show its texture on the transparent spots of the sprite. This helps simulate
-    transparency by using the parents texture when **null** is used.
+  - Default texture that is applied when an object references an undefined texture.
+  - Sprite sheets (including text) can have transparent parts.
 
 ---
 
