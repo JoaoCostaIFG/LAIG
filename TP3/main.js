@@ -12,7 +12,7 @@ function getUrlVars() {
 }	 
 //Include additional files here
 serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MyNode.js', 'MySceneGraph.js', 'MyInterface.js', './Primitives/MyCylinder.js', './Primitives/MyRectangle.js', './Primitives/MyTriangle.js', './Primitives/MySphere.js', './Primitives/MyTorus.js', './Primitives/Plane.js', './Primitives/Patch.js', './Primitives/Defbarrel.js', './Cameras/MyCGFcamera.js', './Cameras/MyCGFcameraOrtho.js', './Animations/Animation.js', './Animations/Keyframe.js', './Animations/KeyframeAnimation.js', './Animations/MySpriteAnimation.js', './Spritesheets/MySpriteText.js', './Spritesheets/MySpritesheet.js',
-'./Primitives/MyTile.js', './Primitives/MyGameBoard.js', './Primitives/MyGameMove.js', 'MyGameMove.js', 'MyGameState.js', './Primitives/MyCube.js', './Primitives/MyPiece.js',
+'./Primitives/MyTile.js', './Primitives/MyCube.js', './Primitives/MyPiece.js', './Primitives/MyGameBoard.js', 'MyGameMove.js', 'MyGameSequence.js', 'MyGameOrchestrator.js',
 main=function()
 {
 	// Standard application, scene and interface setup
@@ -36,7 +36,7 @@ main=function()
 	  // Check console for loading errors
 	  var myGraph = new MySceneGraph(filename, myScene);
 
-    var orchestrator = new MyGameOrchestrator(scene, myGraph);
+    var orchestrator = new MyGameOrchestrator(myScene, myGraph);
 	
 	  // start
     app.run();
