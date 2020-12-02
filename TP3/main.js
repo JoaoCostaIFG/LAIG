@@ -11,7 +11,7 @@ function getUrlVars() {
     return vars;
 }	 
 //Include additional files here
-serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MyNode.js', 'MySceneGraph.js', 'MyInterface.js', './Primitives/MyCylinder.js', './Primitives/MyRectangle.js', './Primitives/MyTriangle.js', './Primitives/MySphere.js', './Primitives/MyTorus.js', './Primitives/Plane.js', './Primitives/Patch.js', './Primitives/Defbarrel.js', './Cameras/MyCGFcamera.js', './Cameras/MyCGFcameraOrtho.js', './Animations/Animation.js', './Animations/Keyframe.js', './Animations/KeyframeAnimation.js', './Animations/MySpriteAnimation.js', './Spritesheets/MySpriteText.js', './Spritesheets/MySpritesheet.js',
+serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MyNode.js', 'MySceneGraph.js', 'MyInterface.js', './Primitives/MyCylinder.js', './Primitives/MyRectangle.js', './Primitives/MyTriangle.js', './Primitives/MySphere.js', './Primitives/MyTorus.js', './Primitives/Plane.js', './Primitives/Patch.js', './Primitives/Defbarrel.js', './Cameras/MyCGFcamera.js', './Cameras/MyCGFcameraOrtho.js', './Animations/Animation.js', './Animations/Keyframe.js', './Animations/KeyframeAnimation.js', './Animations/MySpriteAnimation.js', './Spritesheets/MySpriteText.js', './Spritesheets/MySpritesheet.js', './Primitives/MyPiece.js', './Primitives/MyCube.js',
 main=function()
 {
 	// Standard application, scene and interface setup
