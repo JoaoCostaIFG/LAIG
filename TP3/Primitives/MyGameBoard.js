@@ -2,6 +2,8 @@ class MyGameBoard {
   constructor(scene, size) {
     this.scene = scene;
 
+    this.gameState = new MyGameState();
+
     this.size = size;
     this.genTiles();
   }
@@ -46,16 +48,13 @@ class MyGameBoard {
     return null;
   }
 
-  switchPieces(pieceI, pieceF) {
+  move(pieceI, pieceF) {
     // get tiles
     let tileI = this.getTileByPiece(pieceI);
     let tileF = this.getTileByPiece(pieceF);
 
-    // animate
-
-    // switch pieces possitions
-    tileI.setPiece(pieceF);
-    tileF.setPiece(pieceI);
+    let newMove = new MyGameMove(pieceI, tileI, pieceF, tileF);
+    this.gameState.addMove(this, newMove);
   }
 
   display() {
