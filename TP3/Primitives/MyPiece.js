@@ -27,11 +27,17 @@ class MyPiece extends CGFobject {
     }
 
     applyColor(){
-        this.scene
+        if(this.color == Color.BLACK){
+            this.scene.blackMaterial.apply(); 
+        }
+        else this.scene.whiteMaterial.apply();
     }
 
     display(){
-
+        this.scene.pushMatrix();
+        this.applyColor();
+        this.scene.scale(1,0.5,1);
         this.cube.display();
+        this.scene.popMatrix();
     }
 }
