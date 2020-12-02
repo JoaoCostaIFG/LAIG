@@ -68,9 +68,9 @@ class XMLscene extends CGFscene {
     this.lastCamera = -1;
     this.cameraList = {};
 
-    this.defaultTex = new CGFtexture(this, "./scenes/test.jpg"); // missing texture
+    this.defaultTex = new CGFtexture(this, "./scenes/images/test.jpg"); // missing texture
     this.defaultTex.bind();
-    this.textSheet = new CGFtexture(this, "./scenes/text.png"); // spritesheet for text
+    this.textSheet = new CGFtexture(this, "./scenes/images/text.png"); // spritesheet for text
     this.textSheetSize = [16, 16];
   }
 
