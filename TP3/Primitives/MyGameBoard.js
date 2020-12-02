@@ -54,7 +54,10 @@ class MyGameBoard {
     let tileF = this.getTileByPiece(pieceF);
 
     let newMove = new MyGameMove(pieceI, tileI, pieceF, tileF);
-    this.gameState.addMove(this, newMove);
+    this.gameState.addMove(newMove);
+
+    tileI = pieceF;
+    tileF = pieceI;
   }
 
   display() {

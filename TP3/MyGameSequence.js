@@ -1,9 +1,9 @@
-class MyGameState {
+class MyGameSequence {
   constructor() {
     this.moves = [];
   }
 
-  addMove(board, move) {
+  addMove(move) {
     this.moves.push(move);
 
     // animate
@@ -17,10 +17,16 @@ class MyGameState {
     return this.moves.length != 0;
   }
 
-  undo(board) {
+  getLastMove() {
+    return this.moves.pop();
+  }
+
+  undo() {
     // check if we can undo
     if (!this.canUndo()) return;
-
-    board.
+  
+    let lastMove = this.getLastMove();
+    lastMove.tileI = lastMove.pieceI;
+    lastMove.tileF = lastMove.pieceF;
   }
 }
