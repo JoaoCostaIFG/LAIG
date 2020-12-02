@@ -4,22 +4,22 @@ class MyTile {
     this.board = board;
     this.piece = piece ? piece : null;
   }
-  
+
   setPiece(piece) {
     this.piece = piece;
   }
-  
+
   unsetPiece() {
     this.piece = null;
   }
-  
+
   getPiece() {
     return this.piece;
   }
 
   display() {
     // move to spot
-    this.piece.display();
+    if (this.piece != null) this.piece.display();
     // restore pos
   }
 }
