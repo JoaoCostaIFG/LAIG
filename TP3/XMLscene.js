@@ -78,15 +78,15 @@ class XMLscene extends CGFscene {
 
     // Pieces Colors
     this.blackMaterial = new CGFappearance(this);
-    this.blackMaterial.setAmbient(0, 0, 0, 1);
-    this.blackMaterial.setDiffuse(0, 0, 0, 1);
-    this.blackMaterial.setSpecular(0, 0, 0, 1);
+    this.blackMaterial.setAmbient(0.1, 0.1, 0.1, 1.0);
+    this.blackMaterial.setDiffuse(0.1, 0.1, 0.1, 1.0);
+    this.blackMaterial.setSpecular(0.1, 0.1, 0.1, 1.0);
     this.blackMaterial.setShininess(10.0);
 
     this.whiteMaterial = new CGFappearance(this);
-    this.whiteMaterial.setAmbient(1, 1, 1, 1);
-    this.whiteMaterial.setDiffuse(1, 1, 1, 1);
-    this.whiteMaterial.setSpecular(1, 1, 1, 1);
+    this.whiteMaterial.setAmbient(0.9, 0.87, 0.77, 1.0);
+    this.whiteMaterial.setDiffuse(0.9, 0.87, 0.77, 1.0);
+    this.whiteMaterial.setSpecular(0.9, 0.87, 0.77, 1.0);
     this.whiteMaterial.setShininess(10.0);
   }
 

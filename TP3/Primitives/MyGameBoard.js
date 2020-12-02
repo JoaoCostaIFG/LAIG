@@ -9,12 +9,14 @@ class MyGameBoard {
     this.tiles = [];
 
     for (let i = 0; i < this.size; ++i) {
-      let currTile = new MyTile(this.scene, this, null);
       // even => white, odd => black
-      currTile.setPiece(
-        new MyPiece(this.scene, i % 2 == 0 ? Color.white : Color.black, currTile)
-      );
-      this.tiles.push(currTile);
+      let c = i % 2 == 0 ? Color.WHITE : Color.BLACK;
+      for (let j = 0; j < this.size; ++j) {
+        let currTile = new MyTile(this.scene, this, null);
+        currTile.setPiece(new MyPiece(this.scene, c, currTile));
+        this.tiles.push(currTile);
+        c = c == Color.WHITE ? Color.BLACK : Color.WHITE;
+      }
     }
   }
 
@@ -56,9 +58,25 @@ class MyGameBoard {
   }
 
   display() {
+    /* draw tiles (+ pieces) */
+    this.scene.pushMatrix();
+    // go to first column
+    this.scene.translate(
+      (-MyPiece.size * this.size) / 2,
+      0.0,
+      (-MyPiece.size * this.size) / 2
+    );
+
     // displays all tile (they display all pieces)
-    this.tiles.forEach((tile) => {
-      tile.display();
-    });
+    for (let i = 0; i < this.size; ++i) {
+      for (let j = 0; j < this.size; ++j) {
+        this.tiles[i * this.size + j].display();
+        this.scene.translate(MyPiece.size, 0.0, 0.0);
+      }
+      // go to next line start
+      this.scene.translate(-MyPiece.size * this.size, 0.0, MyPiece.size);
+    }
+
+    this.scene.popMatrix();
   }
 }

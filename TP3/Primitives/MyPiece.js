@@ -1,6 +1,6 @@
 const Color = {
-    BLACK: 0,
-    WHITE: 1,
+  BLACK: 0,
+  WHITE: 1,
 };
 
 /**
@@ -9,35 +9,39 @@ const Color = {
  * @param scene - Reference to MyScene object
  */
 class MyPiece extends CGFobject {
-	constructor(scene, color, tile) {
-        super(scene);
-        this.scene = scene;
-        this.color = color;
-        this.tile = tile ? tile : null;
+  static size = 1.0;
 
-        this.cube = new MyCube(scene);
-	}
-	
-	getColor(){
-        return this.color;
-    }
+  constructor(scene, color, tile) {
+    super(scene);
+    this.scene = scene;
+    this.color = color;
+    this.tile = tile ? tile : null;
 
-    setColor(color){
-        this.color = color;
-    }
+    this.cube = new MyCube(scene);
+  }
 
-    applyColor(){
-        if(this.color == Color.BLACK){
-            this.scene.blackMaterial.apply(); 
-        }
-        else this.scene.whiteMaterial.apply();
-    }
+  getColor() {
+    return this.color;
+  }
 
-    display(){
-        this.scene.pushMatrix();
-        this.applyColor();
-        this.scene.scale(1,0.5,1);
-        this.cube.display();
-        this.scene.popMatrix();
-    }
+  setColor(color) {
+    this.color = color;
+  }
+
+  applyColor() {
+    if (this.color == Color.BLACK) {
+      this.scene.pushMaterial(this.scene.blackMaterial);
+    } else this.scene.pushMaterial(this.scene.whiteMaterial);
+  }
+
+  display() {
+    this.scene.pushMatrix();
+
+    this.applyColor();
+    this.scene.scale(MyPiece.size, 0.5, MyPiece.size);
+    this.cube.display();
+    this.scene.popMaterial();
+
+    this.scene.popMatrix();
+  }
 }
