@@ -34,20 +34,16 @@ class MyGameBoard {
     return this.getTileByCoord(coord).getPiece();
   }
 
-  addPiece2Tile(coord, piece) {
+  addPieceToTile(coord, piece) {
     this.getTileByCoord(coord).setPiece(piece);
   }
 
-  removePiece2Tile(coord) {
+  removePieceFromTile(coord) {
     this.getTileByCoord(coord).unsetPiece();
   }
 
   getTileByPiece(piece) {
-    for (let i = 0; i < this.size; ++i) {
-      if (this.tiles[i].getPiece() == piece) return this.tiles[i];
-    }
-
-    return null;
+    return piece.tile;
   }
 
   move(pieceI, pieceF) {
@@ -61,8 +57,8 @@ class MyGameBoard {
   }
 
   display() {
-    this.displayBoardBottom();
     this.displayTiles();
+    this.displayBoardBottom();
   }
 
   displayBoardBottom() {
@@ -91,13 +87,16 @@ class MyGameBoard {
     // displays all tile (they display all pieces)
     for (let i = 0; i < this.size; ++i) {
       for (let j = 0; j < this.size; ++j) {
-        this.tiles[i * this.size + j].display();
+        let tileIndex = i * this.size + j;
+        this.scene.registerForPick(tileIndex + 1, this.tiles[tileIndex]);
+        this.tiles[tileIndex].display();
         this.scene.translate(MyPiece.size, 0.0, 0.0);
       }
       // go to next line start
       this.scene.translate(-MyPiece.size * this.size, 0.0, MyPiece.size);
     }
 
+    this.scene.registerForPick(undefined, undefined); // stop picking
     this.scene.popMatrix();
   }
 }
