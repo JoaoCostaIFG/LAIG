@@ -1,9 +1,9 @@
 class MyGameMove {
-  constructor(pieceI, tileI, pieceF, tileF) {
+  constructor(pieceI, pieceF) {
     this.pieceI = pieceI;
-    this.tileI = tileI;
+    this.tileI = pieceI.tile;
     this.pieceF = pieceF;
-    this.tileF = tileF;
+    this.tileF = pieceF.tile;
 
     this.genKeyframes();
   }
@@ -17,5 +17,12 @@ class MyGameMove {
 
   animate() {
     // let KeyframeAnimation(scene, id, this.keyframes);
+
+    this.tileI.toggleHightlight();
+    this.tileF.toggleHightlight();
+
+    this.tileI.setPiece(this.pieceF);
+    this.tileF.setPiece(this.pieceI);
+
   }
 }
