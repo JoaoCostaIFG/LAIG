@@ -1,10 +1,13 @@
 class MyGameBoard {
+  static tex = "./scenes/images/wood.jpeg"
+
   constructor(scene, size) {
     this.scene = scene;
     this.size = size;
 
     this.primitive = new MyCube(scene);
     this.boarder = new MyBoarder(scene, size);
+    this.tex = new CGFtexture(scene, MyGameBoard.tex);
 
     this.genTiles();
   }
@@ -62,9 +65,11 @@ class MyGameBoard {
   }
 
   display() {
-    this.displayBoardBottom();
     this.displayTiles();
+    this.scene.pushTexture(this.tex);
     this.displayBoarder();
+    this.displayBoardBottom();
+    this.scene.popTexture();
   }
 
   displayBoarder(){
