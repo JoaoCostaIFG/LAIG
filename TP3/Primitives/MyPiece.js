@@ -9,7 +9,7 @@ const Color = {
  * @param scene - Reference to MyScene object
  */
 class MyPiece extends CGFobject {
-  static size = 1.0;
+  static size = 4.0;
 
   constructor(scene, color, tile) {
     super(scene);
@@ -38,7 +38,8 @@ class MyPiece extends CGFobject {
     this.scene.pushMatrix();
 
     this.applyColor();
-    this.scene.scale(MyPiece.size, 0.5, MyPiece.size);
+    this.scene.translate(0.0, MyPiece.size / 4.0, 0.0);
+    this.scene.scale(MyPiece.size, MyPiece.size / 2.0, MyPiece.size);
     this.cube.display();
     this.scene.popMaterial();
 

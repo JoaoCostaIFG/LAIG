@@ -2,6 +2,9 @@ class MyGameBoard {
   constructor(scene, size) {
     this.scene = scene;
     this.size = size;
+
+    this.primitive = new MyCube(scene);
+
     this.genTiles();
   }
 
@@ -58,8 +61,26 @@ class MyGameBoard {
   }
 
   display() {
+    this.displayBoardBottom();
+    this.displayTiles();
+  }
+
+  displayBoardBottom() {
+    this.scene.pushMatrix();
+
+    let sideLen = MyPiece.size * this.size + MyPiece.size / 2.0;
+
+    this.scene.translate(-sideLen / 2.0, -MyPiece.size / 8.0, -sideLen / 2.0);
+    this.scene.scale(sideLen, MyPiece.size / 4.0, sideLen);
+    this.primitive.display();
+
+    this.scene.popMatrix();
+  }
+
+  displayTiles() {
     /* draw tiles (+ pieces) */
     this.scene.pushMatrix();
+
     // go to first column
     this.scene.translate(
       (-MyPiece.size * this.size) / 2,
