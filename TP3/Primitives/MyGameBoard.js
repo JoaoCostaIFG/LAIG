@@ -1,9 +1,13 @@
 class MyGameBoard {
+  static tex = "./scenes/images/wood.jpeg";
+
   constructor(scene, size) {
     this.scene = scene;
     this.size = size;
 
     this.primitive = new MyCube(scene);
+    this.border = new MyBorder(scene, size);
+    this.tex = new CGFtexture(scene, MyGameBoard.tex);
 
     this.genTiles();
   }
@@ -57,15 +61,57 @@ class MyGameBoard {
   }
 
   display() {
-    this.displayTiles();
+    this.scene.pushTexture(this.tex);
+    this.displayBorder();
     this.displayBoardBottom();
+    this.scene.popTexture();
+
+    this.displayTiles();
+  }
+
+  displayBorder() {
+    let halfPiece = MyPiece.size / 2.0;
+    let aux = this.size * halfPiece;
+
+    // Up
+    this.scene.pushMatrix();
+    this.scene.translate(
+      -aux - MyPiece.size / 4.0,
+      halfPiece,
+      -aux - MyPiece.size / 4.0
+    );
+    this.border.display();
+    this.scene.popMatrix();
+
+    // Right
+    this.scene.pushMatrix();
+    this.scene.translate(-aux, halfPiece, -aux);
+    this.scene.rotate(Math.PI / 2.0, 0, 1, 0);
+    this.border.display();
+    this.scene.popMatrix();
+
+    // Down
+    this.scene.pushMatrix();
+    this.scene.translate(aux, halfPiece, -aux);
+    this.border.display();
+    this.scene.popMatrix();
+
+    // Left
+    this.scene.pushMatrix();
+    this.scene.translate(
+      -aux - MyPiece.size / 4.0,
+      halfPiece,
+      aux + MyPiece.size / 4.0
+    );
+    this.scene.rotate(Math.PI / 2.0, 0, 1, 0);
+    this.border.display();
+    this.scene.popMatrix();
   }
 
   displayBoardBottom() {
     this.scene.pushMatrix();
 
     let sideLen = MyPiece.size * this.size + MyPiece.size / 2.0;
-
     this.scene.translate(-sideLen / 2.0, -MyPiece.size / 8.0, -sideLen / 2.0);
     this.scene.scale(sideLen, MyPiece.size / 4.0, sideLen);
     this.primitive.display();

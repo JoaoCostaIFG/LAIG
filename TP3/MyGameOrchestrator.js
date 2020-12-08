@@ -20,7 +20,9 @@ class MyGameOrchestrator {
         if (p) {
           let customId = this.scene.pickResults[i][1];
           console.log("Picked object: " + p + ", with pick id " + customId);
-          p.tile.toggleHightlight();
+          let tile = p.tile;
+          if (tile)
+            tile.toggleHightlight();
         }
       }
       this.scene.pickResults.splice(0, this.scene.pickResults.length);
