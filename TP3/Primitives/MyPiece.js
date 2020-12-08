@@ -10,6 +10,8 @@ const Color = {
  */
 class MyPiece extends CGFobject {
   static size = 4.0;
+  static white = "./scenes/images/whiteMarble.jpeg"
+  static black = "./scenes/images/blackMarble.jpeg"
 
   constructor(scene, color, tile) {
     super(scene);
@@ -30,8 +32,12 @@ class MyPiece extends CGFobject {
 
   applyColor() {
     if (this.color == Color.BLACK) {
-      this.scene.pushMaterial(this.scene.blackMaterial);
-    } else this.scene.pushMaterial(this.scene.whiteMaterial);
+      this.scene.pushMaterial(this.scene.whiteMaterial);
+      this.scene.pushTexture(this.scene.blackTex);
+    } else{
+      this.scene.pushMaterial(this.scene.whiteMaterial);
+      this.scene.pushTexture(this.scene.whiteTex);
+    } 
   }
 
   display() {

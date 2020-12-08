@@ -88,6 +88,9 @@ class XMLscene extends CGFscene {
     this.whiteMaterial.setDiffuse(0.9, 0.87, 0.77, 1.0);
     this.whiteMaterial.setSpecular(0.9, 0.87, 0.77, 1.0);
     this.whiteMaterial.setShininess(10.0);
+
+    this.whiteTex = new CGFtexture(this, MyPiece.white);
+    this.blackTex = new CGFtexture(this, MyPiece.black);
   }
 
   /**
