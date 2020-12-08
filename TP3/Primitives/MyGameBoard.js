@@ -4,6 +4,7 @@ class MyGameBoard {
     this.size = size;
 
     this.primitive = new MyCube(scene);
+    this.boarder = new MyBoarder(scene, size);
 
     this.genTiles();
   }
@@ -63,6 +64,39 @@ class MyGameBoard {
   display() {
     this.displayBoardBottom();
     this.displayTiles();
+    this.displayBoarder();
+  }
+
+  displayBoarder(){
+    let haflPiece = (MyPiece.size/2.0);
+    let aux = this.size * haflPiece;
+
+    // Up
+    this.scene.pushMatrix();
+    this.scene.translate(-aux - (MyPiece.size/4.0), haflPiece, -aux - (MyPiece.size/4.0));
+    this.boarder.display();
+    this.scene.popMatrix();
+
+    // Right
+    this.scene.pushMatrix();
+    this.scene.translate(-aux, haflPiece, -aux);
+    this.scene.rotate(Math.PI/2.0, 0, 1, 0);
+    this.boarder.display();
+    this.scene.popMatrix(); 
+
+    // Down
+    this.scene.pushMatrix();
+    this.scene.translate(aux , haflPiece, -aux);
+    this.boarder.display();
+    this.scene.popMatrix();
+
+    // Left
+    this.scene.pushMatrix();
+    this.scene.translate(-aux - (MyPiece.size/4.0) , haflPiece, aux + (MyPiece.size/4.0));
+    this.scene.rotate(Math.PI/2.0, 0, 1, 0);
+    this.boarder.display();
+    this.scene.popMatrix(); 
+
   }
 
   displayBoardBottom() {
