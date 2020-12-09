@@ -1,12 +1,12 @@
 class MyGameBoard {
-  static tex = "./scenes/images/wood.jpeg"
+  static tex = "./scenes/images/wood.jpeg";
 
   constructor(scene, size) {
     this.scene = scene;
     this.size = size;
 
     this.primitive = new MyCube(scene);
-    this.boarder = new MyBoarder(scene, size);
+    this.border = new MyBorder(scene, size);
     this.tex = new CGFtexture(scene, MyGameBoard.tex);
 
     this.genTiles();
@@ -38,77 +38,74 @@ class MyGameBoard {
     return this.getTileByCoord(coord).getPiece();
   }
 
-  addPiece2Tile(coord, piece) {
+  addPieceToTile(coord, piece) {
     this.getTileByCoord(coord).setPiece(piece);
   }
 
-  removePiece2Tile(coord) {
+  removePieceFromTile(coord) {
     this.getTileByCoord(coord).unsetPiece();
   }
 
   getTileByPiece(piece) {
-    for (let i = 0; i < this.size; ++i) {
-      if (this.tiles[i].getPiece() == piece) return this.tiles[i];
-    }
-
-    return null;
+    return piece.tile;
   }
 
   move(pieceI, pieceF) {
-    // get tiles
-    let tileI = this.getTileByPiece(pieceI);
-    let tileF = this.getTileByPiece(pieceF);
-    tileI = pieceF;
-    tileF = pieceI;
-
-    return new MyGameMove(pieceI, tileI, pieceF, tileF);
+    return new MyGameMove(pieceI, pieceF);
   }
 
   display() {
-    this.displayTiles();
     this.scene.pushTexture(this.tex);
-    this.displayBoarder();
+    this.displayBorder();
     this.displayBoardBottom();
     this.scene.popTexture();
+
+    this.displayTiles();
   }
 
-  displayBoarder(){
-    let haflPiece = (MyPiece.size/2.0);
-    let aux = this.size * haflPiece;
+  displayBorder() {
+    let halfPiece = MyPiece.size / 2.0;
+    let aux = this.size * halfPiece;
 
     // Up
     this.scene.pushMatrix();
-    this.scene.translate(-aux - (MyPiece.size/4.0), haflPiece, -aux - (MyPiece.size/4.0));
-    this.boarder.display();
+    this.scene.translate(
+      -aux - MyPiece.size / 4.0,
+      halfPiece,
+      -aux - MyPiece.size / 4.0
+    );
+    this.border.display();
     this.scene.popMatrix();
 
     // Right
     this.scene.pushMatrix();
-    this.scene.translate(-aux, haflPiece, -aux);
-    this.scene.rotate(Math.PI/2.0, 0, 1, 0);
-    this.boarder.display();
-    this.scene.popMatrix(); 
+    this.scene.translate(-aux, halfPiece, -aux);
+    this.scene.rotate(Math.PI / 2.0, 0, 1, 0);
+    this.border.display();
+    this.scene.popMatrix();
 
     // Down
     this.scene.pushMatrix();
-    this.scene.translate(aux , haflPiece, -aux);
-    this.boarder.display();
+    this.scene.translate(aux, halfPiece, -aux);
+    this.border.display();
     this.scene.popMatrix();
 
     // Left
     this.scene.pushMatrix();
-    this.scene.translate(-aux - (MyPiece.size/4.0) , haflPiece, aux + (MyPiece.size/4.0));
-    this.scene.rotate(Math.PI/2.0, 0, 1, 0);
-    this.boarder.display();
-    this.scene.popMatrix(); 
-
+    this.scene.translate(
+      -aux - MyPiece.size / 4.0,
+      halfPiece,
+      aux + MyPiece.size / 4.0
+    );
+    this.scene.rotate(Math.PI / 2.0, 0, 1, 0);
+    this.border.display();
+    this.scene.popMatrix();
   }
 
   displayBoardBottom() {
     this.scene.pushMatrix();
 
     let sideLen = MyPiece.size * this.size + MyPiece.size / 2.0;
-
     this.scene.translate(-sideLen / 2.0, -MyPiece.size / 8.0, -sideLen / 2.0);
     this.scene.scale(sideLen, MyPiece.size / 4.0, sideLen);
     this.primitive.display();
@@ -130,7 +127,15 @@ class MyGameBoard {
     // displays all tile (they display all pieces)
     for (let i = 0; i < this.size; ++i) {
       for (let j = 0; j < this.size; ++j) {
-        this.tiles[i * this.size + j].display();
+        let tileIndex = i * this.size + j;
+        this.scene.registerForPick(tileIndex + 1, this.tiles[tileIndex]);
+
+        this.tiles[tileIndex].aaa = tileIndex + 1;
+        this.tiles[tileIndex].piece.aaa = tileIndex + 1;
+
+        this.tiles[tileIndex].display();
+        this.scene.clearPickRegistration(); // stop picking
+
         this.scene.translate(MyPiece.size, 0.0, 0.0);
       }
       // go to next line start

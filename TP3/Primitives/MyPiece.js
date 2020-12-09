@@ -10,8 +10,8 @@ const Color = {
  */
 class MyPiece extends CGFobject {
   static size = 4.0;
-  static white = "./scenes/images/whiteMarble.jpeg"
-  static black = "./scenes/images/blackMarble.jpeg"
+  static white = "./scenes/images/whiteMarble.jpeg";
+  static black = "./scenes/images/blackMarble.jpeg";
 
   constructor(scene, color, tile) {
     super(scene);
@@ -34,21 +34,22 @@ class MyPiece extends CGFobject {
     if (this.color == Color.BLACK) {
       this.scene.pushMaterial(this.scene.whiteMaterial);
       this.scene.pushTexture(this.scene.blackTex);
-    } else{
+    } else {
       this.scene.pushMaterial(this.scene.whiteMaterial);
       this.scene.pushTexture(this.scene.whiteTex);
-    } 
+    }
   }
 
   display() {
     this.scene.pushMatrix();
-
     this.applyColor();
+
     this.scene.translate(0.0, MyPiece.size / 4.0, 0.0);
     this.scene.scale(MyPiece.size, MyPiece.size / 2.0, MyPiece.size);
     this.cube.display();
-    this.scene.popMaterial();
 
+    this.scene.popMaterial();
+    this.scene.popTexture();
     this.scene.popMatrix();
   }
 }

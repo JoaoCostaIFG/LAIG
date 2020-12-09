@@ -4,10 +4,10 @@
  * @param scene - Reference to MyScene object
  */
 class MyCube extends CGFobject {
-  constructor(scene) {
+  constructor(scene, afs=1.0, aft=1.0) {
     super(scene);
     this.scene = scene;
-    this.rect = new MyRectangle(this.scene, 0.5, -0.5, -0.5, 0.5);
+    this.rect = new MyRectangle(this.scene, 0.5, -0.5, -0.5, 0.5, afs, aft);
   }
 
   display() {

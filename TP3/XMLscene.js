@@ -91,6 +91,14 @@ class XMLscene extends CGFscene {
 
     this.whiteTex = new CGFtexture(this, MyPiece.white);
     this.blackTex = new CGFtexture(this, MyPiece.black);
+
+    // readhiglight
+    this.redHighlightMat = new CGFappearance(this);
+    // this.redHighlightMat.setAmbient(1.0, 0.0, 0.0, 1.0);
+    // this.redHighlightMat.setDiffuse(1.0, 0.0, 0.0, 1.0);
+    // this.redHighlightMat.setSpecular(1.0, 0.0, 0.0, 1.0);
+    this.redHighlightMat.setEmission(1.0, 0.0, 0.0, 1.0);
+    this.redHighlightMat.setShininess(100.0);
   }
 
   /**
@@ -201,26 +209,11 @@ class XMLscene extends CGFscene {
     this.setUpdatePeriod(30);
   }
 
-  logPicking() {
-    if (this.pickMode == false) {
-      if (this.pickResults != null && this.pickResults.length > 0) {
-        for (var i = 0; i < this.pickResults.length; i++) {
-          var obj = this.pickResults[i][0];
-          if (obj) {
-            var customId = this.pickResults[i][1];
-            console.log("Picked object: " + obj + ", with pick id " + customId);
-          }
-        }
-        this.pickResults.splice(0, this.pickResults.length);
-      }
-    }
-  }
-
   /**
    * Displays the scene.
    */
   display() {
-    this.logPicking();
+    this.gameOrchestrator.handlePicking();
     this.clearPickRegistration();
 
     // this.gameOrchestrator.orchestrate(); // TODO ?
@@ -241,11 +234,6 @@ class XMLscene extends CGFscene {
 
     this.pushMatrix();
 
-    // We're not sure why this line needs to be here
-    // but it's the only way we can get this to work.
-    // Without this here, the scene lights start acting weird.
-    // Transformations affect lights?
-    // TODO ?
     this.updateLightState();
 
     for (var i = 0; i < this.lights.length; i++) {
@@ -330,6 +318,7 @@ class XMLscene extends CGFscene {
     this.activeMaterials.pop();
     var lastMatInd = this.activeMaterials.length - 1;
     if (lastMatInd >= 0) this.activeMaterials[lastMatInd].apply();
+    else this.defaultAppearance.apply();
 
     this.applyLastTex();
   }

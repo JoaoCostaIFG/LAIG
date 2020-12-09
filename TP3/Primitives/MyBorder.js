@@ -1,4 +1,4 @@
-class MyBoarder{
+class MyBorder{
     constructor(scene, boardSize){
         this.scene = scene;
         this.cube = new MyCube(scene);
