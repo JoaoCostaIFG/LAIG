@@ -68,7 +68,7 @@ valid_move(GameState, [P1, P2], NewGameState) :-
   NewV > CurrV.
 
 % does the same as valid_move, but also checks if the pieces being
-% switched have different colors and below to the correct players
+% switched have different colors and belong to the correct players
 valid_move_full(GameState, Player, [P1, P2]) :-
   state_getLength(GameState, L),
   getValue(P1, _, L, Direcs),

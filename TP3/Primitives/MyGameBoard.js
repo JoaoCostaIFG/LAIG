@@ -21,6 +21,7 @@ class MyGameBoard {
       for (let j = 0; j < this.size; ++j) {
         let currTile = new MyTile(this.scene, this, null);
         currTile.setPiece(new MyPiece(this.scene, c, currTile));
+        currTile.setCoords(j, i);
         this.tiles.push(currTile);
         c = c == Color.WHITE ? Color.BLACK : Color.WHITE;
       }
@@ -143,5 +144,26 @@ class MyGameBoard {
     }
 
     this.scene.popMatrix();
+  }
+
+  toString() {
+    let ret = "[";
+
+    for (let i = 0; i < this.size; ++i) {
+      ret += "[";
+      let color = this.tiles[i * this.size].getPieceColor();
+      if (color == Color.WHITE) ret += "1";
+      else ret += "0";
+      for (let j = 1; j < this.size; ++j) {
+        let color = this.tiles[i * this.size + j].getPieceColor();
+        if (color == Color.WHITE) ret += ",1";
+        else ret += ",0";
+      }
+      ret += "],";
+    }
+
+    ret = ret.slice(0, -1);
+    ret += "]";
+    return ret;
   }
 }

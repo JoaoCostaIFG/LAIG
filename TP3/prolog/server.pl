@@ -104,6 +104,12 @@ print_header_line(_).
 % Require your Prolog Files here
 :-include('emulsion.pl').
 
+% our inputs
+parse_input(move(GameState,Move), NewGameState) :- move(GameState, Move, NewGameState).
+parse_input(ai_move(GameState,Player,Difficulty), Move) :- choose_move(GameState, Player, Difficulty, Move).
+parse_input(get_valid_moves(GameState,Player), ListOfMoves) :- valid_moves(GameState, Player, ListOfMoves).
+parse_input(valid_move(GameState,Player,Move), Move) :- valid_move_full(GameState, Player, Move).
+
 parse_input(handshake, handshake).
 parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).

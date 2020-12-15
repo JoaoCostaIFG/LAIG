@@ -17,12 +17,11 @@ class MyGameMove {
 
   animate() {
     // let KeyframeAnimation(scene, id, this.keyframes);
-
-    this.tileI.toggleHightlight();
-    this.tileF.toggleHightlight();
-
     this.tileI.setPiece(this.pieceF);
     this.tileF.setPiece(this.pieceI);
+  }
 
+  toString() {
+    return "[" + this.tileI.toString() + "," + this.tileF.toString() + "]";
   }
 }

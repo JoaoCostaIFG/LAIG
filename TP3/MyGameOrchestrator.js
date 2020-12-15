@@ -7,7 +7,7 @@ class MyGameOrchestrator {
     this.animator = new MyAnimator(this);
     this.gameboard = new MyGameBoard(scene, 10);
     this.theme = graph;
-    // this.prolog = new MyPrologInterface();
+    this.prolog = new MyPrologInterface("localhost", 8081);
 
     this.selectedPieces = [];
   }
@@ -50,8 +50,11 @@ class MyGameOrchestrator {
     // 2 pieces selected
     if (this.selectedPieces.length == 2) {
       let move = this.gameboard.move(...this.selectedPieces);
-      move.animate();
+      this.prolog.requestValidMove(this.gameboard, 0, move);
+
       // clear piece selection
+      move.tileI.toggleHightlight();
+      move.tileF.toggleHightlight();
       this.selectedPieces.splice(0, this.selectedPieces.length);
     }
   }

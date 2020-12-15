@@ -3,9 +3,14 @@ class MyTile {
     this.scene = scene;
     this.board = board;
     this.tileBorder = new MyCube(scene);
+    this.coord = [-1, -1];
 
     this.isHighlighted = false;
     this.piece = piece ? piece : null;
+  }
+
+  setCoords(x, y) {
+    this.coord = [x, y];
   }
 
   setPiece(piece) {
@@ -20,6 +25,11 @@ class MyTile {
 
   getPiece() {
     return this.piece;
+  }
+
+  getPieceColor() {
+    if (this.piece == null) return null;
+    return this.piece.color;
   }
 
   toggleHightlight() {
@@ -64,5 +74,9 @@ class MyTile {
 
     this.scene.popMatrix();
     this.scene.popMaterial();
+  }
+
+  toString() {
+    return "[" + this.coord[0] + "," + this.coord[1] + "]";
   }
 }
