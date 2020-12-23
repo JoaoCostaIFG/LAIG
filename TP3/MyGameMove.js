@@ -16,6 +16,11 @@ class MyGameMove {
     this.tileF.setPiece(this.pieceF);
   }
 
+  update(time){
+    this.pieceI.update(time);
+    this.pieceF.update(time);
+  }
+
   toString() {
     return "[" + this.tileI.toString() + "," + this.tileF.toString() + "]";
   }

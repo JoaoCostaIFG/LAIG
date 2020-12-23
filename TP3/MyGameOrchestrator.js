@@ -69,11 +69,12 @@ class MyGameOrchestrator {
     this.player = (this.player + 1) % 2;
     move.doMove();
     this.gameSequence.addMove(move);
+    this.animator.addObjToAnim(move);
   }
 
   /* || OTHER */
   update(t) {
-    // this.animator.update(t);
+    this.animator.update(t);
 
     // 2 pieces selected
     if (this.selectedPieces.length == 2) {
