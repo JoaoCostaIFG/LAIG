@@ -5,7 +5,6 @@ class MyAnimator {
     this.sequenceIndex = 0;
     this.animObjs = [];
 
-    this.isMovie = false;
     this.running = false;
   }
 
@@ -22,11 +21,6 @@ class MyAnimator {
     this.running = true;
   }
 
-  startMovie() {
-    this.isMovie = true;
-    this.start();
-  }
-
   pause() {
     this.running = false;
   }
@@ -34,10 +28,7 @@ class MyAnimator {
   update(time) {
     if (!this.running || this.sequenceIndex >= this.gameSequence.length) return;
 
-    let move = null;
-    if (this.isMovie) move = this.gameSequence.getMoveByInd(this.sequenceIndex);
-    else move = this.gameSequence.getLastMove();
-
+    let move = this.gameSequence.getMoveByInd(this.sequenceIndex);
     move.update(time);
   }
 

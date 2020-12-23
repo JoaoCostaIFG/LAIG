@@ -65,6 +65,9 @@ class MyGameOrchestrator {
       console.log("Undo last move.");
       move.undoMove();
       this.nextPlayer();
+
+      // update score
+      this.prolog.requestScore(this.gameboard, this.scoreBoard.parseScore.bind(this.scoreBoard));
     }
   }
 
