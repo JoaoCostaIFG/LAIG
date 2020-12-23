@@ -47,6 +47,7 @@ class MySceneGraph {
      * If any error occurs, the reader calls onXMLError on this object, with an error message
      */
     this.reader.open("scenes/" + filename, this);
+    this.boardPos = [0, 0, 0];
   }
 
   /*
@@ -991,8 +992,8 @@ class MySceneGraph {
         attributeTypes = ["float", "float", "float", "int", "int"];
         break;
       case "gameboard":
-        attributeNames = ["x", "y", "z", "size"];
-        attributeTypes = ["float", "float", "float", "int"];
+        attributeNames = ["x", "y", "z"];
+        attributeTypes = ["float", "float", "float"];
         break;
       default:
         return "unknown leaf type: " + objType + ".";
@@ -1114,7 +1115,8 @@ class MySceneGraph {
         obj = new Defbarrel(this.scene, ...global);
         break;
       case "gameboard":
-        // obj = new MyGameBoard(this.scene, ...global);
+        this.boardPos = global;
+        obj = null;
         break;
       default:
         obj = null;

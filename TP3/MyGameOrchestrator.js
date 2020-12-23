@@ -1,14 +1,22 @@
+const GameState = {
+  NOTSTARTED: 0,
+  RUNNING: 1,
+  PAUSED: 2,
+  ENDED: 3,
+}
+
 class MyGameOrchestrator {
   constructor(scene, graph) {
     this.scene = scene;
     scene.gameOrchestrator = this;
+    this.state = GameState.RUNNING; // TODO
 
     // TODO
     this.scoreBoard = new MyScoreBoard(scene, "1-1");
 
     this.gameSequence = new MyGameSequence();
     this.animator = new MyAnimator(this, this.gameSequence);
-    this.gameboard = new MyGameBoard(scene, 0, 0, 0, 10);
+    this.gameboard = new MyGameBoard(scene, 10);
     this.theme = graph;
     this.prolog = new MyPrologInterface("localhost", 8081);
 
@@ -88,6 +96,8 @@ class MyGameOrchestrator {
 
   /* || OTHER */
   update(t) {
+    if (this.state != GameState.RUNNING) return;
+
     this.animator.update(t);
 
     // 2 pieces selected
@@ -108,8 +118,13 @@ class MyGameOrchestrator {
   }
 
   display() {
+    if (this.state != GameState.RUNNING) return;
+
     this.theme.display();
+    this.scene.pushMatrix();
+    this.scene.translate(...this.theme.boardPos);
     this.gameboard.display();
     this.scoreBoard.display();
+    this.scene.popMatrix();
   }
 }

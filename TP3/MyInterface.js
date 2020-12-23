@@ -34,25 +34,20 @@ class MyInterface extends CGFinterface {
       .name("Selected camera")
       .onChange(this.scene.updateCurrentCamera.bind(this.scene));
 
-    // toggle to show object normals
-    // this.gui
-    // .add(this.scene.graph, "showNormals", this.scene.graph.showNormals)
-    // .name("Show normals")
-    // .onChange(this.scene.graph.toggleObjectNormals.bind(this.scene.graph));
-
-    // toggle to show lights as objects
-    // this.gui
-    // .add(this.scene, "areLightsVisible", this.scene.areLightsVisible)
-    // .name("Show lights");
-
     // undo last move
-    this.gui
-      .add(this.scene.gameOrchestrator, "undo", this.scene.gameOrchestrator.undo())
+    let gameDir = this.gui.addFolder("Game");
+    gameDir.open();
+    gameDir
+      .add(
+        this.scene.gameOrchestrator,
+        "undo",
+        this.scene.gameOrchestrator.undo()
+      )
       .name("Undo");
 
     // lights button
-    var lightsDir = this.gui.addFolder("Lights");
-    var i = 0;
+    let lightsDir = this.gui.addFolder("Lights");
+    let i = 0;
     for (let key in this.scene.graph.lights) {
       if (i >= 8) break; // Only eight lights allowed by WebCGF on default shaders.
 
@@ -62,7 +57,17 @@ class MyInterface extends CGFinterface {
       ++i;
     }
 
-    lightsDir.open();
+    // debug buttons
+    let debugDir = this.gui.addFolder("Debug");
+    // toggle to show object normals
+    debugDir
+      .add(this.scene.graph, "showNormals", this.scene.graph.showNormals)
+      .name("Show normals")
+      .onChange(this.scene.graph.toggleObjectNormals.bind(this.scene.graph));
+    // toggle to show lights as objects
+    debugDir
+      .add(this.scene, "areLightsVisible", this.scene.areLightsVisible)
+      .name("Show lights");
   }
 
   /**
