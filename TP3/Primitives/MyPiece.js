@@ -18,9 +18,13 @@ class MyPiece extends CGFobject {
     this.scene = scene;
     this.color = color;
     this.tile = tile ? tile : null;
-    this.animation = new MovePieceAnimation();
+    this.animation = null;
 
     this.cube = new MyCube(scene);
+  }
+
+  setAnimation(animation){
+    this.animation = animation;
   }
 
   getColor() {
@@ -42,14 +46,18 @@ class MyPiece extends CGFobject {
   }
 
   update(t) {
-    this.animation.update(t);
+    if(this.animation){
+      this.animation.update(t);
+    }
 
-    // TODO check if animation ended
-    // if ended => this.animation = null;
+    if(this.animation.isFinished)
+        this.animation = null;
   }
 
   display() {
-    this.animation.display();
+    
+    if(this.animation)
+      this.animation.display();
 
     this.scene.pushMatrix();
     this.applyColor();

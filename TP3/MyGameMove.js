@@ -7,11 +7,16 @@ class MyGameMove {
   }
 
   doMove() {
-    this.tileI.unsetPiece();
-    this.tileF.unsetPiece();
+    /* this.tileI.unsetPiece();
+    this.tileF.unsetPiece(); */
 
-    // TODO create animations
-    // and send them to the MyAnimator class
+    // Create animations
+    let animationI = new MovePieceAnimation(this.pieceI.scene);
+    this.pieceI.setAnimation(animationI);
+
+    let animationF = new MovePieceAnimation(this.pieceI.scene);
+    this.pieceF.setAnimation(animationF);
+
   }
 
   undoMove() {
@@ -20,6 +25,7 @@ class MyGameMove {
   }
 
   update(t){
+    console.log("UWU");
     this.pieceI.update(t);
     this.pieceF.update(t);
 
