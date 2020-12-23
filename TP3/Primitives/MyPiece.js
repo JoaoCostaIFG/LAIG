@@ -23,7 +23,7 @@ class MyPiece extends CGFobject {
     this.cube = new MyCube(scene);
   }
 
-  setAnimation(animation){
+  setAnimation(animation) {
     this.animation = animation;
   }
 
@@ -46,18 +46,14 @@ class MyPiece extends CGFobject {
   }
 
   update(t) {
-    if(this.animation){
+    if (this.animation) {
       this.animation.update(t);
+      if (this.animation.isFinished) this.animation = null;
     }
-
-    if(this.animation.isFinished)
-        this.animation = null;
   }
 
   display() {
-    
-    if(this.animation)
-      this.animation.display();
+    if (this.animation) this.animation.display();
 
     this.scene.pushMatrix();
     this.applyColor();
@@ -69,5 +65,6 @@ class MyPiece extends CGFobject {
     this.scene.popMaterial();
     this.scene.popTexture();
     this.scene.popMatrix();
+    if (this.animation) this.scene.popTransformation();
   }
 }

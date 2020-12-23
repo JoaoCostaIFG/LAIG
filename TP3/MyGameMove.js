@@ -25,7 +25,6 @@ class MyGameMove {
   }
 
   update(t){
-    console.log("UWU");
     this.pieceI.update(t);
     this.pieceF.update(t);
 

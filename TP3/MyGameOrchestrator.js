@@ -3,7 +3,7 @@ const GameState = {
   RUNNING: 1,
   PAUSED: 2,
   ENDED: 3,
-}
+};
 
 class MyGameOrchestrator {
   constructor(scene, graph) {
@@ -73,7 +73,10 @@ class MyGameOrchestrator {
       this.nextPlayer();
 
       // update score
-      this.prolog.requestScore(this.gameboard, this.scoreBoard.parseScore.bind(this.scoreBoard));
+      this.prolog.requestScore(
+        this.gameboard,
+        this.scoreBoard.parseScore.bind(this.scoreBoard)
+      );
     }
   }
 
@@ -86,17 +89,23 @@ class MyGameOrchestrator {
     this.nextPlayer();
     move.doMove();
     this.gameSequence.addMove(move);
-    this.animator.addObjToAnim(move);
+    // this.animator.addObjToAnim(move); // TODO
 
     // update score
-    this.prolog.requestScore(this.gameboard, this.scoreBoard.parseScore.bind(this.scoreBoard));
+    this.prolog.requestScore(
+      this.gameboard,
+      this.scoreBoard.parseScore.bind(this.scoreBoard)
+    );
   }
 
   /* || OTHER */
   update(t) {
     if (this.state != GameState.RUNNING) return;
 
-    this.animator.update(t);
+    // TODO (this will probably go into the animator)
+    // this.animator.update(t);
+    for (let i = 0; i < this.gameSequence.moves.length; ++i)
+      this.gameSequence.moves[i].update(t);
 
     // 2 pieces selected
     if (this.selectedPieces.length == 2) {
@@ -119,6 +128,7 @@ class MyGameOrchestrator {
     if (this.state != GameState.RUNNING) return;
 
     this.theme.display();
+
     this.scene.pushMatrix();
     this.scene.translate(...this.theme.boardPos);
     this.gameboard.display();
