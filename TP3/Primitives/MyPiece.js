@@ -42,7 +42,7 @@ class MyPiece extends CGFobject {
   }
 
   display() {
-    this.display();
+    this.animation.display();
 
     this.scene.pushMatrix();
     this.applyColor();

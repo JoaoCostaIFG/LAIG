@@ -1,9 +1,7 @@
-class MovePieceAnimation{
-    constructor(){
+class MovePieceAnimation {
+  constructor() {}
 
-    }
+  update(t) {}
 
-    update(time){
-        
-    }
+  display() {}
 }
