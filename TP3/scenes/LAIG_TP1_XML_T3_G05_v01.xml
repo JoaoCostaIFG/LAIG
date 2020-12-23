@@ -7,30 +7,14 @@
     <!-- identifier of root node of the scene graph; this node -->
     <!-- must be defined in one of the following NODE declarations -->
   </initials>
-  <views default="defaultCam">
+  <views default="cam1">
     <!-- at least one of the following type of cameras must be declared -->
-    <perspective id="defaultCam" near="0.1" far="500" angle="45">
-      <from x="200" y="50" z="-80"/>
-      <to x="0" y="0" z="30"/>
-    </perspective>
     <perspective id="cam1" near="0.1" far="500" angle="45">
-      <from x="50" y="20" z="60"/>
-      <to x="0" y="-2" z="0"/>
+      <from x="0" y="120" z="100"/>
+      <to x="0" y="0" z="0"/>
     </perspective>
     <perspective id="cam2" near="0.1" far="500" angle="45">
-      <from x="-50" y="20" z="-60"/>
-      <to x="0" y="-1" z="0"/>
-    </perspective>
-    <perspective id="cam3" near="0.1" far="500" angle="45">
-      <from x="0" y="40" z="-40"/>
-      <to x="0" y="0" z="0"/>
-    </perspective>
-    <perspective id="cam4" near="0.1" far="500" angle="45">
-      <from x="0" y="20" z="70"/>
-      <to x="0" y="0" z="0"/>
-    </perspective>
-    <perspective id="originCam" near="0.1" far="500" angle="45">
-      <from x="0" y="0" z="5"/>
+      <from x="0" y="120" z="-100"/>
       <to x="0" y="0" z="0"/>
     </perspective>
     <ortho id="orthoCam" near="0.1" far="500" left="-50" right="50" top="50" bottom="-50">
@@ -39,10 +23,6 @@
       <up x="0" y="1" z="0"/>
       <!-- optional, default 0,1,0 -->
     </ortho>
-    <perspective id="faceCam" near="0.1" far="500" angle="45">
-      <from x="0" y="4.4" z="13.4"/>
-      <to x="0" y="4.4" z="0"/>
-    </perspective>
   </views>
   <illumination>
     <!-- global ambient -->
@@ -141,6 +121,7 @@
       </transformations>
       <descendants>
         <noderef id="skybox"/>
+        <!-- <leaf type="gameboard" x="0" y="0" z="0" size="10"/> -->
       </descendants>
     </node>
     <!-- SKYBOX -->

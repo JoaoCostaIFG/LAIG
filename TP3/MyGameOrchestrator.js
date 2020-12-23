@@ -3,9 +3,12 @@ class MyGameOrchestrator {
     this.scene = scene;
     scene.gameOrchestrator = this;
 
+    // TODO
+    this.scoreBoard = new MyScoreBoard(scene, "1-1");
+
     this.gameSequence = new MyGameSequence();
     this.animator = new MyAnimator(this);
-    this.gameboard = new MyGameBoard(scene, 10);
+    this.gameboard = new MyGameBoard(scene, 0, 0, 0, 10);
     this.theme = graph;
     this.prolog = new MyPrologInterface("localhost", 8081);
 
@@ -50,6 +53,10 @@ class MyGameOrchestrator {
   }
 
   /* || MOVE */
+  nextPlayer() {
+    this.player = (this.player + 1) % 2;
+  }
+
   undo() {
     let move = this.gameSequence.undo();
     if (move == null) {
@@ -57,6 +64,7 @@ class MyGameOrchestrator {
     } else {
       console.log("Undo last move.");
       move.undoMove();
+      this.nextPlayer();
     }
   }
 
@@ -66,10 +74,13 @@ class MyGameOrchestrator {
       return;
     }
 
-    this.player = (this.player + 1) % 2;
+    this.nextPlayer();
     move.doMove();
     this.gameSequence.addMove(move);
     this.animator.addObjToAnim(move);
+
+    // update score
+    this.prolog.requestScore(this.gameboard, this.scoreBoard.parseScore.bind(this.scoreBoard));
   }
 
   /* || OTHER */
@@ -96,6 +107,6 @@ class MyGameOrchestrator {
   display() {
     this.theme.display();
     this.gameboard.display();
-    // this.animator.display();
+    this.scoreBoard.display();
   }
 }

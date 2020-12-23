@@ -1,4 +1,6 @@
 class MySpritesheet {
+  // TODO webgl warning dos uniform values acontece no setUniformsValues do activateCellMN
+
   constructor(scene, texture, sizeM, sizeN) {
     this.scene = scene;
     this.tex = texture;
@@ -13,10 +15,12 @@ class MySpritesheet {
     // this.mat = new CGFappearance(this.scene);
     // this.mat.setTexture(texture); // default material with spritesheet as texture
 
+    this.scene.setActiveShaderSimple(this.shader);
     this.shader.setUniformsValues({
       sheetSize: [sizeM, sizeN],
       charCoords: [0, 0],
     });
+    this.scene.setActiveShader(this.scene.defaultShader);
   }
 
   activateCellMN(m, n) {

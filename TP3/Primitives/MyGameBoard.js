@@ -1,8 +1,9 @@
 class MyGameBoard {
   static tex = "./scenes/images/wood.jpeg";
 
-  constructor(scene, size) {
+  constructor(scene, x, y, z, size) {
     this.scene = scene;
+    this.pos = [x, y, z];
     this.size = size;
 
     this.primitive = new MyCube(scene);
@@ -56,12 +57,17 @@ class MyGameBoard {
   }
 
   display() {
+    this.scene.pushMatrix();
+    this.scene.translate(...this.pos);
+
     this.scene.pushTexture(this.tex);
     this.displayBorder();
     this.displayBoardBottom();
     this.scene.popTexture();
 
     this.displayTiles();
+
+    this.scene.popMatrix();
   }
 
   displayBorder() {
