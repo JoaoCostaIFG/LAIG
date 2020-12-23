@@ -84,4 +84,13 @@ class MyPrologInterface {
   parseValidMoves(data) {
     console.log(data.target.response.split(","));
   }
+
+  /* || SCORE */
+  requestScore(board, onSuccess) {
+    // http://localhost:8081/score(gameState([0,0],2,[[0,1],[1,0]],0))
+    let req = "score(" + this.genGameState(board, "_") + ")";
+    console.log("Request: " + req);
+
+    this.getPrologRequest(req, onSuccess);
+  }
 }

@@ -990,6 +990,10 @@ class MySceneGraph {
         attributeNames = ["base", "middle", "height", "slices", "stacks"];
         attributeTypes = ["float", "float", "float", "int", "int"];
         break;
+      case "gameboard":
+        attributeNames = ["x", "y", "z", "size"];
+        attributeTypes = ["float", "float", "float", "int"];
+        break;
       default:
         return "unknown leaf type: " + objType + ".";
     }
@@ -1108,6 +1112,9 @@ class MySceneGraph {
         break;
       case "defbarrel":
         obj = new Defbarrel(this.scene, ...global);
+        break;
+      case "gameboard":
+        // obj = new MyGameBoard(this.scene, ...global);
         break;
       default:
         obj = null;

@@ -109,6 +109,9 @@ parse_input(move(GameState,Move), NewGameState) :- move(GameState, Move, NewGame
 parse_input(ai_move(GameState,Player,Difficulty), Move) :- choose_move(GameState, Player, Difficulty, Move).
 parse_input(get_valid_moves(GameState,Player), ListOfMoves) :- valid_moves(GameState, Player, ListOfMoves).
 parse_input(valid_move(GameState,Player,Move), Move) :- valid_move_full(GameState, Player, Move).
+parse_input(score(GameState), V0-V1) :-
+  value(GameState, 0, VL0), value(GameState, 1, VL1),
+  parseValueList(VL0, VL1, V0, V1, _).
 
 parse_input(handshake, handshake).
 parse_input(test(C,N), Res) :- test(C,Res,N).
@@ -116,4 +119,4 @@ parse_input(quit, goodbye).
 
 test(_,[],N) :- N =< 0.
 test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).
-	
+
