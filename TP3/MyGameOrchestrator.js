@@ -11,11 +11,9 @@ class MyGameOrchestrator {
     scene.gameOrchestrator = this;
     this.state = GameState.RUNNING; // TODO
 
-    // TODO
-    this.scoreBoard = new MyScoreBoard(scene, "1-1");
-
     this.gameSequence = new MyGameSequence();
     this.animator = new MyAnimator(this, this.gameSequence);
+    this.scoreBoard = new MyScoreBoard(scene, "1-1");
     this.gameboard = new MyGameBoard(scene, 10);
     this.theme = graph;
     this.prolog = new MyPrologInterface("localhost", 8081);
