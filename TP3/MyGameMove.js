@@ -4,21 +4,16 @@ class MyGameMove {
     this.tileI = pieceI.tile;
     this.pieceF = pieceF;
     this.tileF = pieceF.tile;
-
-    this.genKeyframes();
   }
 
-  genKeyframes() {
-    this.keyframes = [];
-    this.keyframes.push(new Keyframe(0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-    this.keyframes.push(new Keyframe(1, 5, 5, 5, 0, 0, 0, 0, 0, 0));
-    this.keyframes.push(new Keyframe(2, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-  }
-
-  animate() {
-    // let KeyframeAnimation(scene, id, this.keyframes);
+  doMove() {
     this.tileI.setPiece(this.pieceF);
     this.tileF.setPiece(this.pieceI);
+  }
+
+  undoMove() {
+    this.tileI.setPiece(this.pieceI);
+    this.tileF.setPiece(this.pieceF);
   }
 
   toString() {

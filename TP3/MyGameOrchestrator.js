@@ -9,9 +9,11 @@ class MyGameOrchestrator {
     this.theme = graph;
     this.prolog = new MyPrologInterface("localhost", 8081);
 
+    this.player = 0;
     this.selectedPieces = [];
   }
 
+  /* || PICKING */
   handlePicking() {
     if (this.scene.pickMode == true) return;
 
@@ -38,19 +40,50 @@ class MyGameOrchestrator {
       else this.selectedPieces.push(p);
       obj.toggleHightlight();
     } else if (obj instanceof MyPiece) {
-      // piece
+      if (this.selectedPieces.length > 0 && this.selectedPieces[0] == p)
+        this.selectedPieces = [];
+      else this.selectedPieces.push(p);
+      obj.toggleHightlight();
     } else {
       // error
     }
   }
 
+  /* || MOVE */
+  undo() {
+    let move = this.gameSequence.undo();
+    if (move == null) {
+      console.log("No move to undo.");
+    } else {
+      console.log("Undo last move.");
+      move.undoMove();
+    }
+  }
+
+  onValidMove(move, data) {
+    if (data.target.response == "Bad Request") {
+      console.log("Invalid move");
+      return;
+    }
+
+    this.player = (this.player + 1) % 2;
+    move.doMove();
+    this.gameSequence.addMove(move);
+  }
+
+  /* || OTHER */
   update(t) {
     // this.animator.update(t);
 
     // 2 pieces selected
     if (this.selectedPieces.length == 2) {
       let move = this.gameboard.move(...this.selectedPieces);
-      this.prolog.requestValidMove(this.gameboard, 0, move);
+      this.prolog.requestValidMove(
+        this.gameboard,
+        this.player,
+        move,
+        this.onValidMove.bind(this, move)
+      );
 
       // clear piece selection
       move.tileI.toggleHightlight();

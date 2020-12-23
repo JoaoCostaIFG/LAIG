@@ -5,12 +5,6 @@ class MyGameSequence {
 
   addMove(move) {
     this.moves.push(move);
-
-    // animate
-
-    // switch pieces possitions
-    tileI.setPiece(pieceF);
-    tileF.setPiece(pieceI);
   }
 
   canUndo() {
@@ -23,10 +17,9 @@ class MyGameSequence {
 
   undo() {
     // check if we can undo
-    if (!this.canUndo()) return;
+    if (!this.canUndo()) return null;
   
     let lastMove = this.getLastMove();
-    lastMove.tileI = lastMove.pieceI;
-    lastMove.tileF = lastMove.pieceF;
+    return lastMove;
   }
 }

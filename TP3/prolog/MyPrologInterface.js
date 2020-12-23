@@ -52,7 +52,7 @@ class MyPrologInterface {
   }
 
   /* || MOVE IF VALID */
-  requestValidMove(board, player, move) {
+  requestValidMove(board, player, move, onSuccess) {
     // http://localhost:8081/valid_move(gameState([0,0],2,[[0,1],[1,0]],0),[[0,0],[0,1]])
     let req =
       "valid_move(" +
@@ -64,19 +64,7 @@ class MyPrologInterface {
       ")";
     console.log("Request: " + req);
 
-    this.getPrologRequest(
-      req,
-      this.parseValidMove.bind(undefined, move)
-    );
-  }
-
-  parseValidMove(move, data) {
-    if(data.target.response == "Bad Request") {
-      console.log("Invalid move");
-    }
-    else {
-      move.animate();
-    }
+    this.getPrologRequest(req, onSuccess);
   }
 
   /* || VALID MOVES */

@@ -21,7 +21,7 @@ main=function()
     var myInterface = new MyInterface();
     var myScene = new XMLscene(myInterface);
 
-    app.init();4, 20, 2
+    app.init();
 
     app.setScene(myScene);
     app.setInterface(myInterface);

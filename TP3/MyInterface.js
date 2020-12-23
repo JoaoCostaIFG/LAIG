@@ -35,15 +35,20 @@ class MyInterface extends CGFinterface {
       .onChange(this.scene.updateCurrentCamera.bind(this.scene));
 
     // toggle to show object normals
-    this.gui
-      .add(this.scene.graph, "showNormals", this.scene.graph.showNormals)
-      .name("Show normals")
-      .onChange(this.scene.graph.toggleObjectNormals.bind(this.scene.graph));
+    // this.gui
+    // .add(this.scene.graph, "showNormals", this.scene.graph.showNormals)
+    // .name("Show normals")
+    // .onChange(this.scene.graph.toggleObjectNormals.bind(this.scene.graph));
 
     // toggle to show lights as objects
+    // this.gui
+    // .add(this.scene, "areLightsVisible", this.scene.areLightsVisible)
+    // .name("Show lights");
+
+    // undo last move
     this.gui
-      .add(this.scene, "areLightsVisible", this.scene.areLightsVisible)
-      .name("Show lights");
+      .add(this.scene.gameOrchestrator, "undo", this.scene.gameOrchestrator.undo())
+      .name("Undo");
 
     // lights button
     var lightsDir = this.gui.addFolder("Lights");
