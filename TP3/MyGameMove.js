@@ -7,8 +7,11 @@ class MyGameMove {
   }
 
   doMove() {
-    this.tileI.setPiece(this.pieceF);
-    this.tileF.setPiece(this.pieceI);
+    this.tileI.unsetPiece();
+    this.tileF.unsetPiece();
+
+    // TODO create animations
+    // and send them to the MyAnimator class
   }
 
   undoMove() {
@@ -16,9 +19,16 @@ class MyGameMove {
     this.tileF.setPiece(this.pieceF);
   }
 
-  update(time){
-    this.pieceI.update(time);
-    this.pieceF.update(time);
+  update(t){
+    this.pieceI.update(t);
+    this.pieceF.update(t);
+
+    // animations ended
+    if (this.pieceI.animation == null && this.pieceF.animation == null) {
+      // at the end, switch the initial tiles
+      this.tileI.setPiece(this.pieceF);
+      this.tileF.setPiece(this.pieceI);
+    }
   }
 
   toString() {

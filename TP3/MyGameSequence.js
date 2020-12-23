@@ -1,10 +1,12 @@
 class MyGameSequence {
   constructor() {
     this.moves = [];
+    this.length = 0;
   }
 
   addMove(move) {
     this.moves.push(move);
+    this.length++;
   }
 
   canUndo() {
@@ -12,6 +14,7 @@ class MyGameSequence {
   }
 
   getLastMove() {
+    this.length--;
     return this.moves.pop();
   }
 
@@ -21,5 +24,9 @@ class MyGameSequence {
   
     let lastMove = this.getLastMove();
     return lastMove;
+  }
+
+  getMoveByInd(i) {
+    return this.moves[i];
   }
 }

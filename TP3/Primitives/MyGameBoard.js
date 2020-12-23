@@ -137,9 +137,6 @@ class MyGameBoard {
         let tileIndex = i * this.size + j;
         this.scene.registerForPick(tileIndex + 1, this.tiles[tileIndex]);
 
-        this.tiles[tileIndex].aaa = tileIndex + 1;
-        this.tiles[tileIndex].piece.aaa = tileIndex + 1;
-
         this.tiles[tileIndex].display();
         this.scene.clearPickRegistration(); // stop picking
 

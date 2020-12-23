@@ -41,6 +41,13 @@ class MyPiece extends CGFobject {
     }
   }
 
+  update(t) {
+    this.animation.update(t);
+
+    // TODO check if animation ended
+    // if ended => this.animation = null;
+  }
+
   display() {
     this.animation.display();
 
