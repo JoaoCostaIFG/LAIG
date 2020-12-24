@@ -2,14 +2,8 @@ class MyAnimator {
   constructor(gameOrchestrator, gameSequence) {
     this.gameOrchestrator = gameOrchestrator;
     this.gameSequence = gameSequence;
-    this.sequenceIndex = 0;
-    this.animObjs = [];
 
-    this.running = false;
-  }
-
-  addObjToAnim(obj) {
-    this.animObjs.push(obj);
+    this.reset();
   }
 
   reset() {
@@ -28,13 +22,13 @@ class MyAnimator {
   update(time) {
     if (!this.running || this.sequenceIndex >= this.gameSequence.length) return;
 
-    let move = this.gameSequence.getMoveByInd(this.sequenceIndex);
+    let move = this.gameSequence.getLastMove();
     move.update(time);
   }
 
   display() {
-    if (!this.running || this.sequenceIndex >= this.gameSequence.length) return;
+    if (!this.running) return;
 
-    let move = this.gameSequence.getMoveByInd(this.sequenceIndex);
+    let move = this.gameSequence.getLastMove();
   }
 }

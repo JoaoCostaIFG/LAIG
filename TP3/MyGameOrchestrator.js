@@ -89,7 +89,7 @@ class MyGameOrchestrator {
     this.nextPlayer();
     move.doMove();
     this.gameSequence.addMove(move);
-    // this.animator.addObjToAnim(move); // TODO
+    this.animator.start();
 
     // update score
     this.prolog.requestScore(
@@ -102,10 +102,7 @@ class MyGameOrchestrator {
   update(t) {
     if (this.state != GameState.RUNNING) return;
 
-    // TODO (this will probably go into the animator)
-    // this.animator.update(t);
-    for (let i = 0; i < this.gameSequence.moves.length; ++i)
-      this.gameSequence.moves[i].update(t);
+    this.animator.update(t);
 
     // 2 pieces selected
     if (this.selectedPieces.length == 2) {

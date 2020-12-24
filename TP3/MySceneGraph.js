@@ -1357,8 +1357,9 @@ class MySceneGraph {
             if (typeof leafObj === "string" || leafObj instanceof String)
               return leafObj;
             else if (leafObj == null)
+              // TODO this was causing problems for gameboard (it is null)
               this.onXMLMinorError(
-                "Failed instanciating leaf: " + nodeID + "."
+                "Failed instanciating leaf of: " + nodeID + "."
               );
             else nodeObj.addDescendantLeaf(leafObj);
           } else {
