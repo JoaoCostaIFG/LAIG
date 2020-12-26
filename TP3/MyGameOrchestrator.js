@@ -196,6 +196,7 @@ class MyGameOrchestrator {
     if (data.target.response == "Bad Request") {
       console.log("No more valid moves.");
       this.validMoves = [];
+      this.gameEnded();
     }
 
     this.validMoves = JSON.parse(data.target.response);
@@ -257,6 +258,10 @@ class MyGameOrchestrator {
   }
 
   /* || OTHER */
+  gameEnded() {
+    this.scoreBoard.end();
+  }
+
   update(t) {
     if (this.state != GameState.RUNNING && this.state != GameState.PAUSED)
       return;
@@ -264,10 +269,6 @@ class MyGameOrchestrator {
     this.animator.update(t);
     this.scoreBoard.update(t);
 
-    // if (this.validMoves.length == 0) { // game ended
-    // // TODO game ended method
-    // }
-    // else
     if (this.selectedPieces.length == 2) {
       // 2 pieces selected
       let move = this.gameboard.move(...this.selectedPieces);

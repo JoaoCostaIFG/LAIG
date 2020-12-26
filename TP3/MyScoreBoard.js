@@ -23,13 +23,7 @@ class MyScoreBoard {
     this.lastTime = Date.now() / 1000;
     this.time = this.maxTime;
     this.running = true;
-  }
-
-  update(t) {
-    if (this.running) this.time -= t - this.lastTime;
-    this.lastTime = t;
-
-    if (this.time < 0) this.time = 0;
+    this.gameEnded = false;
   }
 
   start() {
@@ -38,6 +32,17 @@ class MyScoreBoard {
 
   pause() {
     this.running = false;
+  }
+
+  end() {
+    this.gameEnded = true;
+  }
+
+  update(t) {
+    if (this.running) this.time -= t - this.lastTime;
+    this.lastTime = t;
+
+    if (this.time < 0) this.time = 0;
   }
 
   displayBoard(isBack = false) {
@@ -49,7 +54,8 @@ class MyScoreBoard {
 
     let timeToShow = this.time.toFixed(1);
     let timerStr = (timeToShow < 10 ? "0" : "") + timeToShow;
-    this.txt.setText(this.score[0] + "-" + this.score[1] + " " + timerStr);
+    if (this.gameEnded) this.txt.setText(this.score[0] + "-" + this.score[1]);
+    else this.txt.setText(this.score[0] + "-" + this.score[1] + " " + timerStr);
     this.txt.display();
 
     this.scene.popMatrix();
@@ -59,10 +65,16 @@ class MyScoreBoard {
     this.scene.scale(3, 3, 0);
     if (isBack) this.scene.rotate(Math.PI, 0, 1, 0);
 
-    if (this.score[0] > this.score[1]) this.txt.setText("Black is winning!");
-    else if (this.score[0] < this.score[1])
-      this.txt.setText("White is winning!");
-    else this.txt.setText("The players are tied!");
+    if (this.score[0] > this.score[1]) {
+      if (this.gameEnded) this.txt.setText("Black wins!");
+      else this.txt.setText("Black is winning!");
+    } else if (this.score[0] < this.score[1]) {
+      if (this.gameEnded) this.txt.setText("White wins!");
+      else this.txt.setText("White is winning!");
+    } else {
+      if (this.gameEnded) this.txt.setText("The players tied!");
+      else this.txt.setText("The players are tied!");
+    }
     this.txt.display();
 
     this.scene.popMatrix();
