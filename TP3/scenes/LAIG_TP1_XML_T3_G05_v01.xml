@@ -113,8 +113,89 @@
       <transformations>
       </transformations>
       <descendants>
+        <noderef id="table"/>
         <noderef id="skybox"/>
         <leaf type="gameboard" x="0" y="0" z="0"/>
+      </descendants>
+    </node>
+    <node id="table">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+      </transformations>
+      <descendants>
+        <noderef id="tabletop"/>
+        <noderef id="upperLeftLeg"/>
+        <noderef id="lowerLeftLeg"/>
+        <noderef id="upperRightLeg"/>
+        <noderef id="lowerRightLeg"/>
+      </descendants>
+    </node>
+    <node id="tabletop">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="-30.0" y="-1.0" z="-30.0"/>
+        <scale sx="1" sy="0.02" sz="1"/>
+      </transformations>
+      <descendants>
+        <leaf type="cube" side="30"/>
+      </descendants>
+    </node>
+    <node id="lowerLeftLeg">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+          <translation x="-26.0" y="-21.0" z="22.0"/>
+          <scale sx="1" sy="10" sz="1"/>
+      </transformations>
+      <descendants>
+        <leaf type="cube" side="2"/>
+      </descendants>
+    </node>
+    <node id="upperLeftLeg">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+          <translation x="-26.0" y="-21.0" z="-26.0"/>
+          <scale sx="1" sy="10" sz="1"/>
+      </transformations>
+      <descendants>
+        <leaf type="cube" side="2"/>
+      </descendants>
+    </node>
+    <node id="lowerRightLeg">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+          <translation x="22.0" y="-21.0" z="22.0"/>
+          <scale sx="1" sy="10" sz="1"/>
+      </transformations>
+      <descendants>
+        <leaf type="cube" side="2"/>
+      </descendants>
+    </node>
+    <node id="upperRightLeg">
+      <material id="null"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+          <translation x="22.0" y="-21.0" z="-26.0"/>
+          <scale sx="1" sy="10" sz="1"/>
+      </transformations>
+      <descendants>
+        <leaf type="cube" side="2"/>
       </descendants>
     </node>
     <!-- SKYBOX -->
@@ -124,7 +205,7 @@
         <amplification afs="1.0" aft="1.0"/>
       </texture>
       <transformations>
-            </transformations>
+      </transformations>
       <descendants>
         <noderef id="skyboxBack"/>
         <noderef id="skyboxFront"/>

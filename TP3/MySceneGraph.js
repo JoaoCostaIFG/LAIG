@@ -995,6 +995,10 @@ class MySceneGraph {
         attributeNames = ["x", "y", "z"];
         attributeTypes = ["float", "float", "float"];
         break;
+      case "cube":
+        attributeNames = ["side"];
+        attributeTypes = ["float"];
+        break;
       default:
         return "unknown leaf type: " + objType + ".";
     }
@@ -1117,6 +1121,9 @@ class MySceneGraph {
       case "gameboard":
         this.boardPos = global;
         obj = null;
+        break;
+      case "cube":
+        obj = new MyCube(this.scene, ...global);
         break;
       default:
         obj = null;
