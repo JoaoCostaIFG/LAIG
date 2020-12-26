@@ -1,8 +1,11 @@
 class MyScoreBoard {
-  constructor(scene) {
+  constructor(scene, maxTime) {
     this.scene = scene;
+    this.maxTime = maxTime;
     this.txt = new MySpriteText(scene, "");
     this.score = [1, 1];
+
+    this.reset();
   }
 
   parseScore(data) {
@@ -14,12 +17,28 @@ class MyScoreBoard {
     this.score = data.target.response.split("-");
   }
 
-  display() {
+  reset() {
+    this.lastTime = Date.now() / 1000;
+    this.time = this.maxTime;
+  }
+
+  update(t) {
+    this.time -= t - this.lastTime;
+    this.lastTime = t;
+
+    if (this.time < 0) this.time = 0;
+  }
+
+  displayBoard(isBack = false) {
     this.scene.pushMatrix();
+
     this.scene.translate(0, 20, 0);
     this.scene.scale(3, 3, 0);
+    if (isBack) this.scene.rotate(Math.PI, 0, 1, 0);
 
-    this.txt.setText(this.score[0] + "-" + this.score[1]);
+    let timeToShow = this.time.toFixed(1);
+    let timerStr = (timeToShow < 10 ? "0" : "") + timeToShow;
+    this.txt.setText(this.score[0] + "-" + this.score[1] + " " + timerStr);
     this.txt.display();
 
     this.scene.popMatrix();
@@ -27,6 +46,7 @@ class MyScoreBoard {
     this.scene.pushMatrix();
     this.scene.translate(0, 15, 0);
     this.scene.scale(3, 3, 0);
+    if (isBack) this.scene.rotate(Math.PI, 0, 1, 0);
 
     if (this.score[0] > this.score[1]) this.txt.setText("Black is winning!");
     else if (this.score[0] < this.score[1])
@@ -35,5 +55,10 @@ class MyScoreBoard {
     this.txt.display();
 
     this.scene.popMatrix();
+  }
+
+  display() {
+    this.displayBoard();
+    this.displayBoard(true);
   }
 }

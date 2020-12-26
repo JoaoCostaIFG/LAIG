@@ -1,4 +1,5 @@
 const GameState = {
+  PRESTART: -1,
   NOTSTARTED: 0,
   RUNNING: 1,
   PAUSED: 2,
@@ -9,17 +10,43 @@ class MyGameOrchestrator {
   constructor(scene, graph) {
     this.scene = scene;
     scene.gameOrchestrator = this;
-    this.state = GameState.RUNNING; // TODO
+    this.state = GameState.PRESTART;
 
     this.gameSequence = new MyGameSequence();
     this.animator = new MyAnimator(this, this.gameSequence);
-    this.scoreBoard = new MyScoreBoard(scene);
-    this.gameboard = new MyGameBoard(scene, 10);
+    // this.scoreBoard = new MyScoreBoard(scene, 10);
+    // this.gameboard = new MyGameBoard(scene, 10);
     this.theme = graph;
     this.prolog = new MyPrologInterface("localhost", 8081);
 
     this.player = 0;
     this.selectedPieces = [];
+
+    // game options
+    this.difficultyTimes = [30, 20, 10];
+    this.difficultyInd = {
+      easy: 0,
+      medium: 1,
+      hard: 2,
+    };
+    this.selectedDifficulty = 0;
+    this.boardSize = 10;
+  }
+
+  /* || START */
+  start() {
+    if (this.state == GameState.PRESTART) {
+      this.state = GameState.NOTSTARTED;
+    } else if (this.state == GameState.NOTSTARTED) {
+      // create board and score board according to game options
+      this.scoreBoard = new MyScoreBoard(
+        this.scene,
+        this.difficultyTimes[this.selectedDifficulty]
+      );
+      this.gameboard = new MyGameBoard(this.scene, this.boardSize);
+
+      this.state = GameState.RUNNING;
+    }
   }
 
   /* || PICKING */
@@ -96,6 +123,8 @@ class MyGameOrchestrator {
       this.gameboard,
       this.scoreBoard.parseScore.bind(this.scoreBoard)
     );
+    // reset timer
+    this.scoreBoard.reset();
   }
 
   /* || OTHER */
@@ -103,6 +132,7 @@ class MyGameOrchestrator {
     if (this.state != GameState.RUNNING) return;
 
     this.animator.update(t);
+    this.scoreBoard.update(t);
 
     // 2 pieces selected
     if (this.selectedPieces.length == 2) {
@@ -118,13 +148,16 @@ class MyGameOrchestrator {
       move.tileI.toggleHightlight();
       move.tileF.toggleHightlight();
       this.selectedPieces.splice(0, this.selectedPieces.length);
+    } else if (this.scoreBoard.time <= 0) {
+      // TODO player lose on time out
+      console.log("PLAYER " + this.player + " TIMED OUT!");
     }
   }
 
   display() {
-    if (this.state != GameState.RUNNING) return;
-
     this.theme.display();
+
+    if (this.state != GameState.RUNNING) return;
 
     this.scene.pushMatrix();
     this.scene.translate(...this.theme.boardPos);

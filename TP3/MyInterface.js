@@ -34,17 +34,6 @@ class MyInterface extends CGFinterface {
       .name("Selected camera")
       .onChange(this.scene.updateCurrentCamera.bind(this.scene));
 
-    // undo last move
-    let gameDir = this.gui.addFolder("Game");
-    gameDir.open();
-    gameDir
-      .add(
-        this.scene.gameOrchestrator,
-        "undo",
-        this.scene.gameOrchestrator.undo()
-      )
-      .name("Undo");
-
     // lights button
     let lightsDir = this.gui.addFolder("Lights");
     let i = 0;
@@ -68,6 +57,41 @@ class MyInterface extends CGFinterface {
     debugDir
       .add(this.scene, "areLightsVisible", this.scene.areLightsVisible)
       .name("Show lights");
+
+    // game buttons
+    let gameDir = this.gui.addFolder("Game");
+    gameDir.open();
+    // game options
+    gameDir
+      .add(
+        this.scene.gameOrchestrator,
+        "selectedDifficulty",
+        this.scene.gameOrchestrator.difficultyInd
+      )
+      .name("Difficulty");
+    gameDir
+      .add(
+        this.scene.gameOrchestrator,
+        "boardSize",
+        this.scene.gameOrchestrator.boardSize
+      )
+      .name("Board size");
+    // undo
+    gameDir
+      .add(
+        this.scene.gameOrchestrator,
+        "undo",
+        this.scene.gameOrchestrator.undo()
+      )
+      .name("Undo");
+    // start
+    gameDir
+      .add(
+        this.scene.gameOrchestrator,
+        "start",
+        this.scene.gameOrchestrator.start()
+      )
+      .name("Start");
   }
 
   /**
