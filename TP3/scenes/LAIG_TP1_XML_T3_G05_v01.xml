@@ -101,6 +101,38 @@
     </material>
   </materials>
   <animations>
+      <animation id="rightChairAnim">
+      <keyframe instant="0.0">
+        <translation x="0.0" y="-5.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="1000.0">
+        <translation x="0.0" y="3.0" z="-4.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="3610.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+    </animation>
+      <animation id="leftChairAnim">
+      <keyframe instant="0.0">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="1000.0">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="3610.0"/>
+        <rotation axis="z" angle="3610.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+    </animation>
   </animations>
   <nodes>
     <node id="root">
@@ -128,10 +160,12 @@
         <amplification afs="1.0" aft="1.0"/>
       </texture>
       <transformations>
-        <translation x="40.0" y="-20.0" z="0.0"/>
-        <rotation axis="y" angle="-90"/>
-        <scale sx="5" sy="5" sz="5"/>  
+        <translation x="60.0" y="0.0" z="0.0"/>
+        <rotation axis="y" angle="-110"/>
+        <rotation axis="z" angle="-110"/>
+        <scale sx="4.5" sy="4.5" sz="4.5"/>  
       </transformations>
+      <animationref id="rightChairAnim"/>
       <descendants>
         <noderef id="chairBack"/>
         <noderef id="seat"/>
@@ -144,10 +178,13 @@
         <amplification afs="1.0" aft="1.0"/>
       </texture>
       <transformations>
-        <translation x="-40.0" y="-20.0" z="0.0"/>
+        <translation x="-60.0" y="-20.0" z="0.0"/>
         <rotation axis="y" angle="90"/>
-        <scale sx="5" sy="5" sz="5"/>  
+        <rotation axis="z" angle="-50"/>
+        <rotation axis="y" angle="-50"/>
+        <scale sx="4.5" sy="4.5" sz="4.5"/>  
       </transformations>
+      <animationref id="leftChairAnim"/>
       <descendants>
         <noderef id="chairBack"/>
         <noderef id="seat"/>
