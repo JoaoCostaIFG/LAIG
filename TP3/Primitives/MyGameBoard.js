@@ -13,8 +13,8 @@ class MyGameBoard {
     this.genTiles();
   }
 
-  togglePicking() {
-    this.pickingEnabled = !this.pickingEnabled;
+  togglePicking(isEnabled) {
+    this.pickingEnabled = isEnabled;
   }
 
   genTiles() {

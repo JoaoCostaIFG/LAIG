@@ -106,7 +106,7 @@ print_header_line(_).
 
 % our inputs
 parse_input(move(GameState,Move), NewGameState) :- move(GameState, Move, NewGameState).
-parse_input(ai_move(GameState,Player,Difficulty), Move) :- choose_move(GameState, Player, Difficulty, Move).
+parse_input(ai_move(GameState,Player,Difficulty), Move) :- Difficulty > 0, choose_move(GameState, Player, Difficulty, Move).
 parse_input(get_valid_moves(GameState,Player), ListOfMoves) :- valid_moves(GameState, Player, ListOfMoves).
 parse_input(valid_move(GameState,Player,Move), Move) :- valid_move_full(GameState, Player, Move).
 parse_input(score(GameState), V0-V1) :-

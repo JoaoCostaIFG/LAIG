@@ -89,4 +89,20 @@ class MyPrologInterface {
 
     this.getPrologRequest(req, onSuccess);
   }
+
+  /* || AI MOVE */
+  requestAIMove(board, player, difficulty, onSuccess) {
+    // http://localhost:8081/ai_move(gameState([0,0],2,[[0,1],[1,0]],0),0,1)
+    let req =
+      "ai_move(" +
+      this.genGameState(board, player) +
+      "," +
+      player +
+      "," +
+      difficulty +
+      ")";
+    console.log("Request: " + req);
+
+    this.getPrologRequest(req, onSuccess);
+  }
 }

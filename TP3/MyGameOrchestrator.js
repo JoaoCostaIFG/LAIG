@@ -31,8 +31,21 @@ class MyGameOrchestrator {
     };
     this.selectedDifficulty = 0;
     this.boardSize = 10;
-
     // AI options
+    this.savedPlayerOps = [0, 0];
+    this.playerOps = [
+      [0, 0],
+      [0, 1],
+      [1, 0],
+      [1, 1],
+    ];
+    this.playerOpsInd = {
+      PvP: 0,
+      PvAI: 1,
+      AIvP: 2,
+      AIvAI: 3,
+    };
+    this.selectedPlayerOps = 0;
   }
 
   /* || START */
@@ -53,6 +66,10 @@ class MyGameOrchestrator {
         this.player,
         this.parseValidMoves.bind(this)
       );
+
+      // if AI is first player
+      this.savedPlayerOps = this.playerOps[this.selectedPlayerOps];
+      this.aiMove(); // if is AI
 
       // start game
       this.state = GameState.RUNNING;
@@ -147,6 +164,34 @@ class MyGameOrchestrator {
     }
   }
 
+  aiMove() {
+    // starts an AI move if it's the AI's turn
+    if (this.savedPlayerOps[this.player]) {
+      this.prolog.requestAIMove(
+        this.gameboard,
+        this.player,
+        1,
+        this.onAIMove.bind(this)
+      );
+      this.gameboard.togglePicking(false);
+    }
+  }
+
+  startMove(move) {
+    this.togglePossibleMoveIndicators(); // clear valid moves
+
+    move.doMove();
+    this.gameSequence.addMove(move);
+    this.animator.start();
+
+    // pause timer until animation is done
+    this.scoreBoard.pause();
+    this.gameboard.togglePicking(false);
+
+    this.state = GameState.PAUSED; // pause until animation is done
+  }
+
+  /* || PROLOG REQUEST HANDLERS */
   parseValidMoves(data) {
     if (data.target.response == "Bad Request") {
       console.log("No more valid moves.");
@@ -154,7 +199,27 @@ class MyGameOrchestrator {
     }
 
     this.validMoves = JSON.parse(data.target.response);
-    this.togglePossibleMoveIndicators();
+    this.togglePossibleMoveIndicators(); // active
+  }
+
+  onAIMove(data) {
+    if (data.target.response == "Bad Request") {
+      console.log("Couldn't get AI move");
+      return;
+    }
+
+    let moveCoords = JSON.parse(data.target.response);
+    let pieceI = this.gameboard.getPieceByCoord(
+      moveCoords[0][0],
+      moveCoords[0][1]
+    );
+    let pieceF = this.gameboard.getPieceByCoord(
+      moveCoords[1][0],
+      moveCoords[1][1]
+    );
+
+    let move = this.gameboard.move(pieceI, pieceF);
+    this.startMove(move);
   }
 
   onValidMove(move, data) {
@@ -163,21 +228,10 @@ class MyGameOrchestrator {
       return;
     }
 
-    // clear valid moves
-    this.togglePossibleMoveIndicators();
-
-    move.doMove();
-    this.gameSequence.addMove(move);
-    this.animator.start();
-
-    // pause timer until animation is done
-    this.scoreBoard.pause();
-    this.gameboard.togglePicking();
-
-    this.state = GameState.PAUSED; // pause until animation is done
+    this.startMove(move);
   }
 
-  /* || OTHER */
+  /* called after every move */
   onAnimationDone() {
     // next player
     this.nextPlayer();
@@ -196,10 +250,13 @@ class MyGameOrchestrator {
     );
     this.scoreBoard.reset(); // reset timer
 
-    this.gameboard.togglePicking();
+    this.gameboard.togglePicking(true);
     this.state = GameState.RUNNING;
+
+    this.aiMove(); // if is AI
   }
 
+  /* || OTHER */
   update(t) {
     if (this.state != GameState.RUNNING && this.state != GameState.PAUSED)
       return;
@@ -207,8 +264,12 @@ class MyGameOrchestrator {
     this.animator.update(t);
     this.scoreBoard.update(t);
 
-    // 2 pieces selected
+    // if (this.validMoves.length == 0) { // game ended
+    // // TODO game ended method
+    // }
+    // else
     if (this.selectedPieces.length == 2) {
+      // 2 pieces selected
       let move = this.gameboard.move(...this.selectedPieces);
       this.prolog.requestValidMove(
         this.gameboard,
@@ -222,6 +283,7 @@ class MyGameOrchestrator {
       move.tileF.toggleHightlight();
       this.selectedPieces.splice(0, this.selectedPieces.length);
     } else if (this.scoreBoard.time <= 0) {
+      // current player timed out
       // TODO player lose on time out
       console.log("PLAYER " + this.player + " TIMED OUT!");
     }

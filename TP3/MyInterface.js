@@ -65,6 +65,13 @@ class MyInterface extends CGFinterface {
     gameDir
       .add(
         this.scene.gameOrchestrator,
+        "selectedPlayerOps",
+        this.scene.gameOrchestrator.playerOpsInd
+      )
+      .name("Players");
+    gameDir
+      .add(
+        this.scene.gameOrchestrator,
         "selectedDifficulty",
         this.scene.gameOrchestrator.difficultyInd
       )
