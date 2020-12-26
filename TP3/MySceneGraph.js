@@ -1123,7 +1123,7 @@ class MySceneGraph {
         obj = null;
         break;
       case "cube":
-        obj = new MyCube(this.scene, ...global);
+        obj = new MyCube(this.scene, ...global, afs, aft);
         break;
       default:
         obj = null;
