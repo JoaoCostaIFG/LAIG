@@ -1,4 +1,6 @@
 class MyScoreBoard {
+  // TODO show current player
+
   constructor(scene, maxTime) {
     this.scene = scene;
     this.maxTime = maxTime;
@@ -20,13 +22,22 @@ class MyScoreBoard {
   reset() {
     this.lastTime = Date.now() / 1000;
     this.time = this.maxTime;
+    this.running = true;
   }
 
   update(t) {
-    this.time -= t - this.lastTime;
+    if (this.running) this.time -= t - this.lastTime;
     this.lastTime = t;
 
     if (this.time < 0) this.time = 0;
+  }
+
+  start() {
+    this.running = true;
+  }
+
+  pause() {
+    this.running = false;
   }
 
   displayBoard(isBack = false) {

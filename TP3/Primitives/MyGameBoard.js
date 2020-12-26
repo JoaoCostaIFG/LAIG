@@ -9,7 +9,12 @@ class MyGameBoard {
     this.border = new MyBorder(scene, size);
     this.tex = new CGFtexture(scene, MyGameBoard.tex);
 
+    this.pickingEnabled = true;
     this.genTiles();
+  }
+
+  togglePicking() {
+    this.pickingEnabled = !this.pickingEnabled;
   }
 
   genTiles() {
@@ -28,23 +33,20 @@ class MyGameBoard {
     }
   }
 
-  getTileByCoord(coord) {
-    // get the 2 components of a coordinate, e.g.: 1;2
-    parsedCoord = coord.split(";");
-
-    return this.tiles[this.size * parsedCoord[0] + parsedCoord[1]];
+  getTileByCoord(x, y) {
+    return this.tiles[this.size * y + x]; // this is not flipped
   }
 
-  getPieceByCoord(coord) {
-    return this.getTileByCoord(coord).getPiece();
+  getPieceByCoord(x, y) {
+    return this.getTileByCoord(x, y).getPiece();
   }
 
-  addPieceToTile(coord, piece) {
-    this.getTileByCoord(coord).setPiece(piece);
+  addPieceToTile(x, y, piece) {
+    this.getTileByCoord(x, y).setPiece(piece);
   }
 
-  removePieceFromTile(coord) {
-    this.getTileByCoord(coord).unsetPiece();
+  removePieceFromTile(x, y) {
+    this.getTileByCoord(x, y).unsetPiece();
   }
 
   getTileByPiece(piece) {
@@ -52,7 +54,7 @@ class MyGameBoard {
   }
 
   move(pieceI, pieceF) {
-    return new MyGameMove(pieceI, pieceF);
+    return new MyGameMove(this.scene.gameOrchestrator, pieceI, pieceF);
   }
 
   display() {
@@ -129,10 +131,11 @@ class MyGameBoard {
     for (let i = 0; i < this.size; ++i) {
       for (let j = 0; j < this.size; ++j) {
         let tileIndex = i * this.size + j;
-        this.scene.registerForPick(tileIndex + 1, this.tiles[tileIndex]);
+        if (this.pickingEnabled)
+          this.scene.registerForPick(tileIndex + 1, this.tiles[tileIndex]);
 
         this.tiles[tileIndex].display();
-        this.scene.clearPickRegistration(); // stop picking
+        if (this.pickingEnabled) this.scene.clearPickRegistration(); // stop picking
 
         this.scene.translate(MyPiece.size, 0.0, 0.0);
       }

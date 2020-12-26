@@ -6,6 +6,7 @@ class MyTile {
     this.coord = [-1, -1];
 
     this.isHighlighted = false;
+    this.isPossible = false;
     this.piece = piece ? piece : null;
   }
 
@@ -32,20 +33,28 @@ class MyTile {
     return this.piece.color;
   }
 
+  toggleIsPossible() {
+    this.isPossible = !this.isPossible;
+  }
+
   toggleHightlight() {
     this.isHighlighted = !this.isHighlighted;
   }
 
   display() {
-    if (this.isHighlighted) this.displayBorder();
+    if (this.isPossible || this.isHighlighted) this.displayBorder();
     if (this.piece != null) this.piece.display();
   }
 
   displayBorder() {
+    if (this.isHighlighted) this.scene.pushMaterial(this.scene.redHighlightMat);
+    else if (this.isPossible)
+      this.scene.pushMaterial(this.scene.greenHighlightMat);
+    else return; // for safety
+
     let borderWidth = MyPiece.size / 10.0;
     let translationDist = MyPiece.size - borderWidth;
 
-    this.scene.pushMaterial(this.scene.redHighlightMat);
     this.scene.pushMatrix();
 
     this.scene.translate(0.0, MyPiece.size / 2.0, 0.0);

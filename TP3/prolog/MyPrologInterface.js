@@ -68,7 +68,7 @@ class MyPrologInterface {
   }
 
   /* || VALID MOVES */
-  requestValidMoves(board, player) {
+  requestValidMoves(board, player, onSuccess) {
     // http://localhost:8081/get_valid_moves(gameState([0,0],2,[[0,1],[1,0]],0),0)
     let req =
       "get_valid_moves(" +
@@ -78,11 +78,7 @@ class MyPrologInterface {
       ")";
     console.log("Request: " + req);
 
-    this.getPrologRequest(req, this.parseValidMoves);
-  }
-
-  parseValidMoves(data) {
-    console.log(data.target.response.split(","));
+    this.getPrologRequest(req, onSuccess);
   }
 
   /* || SCORE */
