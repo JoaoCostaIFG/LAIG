@@ -243,6 +243,7 @@ class MyGameOrchestrator {
   onValidMove(move, data) {
     if (data.target.response == "Bad Request") {
       console.log("Invalid move");
+      this.togglePossibleMoveIndicators(true);
       return;
     }
 
