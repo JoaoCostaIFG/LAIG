@@ -21,7 +21,6 @@ class MyPiece extends CGFobject {
     this.animation = null;
 
     this.cube = new MyCube(scene, 0.5);
-    this.top = new MyCube(scene, 0.4);
     this.cylinder = new MyCylinder(scene, 1.2, 1.2, 0.2, 25, 2);
     this.torus = new MyTorus(scene, 25, 25, 0.1, 1.3);
     this.triangle = new MyCylinder(scene, 0.5, 0.5, 0.1, 3, 4);
@@ -76,8 +75,8 @@ class MyPiece extends CGFobject {
     this.scene.pushMatrix();
 
     this.scene.translate(MyPiece.size/10.0, MyPiece.size/2.0, MyPiece.size/10.0);
-    this.scene.scale(MyPiece.size, MyPiece.size / 6.0, MyPiece.size);
-    this.top.display();
+    this.scene.scale(MyPiece.size/1.25, MyPiece.size / 6.0, MyPiece.size/1.25);
+    this.cube.display();
     
     this.scene.popMatrix();
 
@@ -143,7 +142,42 @@ class MyPiece extends CGFobject {
   
       this.scene.popMatrix();
     }
+    else { // Black
+      this.scene.pushMatrix();
 
+      this.scene.translate(MyPiece.size/2.50, MyPiece.size/1.65, MyPiece.size/3.3);
+      this.scene.scale(MyPiece.size/11.0, MyPiece.size / 50.0, MyPiece.size/2.5);
+      this.cube.display();
+      
+      this.scene.popMatrix();
+
+      this.scene.pushMatrix();
+
+      this.scene.translate(MyPiece.size/2.0, MyPiece.size/1.65, MyPiece.size/3.3);
+      this.scene.scale(MyPiece.size/11.0, MyPiece.size / 50.0, MyPiece.size/2.5);
+      this.cube.display();
+      
+      this.scene.popMatrix();
+
+      // Circle
+      this.scene.pushMatrix();
+
+      this.scene.translate(MyPiece.size/3.25, MyPiece.size/1.60, MyPiece.size/2.0);
+      this.scene.rotate(Math.PI / 2.0, 1, 0, 0);
+      this.scene.scale(MyPiece.size/20.0, MyPiece.size /20.0, MyPiece.size/20.0);
+      this.cylinder.display();
+
+      this.scene.popMatrix();
+
+      this.scene.pushMatrix();
+
+      this.scene.translate(MyPiece.size/1.47, MyPiece.size/1.60, MyPiece.size/2.0);
+      this.scene.rotate(Math.PI / 2.0, 1, 0, 0);
+      this.scene.scale(MyPiece.size/20.0, MyPiece.size /20.0, MyPiece.size/20.0);
+      this.cylinder.display();
+
+      this.scene.popMatrix();
+    }
 
     this.scene.popTexture();
     this.scene.popMaterial();
