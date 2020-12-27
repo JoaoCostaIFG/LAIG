@@ -260,10 +260,11 @@ class MyGameOrchestrator {
   /* || OTHER */
   gameEnded() {
     this.scoreBoard.end();
+    this.state = GameState.ENDED;
   }
 
   update(t) {
-    if (this.state != GameState.RUNNING && this.state != GameState.PAUSED)
+    if (this.state == GameState.PRESTART || this.state == GameState.NOTSTARTED)
       return;
 
     this.animator.update(t);
@@ -285,15 +286,16 @@ class MyGameOrchestrator {
       this.selectedPieces.splice(0, this.selectedPieces.length);
     } else if (this.scoreBoard.time <= 0) {
       // current player timed out
-      // TODO player lose on time out
-      console.log("PLAYER " + this.player + " TIMED OUT!");
+      this.scoreBoard.timedOut(this.player);
+      this.state = GameState.ENDED;
     }
   }
 
   display() {
+    // scene graph is always drawn
     this.theme.display();
 
-    if (this.state != GameState.RUNNING && this.state != GameState.PAUSED)
+    if (this.state == GameState.PRESTART || this.state == GameState.NOTSTARTED)
       return;
 
     this.scene.pushMatrix();

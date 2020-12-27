@@ -6,6 +6,7 @@ class MyScoreBoard {
     this.maxTime = maxTime;
     this.txt = new MySpriteText(scene, "");
     this.score = [1, 1];
+    this.scoreStr = "B:1 - W:1";
 
     this.reset();
   }
@@ -17,13 +18,14 @@ class MyScoreBoard {
     }
 
     this.score = data.target.response.split("-");
+    this.scoreStr = "B:" + this.score[0] + " - W:" + this.score[1];
   }
 
   reset() {
     this.lastTime = Date.now() / 1000;
     this.time = this.maxTime;
     this.running = true;
-    this.gameEnded = false;
+    this.gameEnded = 0;
   }
 
   start() {
@@ -35,7 +37,12 @@ class MyScoreBoard {
   }
 
   end() {
-    this.gameEnded = true;
+    this.gameEnded = 1;
+  }
+
+  timedOut(timedOutPlayer) {
+    this.gameEnded = 2;
+    this.timedOutPlayer = timedOutPlayer;
   }
 
   update(t) {
@@ -52,10 +59,12 @@ class MyScoreBoard {
     this.scene.scale(3, 3, 0);
     if (isBack) this.scene.rotate(Math.PI, 0, 1, 0);
 
-    let timeToShow = this.time.toFixed(1);
-    let timerStr = (timeToShow < 10 ? "0" : "") + timeToShow;
-    if (this.gameEnded) this.txt.setText(this.score[0] + "-" + this.score[1]);
-    else this.txt.setText(this.score[0] + "-" + this.score[1] + " " + timerStr);
+    if (this.gameEnded) {
+      this.txt.setText(this.scoreStr);
+    } else {
+      let timerStr = (this.time < 10 ? "0" : "") + this.time.toFixed(1);
+      this.txt.setText(this.scoreStr + " " + timerStr);
+    }
     this.txt.display();
 
     this.scene.popMatrix();
@@ -65,8 +74,14 @@ class MyScoreBoard {
     this.scene.scale(3, 3, 0);
     if (isBack) this.scene.rotate(Math.PI, 0, 1, 0);
 
-    if (this.score[0] > this.score[1]) {
-      if (this.gameEnded) this.txt.setText("Black wins!");
+    if (this.gameEnded == 2) {
+      // timed out player loses
+      this.txt.setText(
+        (this.timedOutPlayer == 0 ? "Black" : "White") +
+          " lost (ran out of time)!"
+      );
+    } else if (this.score[0] > this.score[1]) {
+      if (this.gameEnded == 1) this.txt.setText("Black wins!");
       else this.txt.setText("Black is winning!");
     } else if (this.score[0] < this.score[1]) {
       if (this.gameEnded) this.txt.setText("White wins!");
