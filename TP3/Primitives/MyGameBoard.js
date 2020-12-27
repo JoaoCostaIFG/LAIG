@@ -5,7 +5,7 @@ class MyGameBoard {
     this.scene = scene;
     this.size = size;
 
-    this.primitive = new MyCube(scene);
+    this.primitive = new MyCube(scene, 0.5);
     this.border = new MyBorder(scene, size);
     this.tex = new CGFtexture(scene, MyGameBoard.tex);
 

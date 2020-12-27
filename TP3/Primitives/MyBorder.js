@@ -1,7 +1,7 @@
 class MyBorder{
     constructor(scene, boardSize){
         this.scene = scene;
-        this.cube = new MyCube(scene);
+        this.cube = new MyCube(scene, 0.5);
         this.len = boardSize * MyPiece.size + MyPiece.size/4;
         this.height = MyPiece.size;
     }

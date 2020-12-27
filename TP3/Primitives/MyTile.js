@@ -2,7 +2,7 @@ class MyTile {
   constructor(scene, board, piece) {
     this.scene = scene;
     this.board = board;
-    this.tileBorder = new MyCube(scene);
+    this.tileBorder = new MyCube(scene, 0.5);
     this.coord = [-1, -1];
 
     this.isHighlighted = false;

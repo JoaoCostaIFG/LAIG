@@ -20,7 +20,7 @@ class MyPiece extends CGFobject {
     this.tile = tile ? tile : null;
     this.animation = null;
 
-    this.cube = new MyCube(scene);
+    this.cube = new MyCube(scene, 0.5);
   }
 
   setAnimation(animation) {

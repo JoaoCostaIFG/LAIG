@@ -71,12 +71,19 @@
   <textures>
     <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
     <texture id="testTex" path="./scenes/images/test.jpg"/>
-    <texture id="skybox_back" path="./scenes/images/skybox/back.png"/>
-    <texture id="skybox_front" path="./scenes/images/skybox/front.png"/>
-    <texture id="skybox_left" path="./scenes/images/skybox/left.png"/>
-    <texture id="skybox_right" path="./scenes/images/skybox/right.png"/>
-    <texture id="skybox_top" path="./scenes/images/skybox/top.png"/>
-    <texture id="skybox_bottom" path="./scenes/images/skybox/bottom.png"/>
+    <texture id="skybox_back" path="./scenes/images/room/back.png"/>
+    <texture id="skybox_front" path="./scenes/images/room/front.png"/>
+    <texture id="skybox_left" path="./scenes/images/room/left.png"/>
+    <texture id="skybox_right" path="./scenes/images/room/right.png"/>
+    <texture id="skybox_top" path="./scenes/images/room/top.png"/>
+    <texture id="skybox_bottom" path="./scenes/images/room/bottom.png"/>
+    <texture id="pillowTex" path="./scenes/images/pillow.jpeg"/>
+    <texture id="woodTex" path="./scenes/images/woodFurniture.jpeg"/>
+    <texture id="boiaTex" path="./scenes/images/boia.jpeg"/>
+    <texture id="tableTex" path="./scenes/images/table.jpeg"/>
+    <texture id="tableBotTex" path="./scenes/images/botTable.jpeg"/>
+    <texture id="coneTex" path="./scenes/images/cone.jpeg"/>
+    <texture id="strawberryTex" path="./scenes/images/strawberry.jpeg"/>
   </textures>
   <spritesheets>
   </spritesheets>
@@ -90,15 +97,47 @@
       <specular r="1.0" g="1.0" b="1.0" a="1.0"/>
       <emissive r="0.0" g="0.0" b="0.0" a="1.0"/>
     </material>
-    <material id="skyboxMaterial">
-      <shininess value="0.2"/>
-      <ambient r="0.0" g="0.0" b="0.0" a="1.0"/>
-      <diffuse r="0.0" g="0.0" b="0.0" a="1.0"/>
-      <specular r="0.0" g="0.0" b="0.0" a="1.0"/>
-      <emissive r="0.7" g="0.8" b="0.69" a="1.0"/>
+    <material id="boialMaterial">
+      <shininess value="10.0"/>
+      <ambient r="0.5" g="0.3" b="0.3" a="1.0"/>
+      <diffuse r="0.3" g="0.3" b="0.3" a="1.0"/>
+      <specular r="0.5" g="0.3" b="0.3" a="1.0"/>
+      <emissive r="0.0" g="0.0" b="0.0" a="1.0"/>
     </material>
   </materials>
   <animations>
+      <animation id="rightChairAnim">
+      <keyframe instant="0.0">
+        <translation x="0.0" y="-5.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="1000.0">
+        <translation x="0.0" y="3.0" z="-4.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="3610.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+    </animation>
+      <animation id="leftChairAnim">
+      <keyframe instant="0.0">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="0.0"/>
+        <rotation axis="z" angle="0.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+      <keyframe instant="1000.0">
+        <translation x="0.0" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="0.0"/>
+        <rotation axis="y" angle="3610.0"/>
+        <rotation axis="z" angle="3610.0"/>
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
+      </keyframe>
+    </animation>
   </animations>
   <nodes>
     <node id="root">
@@ -114,17 +153,110 @@
       </transformations>
       <descendants>
         <noderef id="skybox"/>
-        <leaf type="gameboard" x="0" y="0" z="0"/>
+        <noderef id="boia"/>
+        <noderef id="table"/>
+        <noderef id="icecream"/>
+        <leaf type="gameboard" x="0" y="-44" z="0"/>
+      </descendants>
+    </node>
+    <node id="table">
+      <material id="null"/>
+      <texture id="tableTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+      </transformations>
+      <descendants>
+        <noderef id="tablebot"/>
+        <noderef id="tabletop"/>
+      </descendants>
+    </node>
+    <node id="tabletop">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="-50.0" z="0.0"/>
+        <rotation axis="x" angle="-90"/>
+      </transformations>
+      <descendants>
+        <leaf type="cylinder" height="5" topRadius="40" bottomRadius="40" stacks="1" slices="40"/>
+      </descendants>
+    </node>
+    <node id="tablebot">
+      <material id="null"/>
+      <texture id="tableBotTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="-100.0" z="0.0"/>
+        <rotation axis="x" angle="-90"/>
+      </transformations>
+      <descendants>
+        <leaf type="cylinder" height="50" topRadius="5" bottomRadius="13" stacks="10" slices="30"/>
+      </descendants>
+    </node>
+    <node id="icecream">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="25.0" y="-45.0" z="-25.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="cone"/>
+        <noderef id="ballStrawberry"/>
+      </descendants>
+    </node>
+    <node id="ballStrawberry">
+      <material id="null"/>
+      <texture id="strawberryTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="13.0" z="0.0"/>
+        <rotation axis="y" angle="-90"/>
+        <rotation axis="z" angle="-180"/>
+      </transformations>
+      <descendants>
+        <leaf type="sphere" radius="3.5" slices="20" stacks="20"/>
+      </descendants>
+    </node>
+    <node id="cone">
+      <material id="null"/>
+      <texture id="coneTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="x" angle="-90"/>
+      </transformations>
+      <descendants>
+        <leaf type="cylinder" height="12" topRadius="3.3" bottomRadius="0.1" stacks="10" slices="10"/>
+      </descendants>
+    </node>
+    <node id="boia">
+      <material id="boialMaterial"/>
+      <texture id="boiaTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="-50.0" y="-100.0" z="-70.0"/>
+        <rotation axis="x" angle="90"/>
+      </transformations>
+      <descendants>
+        <leaf type="torus" inner="10.0" outer="20.0" slices="50" loops="50"/>
       </descendants>
     </node>
     <!-- SKYBOX -->
     <node id="skybox">
-      <material id="skyboxMaterial"/>
+      <material id="null"/>
       <texture id="clear">
         <amplification afs="1.0" aft="1.0"/>
       </texture>
       <transformations>
-            </transformations>
+      </transformations>
       <descendants>
         <noderef id="skyboxBack"/>
         <noderef id="skyboxFront"/>
@@ -155,6 +287,7 @@
       </texture>
       <transformations>
         <translation x="0.0" y="0.0" z="100.0"/>
+        <rotation axis="z" angle="180"/>
         <rotation axis="y" angle="180"/>
         <rotation axis="x" angle="90"/>
       </transformations>
@@ -170,6 +303,7 @@
       <transformations>
         <translation x="0.0" y="100.0" z="0.0"/>
         <rotation axis="z" angle="180"/>
+        <rotation axis="y" angle="180"/>
       </transformations>
       <descendants>
         <noderef id="skyboxPlane"/>
@@ -182,7 +316,6 @@
       </texture>
       <transformations>
         <translation x="0.0" y="-100.0" z="0.0"/>
-        <rotation axis="y" angle="180"/>
       </transformations>
       <descendants>
         <noderef id="skyboxPlane"/>
@@ -195,7 +328,7 @@
       </texture>
       <transformations>
         <translation x="100.0" y="0.0" z="0.0"/>
-        <rotation axis="x" angle="180"/>
+        <rotation axis="x" angle="-90"/>
         <rotation axis="z" angle="90"/>
       </transformations>
       <descendants>
@@ -209,7 +342,7 @@
       </texture>
       <transformations>
         <translation x="-100.0" y="0.0" z="0.0"/>
-        <rotation axis="x" angle="180"/>
+        <rotation axis="x" angle="-90"/>
         <rotation axis="z" angle="-90"/>
       </transformations>
       <descendants>
