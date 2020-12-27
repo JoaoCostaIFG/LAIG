@@ -16,7 +16,6 @@ class MyGameMove {
 
     let animationF = new MovePieceAnimation(this.pieceI.scene);
     this.pieceF.setAnimation(animationF);
-
   }
 
   undoMove() {
@@ -24,7 +23,7 @@ class MyGameMove {
     this.tileF.setPiece(this.pieceF);
   }
 
-  update(t){
+  update(t) {
     if (this.isDone) return;
 
     this.pieceI.update(t);
