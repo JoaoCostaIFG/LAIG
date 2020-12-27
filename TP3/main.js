@@ -36,13 +36,13 @@ main=function()
 	  // get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml 
 	  // or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor) 
 	
-    var poolFile=getUrlVars()['file'] || "pool.xml";
-    var spaceFile=getUrlVars()['file2'] || "space.xml";
+    var spaceFile=getUrlVars()['file'] || "space.xml";
+    var poolFile=getUrlVars()['file2'] || "pool.xml";
 
 	  // create and load graph, and associate it to scene. 
 	  // Check console for loading errors
-    var poolGraph = new MySceneGraph(poolFile, myScene);
     var spaceGraph = new MySceneGraph(spaceFile, myScene);
+    var poolGraph = new MySceneGraph(poolFile, myScene);
     var orchestrator = new MyGameOrchestrator(myScene);
 	
 	  // start
