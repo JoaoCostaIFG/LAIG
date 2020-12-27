@@ -92,13 +92,19 @@ class XMLscene extends CGFscene {
     this.whiteTex = new CGFtexture(this, MyPiece.white);
     this.blackTex = new CGFtexture(this, MyPiece.black);
 
-    // readhiglight
+    // Highlights
     this.redHighlightMat = new CGFappearance(this);
     // this.redHighlightMat.setAmbient(1.0, 0.0, 0.0, 1.0);
     // this.redHighlightMat.setDiffuse(1.0, 0.0, 0.0, 1.0);
     // this.redHighlightMat.setSpecular(1.0, 0.0, 0.0, 1.0);
     this.redHighlightMat.setEmission(1.0, 0.0, 0.0, 1.0);
     this.redHighlightMat.setShininess(100.0);
+
+    this.greenHighlightMat = new CGFappearance(this);
+    this.greenHighlightMat.setAmbient(0.19, 0.51, 0.14, 1.0);
+    this.greenHighlightMat.setDiffuse(0.19, 0.51, 0.14, 1.0);
+    this.greenHighlightMat.setEmission(0.0, 0.2, 0.0, 1.0);
+    this.greenHighlightMat.setShininess(100.0);
   }
 
   /**

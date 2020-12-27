@@ -1,4 +1,5 @@
 const GameState = {
+  PRESTART: -1,
   NOTSTARTED: 0,
   RUNNING: 1,
   PAUSED: 2,
@@ -9,17 +10,70 @@ class MyGameOrchestrator {
   constructor(scene, graph) {
     this.scene = scene;
     scene.gameOrchestrator = this;
-    this.state = GameState.RUNNING; // TODO
+    this.state = GameState.PRESTART;
 
     this.gameSequence = new MyGameSequence();
     this.animator = new MyAnimator(this, this.gameSequence);
-    this.scoreBoard = new MyScoreBoard(scene);
-    this.gameboard = new MyGameBoard(scene, 10);
+    // this.scoreBoard = new MyScoreBoard(scene, 10);
+    // this.gameboard = new MyGameBoard(scene, 10);
     this.theme = graph;
     this.prolog = new MyPrologInterface("localhost", 8081);
 
     this.player = 0;
     this.selectedPieces = [];
+
+    // game options
+    this.difficultyTimes = [30, 20, 10];
+    this.difficultyInd = {
+      easy: 0,
+      medium: 1,
+      hard: 2,
+    };
+    this.selectedDifficulty = 0;
+    this.boardSize = 10;
+    // AI options
+    this.savedPlayerOps = [0, 0];
+    this.playerOps = [
+      [0, 0],
+      [0, 1],
+      [1, 0],
+      [1, 1],
+    ];
+    this.playerOpsInd = {
+      PvP: 0,
+      PvAI: 1,
+      AIvP: 2,
+      AIvAI: 3,
+    };
+    this.selectedPlayerOps = 0;
+  }
+
+  /* || START */
+  start() {
+    if (this.state == GameState.PRESTART) {
+      this.state = GameState.NOTSTARTED;
+    } else if (this.state == GameState.NOTSTARTED) {
+      // create board and score board according to game options
+      this.scoreBoard = new MyScoreBoard(
+        this.scene,
+        this.difficultyTimes[this.selectedDifficulty]
+      );
+      this.gameboard = new MyGameBoard(this.scene, this.boardSize);
+
+      // initial valid moves
+      this.prolog.requestValidMoves(
+        this.gameboard,
+        this.player,
+        this.parseValidMoves.bind(this)
+      );
+
+      // if AI is first player
+      this.savedPlayerOps = this.playerOps[this.selectedPlayerOps];
+      this.aiMove(); // if is AI
+
+      // start game
+      this.state = GameState.RUNNING;
+    }
   }
 
   /* || PICKING */
@@ -43,18 +97,65 @@ class MyGameOrchestrator {
     console.log("Picked object: " + obj + ", with pick id " + id);
 
     if (obj instanceof MyTile) {
+      // TODO togglePossibleMoveIndicators and check if is valid
       let p = obj.piece;
-      if (this.selectedPieces.length > 0 && this.selectedPieces[0] == p)
+      if (this.selectedPieces.length > 0 && this.selectedPieces[0] == p) {
+        // cleared all pieces
         this.selectedPieces = [];
-      else this.selectedPieces.push(p);
+        this.togglePossibleMoveIndForPiece(p, false); // clear possible moves on that piece
+        this.togglePossibleMoveIndicators(true);
+      } else {
+        // add another selected piece
+        this.selectedPieces.push(p);
+
+        if (this.selectedPieces.length == 1) {
+          // if first piece selected, we highlight possible move on that piece
+          this.togglePossibleMoveIndicators(false);
+          this.togglePossibleMoveIndForPiece(p, true); // show possible moves on that piece
+        } else {
+          // toggle possible moves on piece highlight (clearer animations)
+          this.togglePossibleMoveIndForPiece(this.selectedPieces[0], false);
+        }
+      }
       obj.toggleHightlight();
     } else if (obj instanceof MyPiece) {
-      if (this.selectedPieces.length > 0 && this.selectedPieces[0] == p)
-        this.selectedPieces = [];
-      else this.selectedPieces.push(p);
-      obj.toggleHightlight();
+      // piece
     } else {
       // error
+    }
+  }
+
+  /* || INDICATORS */
+  togglePossibleMoveIndForPiece(piece, isEnabled) {
+    let moveFrom = piece.getTile().getCoords();
+
+    for (let i = 0; i < this.validMoves.length; ++i) {
+      let possibleMoveFrom = this.validMoves[i][0];
+      if (
+        moveFrom[1] == possibleMoveFrom[1] &&
+        moveFrom[0] == possibleMoveFrom[0]
+      ) {
+        let possibleMoveTo = this.validMoves[i][1];
+        this.gameboard
+          .getTileByCoord(possibleMoveTo[0], possibleMoveTo[1])
+          .toggleIsPossible(isEnabled);
+      }
+    }
+  }
+
+  togglePossibleMoveIndicators(isEnabled) {
+    let previousFrom = [-1, -1]; // impossible coors
+    for (let i = 0; i < this.validMoves.length; ++i) {
+      let possibleMoveFrom = this.validMoves[i][0];
+      if (
+        previousFrom[1] != possibleMoveFrom[1] ||
+        previousFrom[0] != possibleMoveFrom[0]
+      ) {
+        this.gameboard
+          .getTileByCoord(possibleMoveFrom[0], possibleMoveFrom[1])
+          .toggleIsPossible(isEnabled);
+        previousFrom = possibleMoveFrom;
+      }
     }
   }
 
@@ -80,32 +181,115 @@ class MyGameOrchestrator {
     }
   }
 
+  aiMove() {
+    // starts an AI move if it's the AI's turn
+    if (this.savedPlayerOps[this.player]) {
+      this.prolog.requestAIMove(
+        this.gameboard,
+        this.player,
+        1,
+        this.onAIMove.bind(this)
+      );
+      this.gameboard.togglePicking(false);
+    }
+  }
+
+  startMove(move) {
+    this.togglePossibleMoveIndicators(false); // clear valid moves
+
+    move.doMove();
+    this.gameSequence.addMove(move);
+    this.animator.start();
+
+    // pause timer until animation is done
+    this.scoreBoard.pause();
+    this.gameboard.togglePicking(false);
+
+    this.state = GameState.PAUSED; // pause until animation is done
+  }
+
+  /* || PROLOG REQUEST HANDLERS */
+  parseValidMoves(data) {
+    if (data.target.response == "Bad Request") {
+      console.log("No more valid moves.");
+      this.validMoves = [];
+      this.gameEnded();
+    }
+
+    this.validMoves = JSON.parse(data.target.response);
+    this.togglePossibleMoveIndicators(true); // active
+  }
+
+  onAIMove(data) {
+    if (data.target.response == "Bad Request") {
+      console.log("Couldn't get AI move");
+      return;
+    }
+
+    let moveCoords = JSON.parse(data.target.response);
+    let pieceI = this.gameboard.getPieceByCoord(
+      moveCoords[0][0],
+      moveCoords[0][1]
+    );
+    let pieceF = this.gameboard.getPieceByCoord(
+      moveCoords[1][0],
+      moveCoords[1][1]
+    );
+
+    let move = this.gameboard.move(pieceI, pieceF);
+    this.startMove(move);
+  }
+
   onValidMove(move, data) {
     if (data.target.response == "Bad Request") {
       console.log("Invalid move");
       return;
     }
 
+    this.startMove(move);
+  }
+
+  /* called after every move */
+  onAnimationDone() {
+    // next player
     this.nextPlayer();
-    move.doMove();
-    this.gameSequence.addMove(move);
-    this.animator.start();
+
+    // new valid moves
+    this.prolog.requestValidMoves(
+      this.gameboard,
+      this.player,
+      this.parseValidMoves.bind(this)
+    );
 
     // update score
     this.prolog.requestScore(
       this.gameboard,
       this.scoreBoard.parseScore.bind(this.scoreBoard)
     );
+    this.scoreBoard.reset(); // reset timer
+
+    this.gameboard.togglePicking(true);
+    this.state = GameState.RUNNING;
+
+    this.aiMove(); // if is AI
   }
 
   /* || OTHER */
+  gameEnded() {
+    this.scoreBoard.end();
+    this.gameboard.togglePicking(false);
+    this.state = GameState.ENDED;
+  }
+
   update(t) {
-    if (this.state != GameState.RUNNING) return;
+    if (this.state == GameState.PRESTART || this.state == GameState.NOTSTARTED)
+      return;
 
     this.animator.update(t);
+    this.scoreBoard.update(t);
 
-    // 2 pieces selected
     if (this.selectedPieces.length == 2) {
+      // 2 pieces selected
       let move = this.gameboard.move(...this.selectedPieces);
       this.prolog.requestValidMove(
         this.gameboard,
@@ -118,13 +302,19 @@ class MyGameOrchestrator {
       move.tileI.toggleHightlight();
       move.tileF.toggleHightlight();
       this.selectedPieces.splice(0, this.selectedPieces.length);
+    } else if (this.scoreBoard.time <= 0) {
+      // current player timed out
+      this.gameEnded();
+      this.scoreBoard.timedOut(this.player);
     }
   }
 
   display() {
-    if (this.state != GameState.RUNNING) return;
-
+    // scene graph is always drawn
     this.theme.display();
+
+    if (this.state == GameState.PRESTART || this.state == GameState.NOTSTARTED)
+      return;
 
     this.scene.pushMatrix();
     this.scene.translate(...this.theme.boardPos);
