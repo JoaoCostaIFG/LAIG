@@ -17,6 +17,10 @@
       <from x="0" y="120" z="-100"/>
       <to x="0" y="0" z="0"/>
     </perspective>
+    <perspective id="originCam" near="0.1" far="500" angle="45">
+      <from x="0" y="20" z="5"/>
+      <to x="0" y="0" z="0"/>
+    </perspective>
     <ortho id="orthoCam" near="0.1" far="500" left="-50" right="50" top="50" bottom="-50">
       <from x="50" y="20" z="60"/>
       <to x="5" y="0" z="0"/>
@@ -70,7 +74,6 @@
   </lights>
   <textures>
     <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
-    <texture id="testTex" path="./scenes/images/test.jpg"/>
     <texture id="skybox_back" path="./scenes/images/room/back.png"/>
     <texture id="skybox_front" path="./scenes/images/room/front.png"/>
     <texture id="skybox_left" path="./scenes/images/room/left.png"/>

@@ -84,13 +84,6 @@ class XMLscene extends CGFscene {
     this.textSheet = new CGFtexture(this, "./scenes/images/text.png"); // spritesheet for text
     this.textSheetSize = [16, 16];
 
-    // Pieces Colors
-    this.blackMaterial = new CGFappearance(this);
-    this.blackMaterial.setAmbient(0.1, 0.1, 0.1, 1.0);
-    this.blackMaterial.setDiffuse(0.1, 0.1, 0.1, 1.0);
-    this.blackMaterial.setSpecular(0.1, 0.1, 0.1, 1.0);
-    this.blackMaterial.setShininess(10.0);
-
     this.whiteMaterial = new CGFappearance(this);
     this.whiteMaterial.setAmbient(0.9, 0.87, 0.77, 1.0);
     this.whiteMaterial.setDiffuse(0.9, 0.87, 0.77, 1.0);

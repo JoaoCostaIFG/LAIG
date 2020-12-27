@@ -21,6 +21,10 @@ class MyPiece extends CGFobject {
     this.animation = null;
 
     this.cube = new MyCube(scene, 0.5);
+    this.top = new MyCube(scene, 0.4);
+    this.cylinder = new MyCylinder(scene, 1.2, 1.2, 0.2, 25, 2);
+    this.torus = new MyTorus(scene, 25, 25, 0.1, 1.3);
+    this.triangle = new MyCylinder(scene, 0.5, 0.5, 0.1, 3, 4);
   }
 
   setAnimation(animation) {
@@ -40,11 +44,10 @@ class MyPiece extends CGFobject {
   }
 
   applyColor() {
+    this.scene.pushMaterial(this.scene.whiteMaterial);
     if (this.color == Color.BLACK) {
-      this.scene.pushMaterial(this.scene.whiteMaterial);
       this.scene.pushTexture(this.scene.blackTex);
     } else {
-      this.scene.pushMaterial(this.scene.whiteMaterial);
       this.scene.pushTexture(this.scene.whiteTex);
     }
   }
@@ -59,6 +62,7 @@ class MyPiece extends CGFobject {
   display() {
     if (this.animation) this.animation.display();
 
+    // Base
     this.scene.pushMatrix();
     this.applyColor();
 
@@ -66,9 +70,84 @@ class MyPiece extends CGFobject {
     this.scene.scale(MyPiece.size, MyPiece.size / 2.0, MyPiece.size);
     this.cube.display();
 
-    this.scene.popMaterial();
-    this.scene.popTexture();
     this.scene.popMatrix();
+
+    // Top
+    this.scene.pushMatrix();
+
+    this.scene.translate(MyPiece.size/10.0, MyPiece.size/2.0, MyPiece.size/10.0);
+    this.scene.scale(MyPiece.size, MyPiece.size / 6.0, MyPiece.size);
+    this.top.display();
+    
+    this.scene.popMatrix();
+
+    // Circle
+    this.scene.pushMatrix();
+
+    this.scene.translate(MyPiece.size/2.0, MyPiece.size/1.65, MyPiece.size/2.0);
+    this.scene.rotate(Math.PI / 2.0, 1, 0, 0);
+    this.cylinder.display();
+
+    this.scene.popMatrix();
+
+    // Torus
+    this.scene.pushMatrix();
+
+    this.scene.translate(MyPiece.size/2.0, MyPiece.size/1.75, MyPiece.size/2.0);
+    this.scene.rotate(Math.PI / 2.0, 1, 0, 0);
+    this.torus.display();
+
+    this.scene.popMatrix();
+
+    if(this.color == Color.WHITE){
+      // Right
+      this.scene.pushMatrix();
+  
+      this.scene.translate(MyPiece.size/1.5, MyPiece.size/1.6, MyPiece.size/2.0);
+      this.scene.rotate(Math.PI / 2.0, 1, 0, 0);
+  
+      this.triangle.display();
+  
+      this.scene.popMatrix();
+  
+      // Down
+      this.scene.pushMatrix();
+  
+      this.scene.translate(MyPiece.size/2.0, MyPiece.size/1.6, MyPiece.size/1.5);
+      this.scene.rotate(Math.PI / 2.0, 1, 0, 0);
+      this.scene.rotate(Math.PI / 2.0, 0, 0, 1);
+  
+      this.triangle.display();
+  
+      this.scene.popMatrix();
+  
+      // Left
+      this.scene.pushMatrix();
+  
+      this.scene.translate(MyPiece.size/3.0, MyPiece.size/1.6, MyPiece.size/2.0);
+      this.scene.rotate(Math.PI / 2.0, 1, 0, 0);
+      this.scene.rotate(Math.PI, 0, 0, 1);
+  
+      this.triangle.display();
+  
+      this.scene.popMatrix();
+  
+      // Up
+      this.scene.pushMatrix();
+  
+      this.scene.translate(MyPiece.size/2.0, MyPiece.size/1.6, MyPiece.size/3.0);
+      this.scene.rotate(Math.PI / 2.0, 1, 0, 0);
+      this.scene.rotate(-Math.PI / 2.0, 0, 0, 1);
+  
+      this.triangle.display();
+  
+      this.scene.popMatrix();
+    }
+
+
+    this.scene.popTexture();
+    this.scene.popMaterial();
     if (this.animation) this.scene.popTransformation();
+
   }
 }
