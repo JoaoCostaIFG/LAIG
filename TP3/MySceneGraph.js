@@ -26,7 +26,7 @@ class MySceneGraph {
 
     // Establish bidirectional references between scene and graph.
     this.scene = scene;
-    scene.graph = this;
+    scene.addGraph(this);
 
     this.nodes = [];
     this.idRoot = null; // The id of the root element.

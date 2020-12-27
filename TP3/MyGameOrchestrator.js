@@ -7,7 +7,7 @@ const GameState = {
 };
 
 class MyGameOrchestrator {
-  constructor(scene, graph) {
+  constructor(scene) {
     this.scene = scene;
     scene.gameOrchestrator = this;
     this.state = GameState.PRESTART;
@@ -16,7 +16,7 @@ class MyGameOrchestrator {
     this.animator = new MyAnimator(this, this.gameSequence);
     // this.scoreBoard = new MyScoreBoard(scene, 10);
     // this.gameboard = new MyGameBoard(scene, 10);
-    this.theme = graph;
+    this.theme = scene.graphs[0];
     this.prolog = new MyPrologInterface("localhost", 8081);
 
     this.player = 0;

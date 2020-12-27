@@ -14,6 +14,14 @@ class XMLscene extends CGFscene {
     this.activeMaterials = [];
     this.activeTextures = [];
     this.updatables = []; // the objects that need to be updated each frame
+    this.graphs = [];
+  }
+
+  addGraph(graph){
+    if(this.graphs.length == 0){
+      this.graph = graph;
+    }
+    this.graphs.push(graph);
   }
 
   /**
