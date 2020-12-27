@@ -101,8 +101,9 @@ class XMLscene extends CGFscene {
     this.redHighlightMat.setShininess(100.0);
 
     this.greenHighlightMat = new CGFappearance(this);
-    this.redHighlightMat.setAmbient(0.19, 0.51, 0.14, 1.0);
-    this.greenHighlightMat.setEmission(0.1, 1.0, 0.1, 1.0);
+    this.greenHighlightMat.setAmbient(0.19, 0.51, 0.14, 1.0);
+    this.greenHighlightMat.setDiffuse(0.19, 0.51, 0.14, 1.0);
+    this.greenHighlightMat.setEmission(0.0, 0.2, 0.0, 1.0);
     this.greenHighlightMat.setShininess(100.0);
   }
 

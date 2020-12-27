@@ -14,6 +14,10 @@ class MyTile {
     this.coord = [x, y];
   }
 
+  getCoords() {
+    return this.coord;
+  }
+
   setPiece(piece) {
     this.piece = piece;
     this.piece.tile = this;
@@ -33,8 +37,8 @@ class MyTile {
     return this.piece.color;
   }
 
-  toggleIsPossible() {
-    this.isPossible = !this.isPossible;
+  toggleIsPossible(isPossible) {
+    this.isPossible = isPossible;
   }
 
   toggleHightlight() {

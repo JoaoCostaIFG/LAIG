@@ -26,9 +26,11 @@ class MyAnimator {
     move.update(time);
   }
 
-  display() {
-    if (!this.running) return;
-
-    let move = this.gameSequence.getLastMove();
-  }
+  /*
+   *   display() {
+   *     if (!this.running) return;
+   *
+   *     let move = this.gameSequence.getLastMove();
+   *   }
+   */
 }

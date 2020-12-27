@@ -27,6 +27,10 @@ class MyPiece extends CGFobject {
     this.animation = animation;
   }
 
+  getTile() {
+    return this.tile;
+  }
+
   getColor() {
     return this.color;
   }

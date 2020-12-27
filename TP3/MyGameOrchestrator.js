@@ -99,9 +99,24 @@ class MyGameOrchestrator {
     if (obj instanceof MyTile) {
       // TODO togglePossibleMoveIndicators and check if is valid
       let p = obj.piece;
-      if (this.selectedPieces.length > 0 && this.selectedPieces[0] == p)
+      if (this.selectedPieces.length > 0 && this.selectedPieces[0] == p) {
+        // cleared all pieces
         this.selectedPieces = [];
-      else this.selectedPieces.push(p);
+        this.togglePossibleMoveIndForPiece(p, false); // clear possible moves on that piece
+        this.togglePossibleMoveIndicators(true);
+      } else {
+        // add another selected piece
+        this.selectedPieces.push(p);
+
+        if (this.selectedPieces.length == 1) {
+          // if first piece selected, we highlight possible move on that piece
+          this.togglePossibleMoveIndicators(false);
+          this.togglePossibleMoveIndForPiece(p, true); // show possible moves on that piece
+        } else {
+          // toggle possible moves on piece highlight (clearer animations)
+          this.togglePossibleMoveIndForPiece(this.selectedPieces[0], false);
+        }
+      }
       obj.toggleHightlight();
     } else if (obj instanceof MyPiece) {
       // piece
@@ -111,7 +126,9 @@ class MyGameOrchestrator {
   }
 
   /* || INDICATORS */
-  togglePossibleMoveIndForPiece(moveFrom) {
+  togglePossibleMoveIndForPiece(piece, isEnabled) {
+    let moveFrom = piece.getTile().getCoords();
+
     for (let i = 0; i < this.validMoves.length; ++i) {
       let possibleMoveFrom = this.validMoves[i][0];
       if (
@@ -121,12 +138,12 @@ class MyGameOrchestrator {
         let possibleMoveTo = this.validMoves[i][1];
         this.gameboard
           .getTileByCoord(possibleMoveTo[0], possibleMoveTo[1])
-          .toggleIsPossible();
+          .toggleIsPossible(isEnabled);
       }
     }
   }
 
-  togglePossibleMoveIndicators() {
+  togglePossibleMoveIndicators(isEnabled) {
     let previousFrom = [-1, -1]; // impossible coors
     for (let i = 0; i < this.validMoves.length; ++i) {
       let possibleMoveFrom = this.validMoves[i][0];
@@ -136,7 +153,7 @@ class MyGameOrchestrator {
       ) {
         this.gameboard
           .getTileByCoord(possibleMoveFrom[0], possibleMoveFrom[1])
-          .toggleIsPossible();
+          .toggleIsPossible(isEnabled);
         previousFrom = possibleMoveFrom;
       }
     }
@@ -178,7 +195,7 @@ class MyGameOrchestrator {
   }
 
   startMove(move) {
-    this.togglePossibleMoveIndicators(); // clear valid moves
+    this.togglePossibleMoveIndicators(false); // clear valid moves
 
     move.doMove();
     this.gameSequence.addMove(move);
@@ -200,7 +217,7 @@ class MyGameOrchestrator {
     }
 
     this.validMoves = JSON.parse(data.target.response);
-    this.togglePossibleMoveIndicators(); // active
+    this.togglePossibleMoveIndicators(true); // active
   }
 
   onAIMove(data) {
@@ -260,6 +277,7 @@ class MyGameOrchestrator {
   /* || OTHER */
   gameEnded() {
     this.scoreBoard.end();
+    this.gameboard.togglePicking(false);
     this.state = GameState.ENDED;
   }
 
@@ -286,8 +304,8 @@ class MyGameOrchestrator {
       this.selectedPieces.splice(0, this.selectedPieces.length);
     } else if (this.scoreBoard.time <= 0) {
       // current player timed out
+      this.gameEnded();
       this.scoreBoard.timedOut(this.player);
-      this.state = GameState.ENDED;
     }
   }
 
