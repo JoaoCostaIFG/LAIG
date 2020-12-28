@@ -13,10 +13,8 @@ class XMLscene extends CGFscene {
 
     this.activeMaterials = [];
     this.activeTextures = [];
-    this.updatables = []; // the objects that need to be updated each frame
     this.graphs = [];
     this.graphNames = {};
-    this.loadedFirstGraph = false;
     this.selectedGraph = 0;
   }
 
@@ -32,6 +30,18 @@ class XMLscene extends CGFscene {
   updateSelectedGraph() {
     this.graph = this.graphs[this.selectedGraph];
     this.gameOrchestrator.theme = this.graph;
+
+    this.axis = new CGFaxis(this, this.graph.referenceLength);
+
+    this.gl.clearColor(...this.graph.background);
+
+    this.setGlobalAmbientLight(...this.graph.ambient);
+
+    this.initCameras();
+    this.updateCurrentCamera();
+    this.initLights();
+
+    this.interface.updateGUI();
   }
 
   /**
@@ -208,25 +218,16 @@ class XMLscene extends CGFscene {
   /** Handler called when the graph is finally loaded.
    * As loading is asynchronous, this may be called already after the application has started the run loop
    */
-  onGraphLoaded() {
-    if (this.loadedFirstGraph) return;
-    this.loadedFirstGraph = true;
-
-    this.axis = new CGFaxis(this, this.graph.referenceLength);
-
-    this.gl.clearColor(...this.graph.background);
-
-    this.setGlobalAmbientLight(...this.graph.ambient);
-
-    this.initCameras();
-    this.updateCurrentCamera();
-    this.initLights();
+  onGraphLoaded(loadedGraph) {
+    // scene is only ready when selected graph is ready
+    if (this.sceneInited || this.graph != loadedGraph) return;
 
     this.interface.instGuiButtons();
+    this.updateSelectedGraph();
 
-    this.sceneInited = true;
     // this.setUpdatePeriod(100);
     this.setUpdatePeriod(30);
+    this.sceneInited = true;
   }
 
   /**
@@ -288,9 +289,6 @@ class XMLscene extends CGFscene {
 
     let t = time / 1000;
 
-    this.updatables.forEach((updatable) => {
-      updatable.update(t);
-    });
     this.gameOrchestrator.update(t);
   }
 

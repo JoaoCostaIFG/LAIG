@@ -48,6 +48,7 @@ class MySceneGraph {
      */
     this.reader.open("scenes/" + filename, this);
     this.boardPos = [0, 0, 0];
+    this.updatables = []; // the objects that need to be updated each frame
   }
 
   /*
@@ -68,7 +69,7 @@ class MySceneGraph {
     this.loadedOk = true;
 
     // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
-    this.scene.onGraphLoaded();
+    this.scene.onGraphLoaded(this);
   }
 
   /*
@@ -928,7 +929,7 @@ class MySceneGraph {
         keyframes
       );
 
-      this.scene.updatables.push(this.animations[animationID]);
+      this.updatables.push(this.animations[animationID]);
     }
 
     return null;
@@ -1070,7 +1071,7 @@ class MySceneGraph {
           );
 
           // push animation so it can be updated
-          this.scene.updatables.push(obj);
+          this.updatables.push(obj);
         }
         break;
       case "plane":
@@ -1649,6 +1650,12 @@ class MySceneGraph {
       if (this.showNormals) node.enableNormalViz();
       else node.disableNormalViz();
     }
+  }
+
+  update(t) {
+    this.updatables.forEach((updatable) => {
+      updatable.update(t);
+    });
   }
 
   /**

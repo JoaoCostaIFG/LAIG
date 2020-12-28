@@ -283,6 +283,8 @@ class MyGameOrchestrator {
   }
 
   update(t) {
+    this.theme.update(t);
+
     if (this.state == GameState.PRESTART || this.state == GameState.NOTSTARTED)
       return;
 
