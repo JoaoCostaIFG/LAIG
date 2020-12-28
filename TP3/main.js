@@ -41,8 +41,8 @@ main=function()
 
 	  // create and load graph, and associate it to scene. 
 	  // Check console for loading errors
-    var spaceGraph = new MySceneGraph(spaceFile, myScene);
-    var poolGraph = new MySceneGraph(poolFile, myScene);
+    var spaceGraph = new MySceneGraph(spaceFile, myScene, "Space");
+    var poolGraph = new MySceneGraph(poolFile, myScene, "Pool");
     var orchestrator = new MyGameOrchestrator(myScene);
 	
 	  // start

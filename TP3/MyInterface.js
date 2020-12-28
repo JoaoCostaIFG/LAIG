@@ -34,6 +34,12 @@ class MyInterface extends CGFinterface {
       .name("Selected camera")
       .onChange(this.scene.updateCurrentCamera.bind(this.scene));
 
+    // scene list
+    this.gui
+      .add(this.scene, "selectedGraph", this.scene.graphNames)
+      .name("Selected theme")
+      .onChange(this.scene.updateSelectedGraph.bind(this.scene));
+
     // lights button
     let lightsDir = this.gui.addFolder("Lights");
     let i = 0;

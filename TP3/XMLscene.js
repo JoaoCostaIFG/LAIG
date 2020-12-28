@@ -15,13 +15,23 @@ class XMLscene extends CGFscene {
     this.activeTextures = [];
     this.updatables = []; // the objects that need to be updated each frame
     this.graphs = [];
+    this.graphNames = {};
+    this.loadedFirstGraph = false;
+    this.selectedGraph = 0;
   }
 
-  addGraph(graph){
-    if(this.graphs.length == 0){
+  addGraph(graph, graphName) {
+    if (this.graphs.length == 0) {
       this.graph = graph;
+      this.selectedGraph = 0;
     }
+    this.graphNames[graphName] = this.graphs.length;
     this.graphs.push(graph);
+  }
+
+  updateSelectedGraph() {
+    this.graph = this.graphs[this.selectedGraph];
+    this.gameOrchestrator.theme = this.graph;
   }
 
   /**
@@ -199,6 +209,9 @@ class XMLscene extends CGFscene {
    * As loading is asynchronous, this may be called already after the application has started the run loop
    */
   onGraphLoaded() {
+    if (this.loadedFirstGraph) return;
+    this.loadedFirstGraph = true;
+
     this.axis = new CGFaxis(this, this.graph.referenceLength);
 
     this.gl.clearColor(...this.graph.background);
