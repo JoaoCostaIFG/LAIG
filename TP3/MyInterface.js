@@ -88,8 +88,7 @@ class MyInterface extends CGFinterface {
     gameDir
       .add(
         this.scene.gameOrchestrator,
-        "boardSize",
-        this.scene.gameOrchestrator.boardSize
+        "boardSize"
       )
       .name("Board size");
     // undo
