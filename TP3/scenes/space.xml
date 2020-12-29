@@ -7,7 +7,7 @@
     <!-- identifier of root node of the scene graph; this node -->
     <!-- must be defined in one of the following NODE declarations -->
   </initials>
-  <views default="orthoCam">
+  <views default="camCenter">
     <perspective id="camCenter" near="0.1" far="500" angle="45">
       <from x="0" y="50" z="70"/>
       <to x="0" y="0" z="-20"/>
@@ -32,10 +32,10 @@
       <from x="-30" y="60" z="-60"/>
       <to x="0" y="0" z="0"/>
     </perspective>
-    <ortho id="orthoCam" near="0.1" far="500" left="-50" right="50" top="50" bottom="-50">
-      <from x="50" y="20" z="60"/>
-      <to x="5" y="0" z="0"/>
-      <up x="0" y="1" z="0"/> <!-- optional, default 0,1,0 -->
+    <ortho id="orthoCam" near="0.1" far="500" left="-40" right="40" top="40" bottom="-40">
+      <from x="1" y="50" z="0"/>
+      <to x="0" y="0" z="0"/>
+      <up x="0" y="1" z="-1"/> <!-- optional, default 0,1,0 -->
     </ortho>
   </views>
   <illumination>

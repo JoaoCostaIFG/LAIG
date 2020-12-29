@@ -2,7 +2,7 @@ class MyGameSequence {
   constructor() {
     this.moves = [];
   }
-  
+
   length() {
     return this.moves.length;
   }
@@ -26,12 +26,17 @@ class MyGameSequence {
     return this.moves.pop();
   }
 
-  undoAll() {
-    for (let i = this.moves.length - 1; i >= 0; --i)
-      this.moves[i].undoMove();
-  }
-
   getMoveByInd(i) {
     return this.moves[i];
+  }
+
+  // || FOR REPLAY
+  undoAll() {
+    for (let i = this.moves.length - 1; i >= 0; --i) this.moves[i].undoMove();
+  }
+
+  doAll() {
+    this.undoAll();
+    for (let i = 0; i < this.moves.length; ++i) this.moves[i].doMoveInstant();
   }
 }

@@ -37,6 +37,13 @@ class MyGameMove {
     this.isRunning = true;
   }
 
+  doMoveInstant() {
+    this.tileI.setPiece(this.pieceF);
+    this.tileF.setPiece(this.pieceI);
+    this.isDone = true;
+    this.isRunning = false;
+  }
+
   undoMove() {
     this.tileI.setPiece(this.pieceI);
     this.tileF.setPiece(this.pieceF);
@@ -56,14 +63,10 @@ class MyGameMove {
     // animations ended
     if (this.pieceI.animation == null && this.pieceF.animation == null) {
       // at the end, switch the initial tiles
-      this.tileI.setPiece(this.pieceF);
-      this.tileF.setPiece(this.pieceI);
+      this.doMoveInstant();
 
       // notify orchestrator on finish
       if (notifyOrchestrator) this.orch.onAnimationDone();
-
-      this.isDone = true;
-      this.isRunning = false;
     }
   }
 
