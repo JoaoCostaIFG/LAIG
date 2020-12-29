@@ -92,16 +92,16 @@ class MyGameOrchestrator {
   }
 
   gameMovie() {
-    // Uncomment this
     if (this.state != GameState.ENDED) return;
     console.log("Start replay");
 
     if (this.animator.running == 2) {
-      // currently replaying
+      // stops replay
       this.scene.interface.toggleReplayButton(false);
-      this.gameSequence.undoAll();
+      this.gameSequence.doAll();
       this.animator.reset();
     } else {
+      // starts replay
       this.scene.interface.toggleReplayButton(true);
       this.gameSequence.undoAll();
       this.animator.startMovie();
@@ -339,6 +339,9 @@ class MyGameOrchestrator {
   }
 
   gameEnded() {
+    // only end once
+    if (this.state == GameState.ENDED) return;
+
     this.scoreBoard.end();
     this.gameboard.togglePicking(false);
     this.togglePossibleMoveIndicators(false);
