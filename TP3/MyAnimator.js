@@ -45,11 +45,4 @@ class MyAnimator {
       if (move.isDone && !move.isRunning) this.sequenceIndex++;
     }
   }
-
-  // display() {
-  // if (!this.running) return;
-
-  // let move = this.gameSequence.getLastMove();
-  // // if (move)
-  // }
 }
