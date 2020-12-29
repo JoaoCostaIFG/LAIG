@@ -23,6 +23,17 @@ class XMLscene extends CGFscene {
       this.graph = graph;
       this.selectedGraph = 0;
     }
+
+    if (this.graphNames[graphName]) {
+      // prevent for scene graph conflicts
+      console.error(
+        "Already have a scene graph with that name: " +
+          graphName +
+          ". This scene graph will be ignored"
+      );
+      return;
+    }
+
     this.graphNames[graphName] = this.graphs.length;
     this.graphs.push(graph);
   }
