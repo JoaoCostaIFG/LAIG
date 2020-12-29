@@ -14,23 +14,22 @@ class MyGameOrchestrator {
 
     this.gameSequence = new MyGameSequence();
     this.animator = new MyAnimator(this, this.gameSequence);
-    // this.scoreBoard = new MyScoreBoard(scene, 10);
-    // this.gameboard = new MyGameBoard(scene, 10);
     this.theme = scene.graphs[0];
     this.prolog = new MyPrologInterface("localhost", 8081);
 
-    this.player = 0;
-    this.selectedPieces = [];
+    this.player = 0; // player 0 (Black) is always first
+    this.selectedPieces = []; // list of picked pieces (max 2)
 
     // game options
+    // turn time (in seconds)
     this.difficultyTimes = [30, 20, 10];
     this.difficultyInd = {
       easy: 0,
       medium: 1,
       hard: 2,
     };
-    this.selectedDifficulty = 0;
-    this.boardSize = 10;
+    this.selectedDifficulty = 0; // default difficulty: easy
+    this.boardSize = 10; // default boardsize: 10
     // AI options
     this.savedPlayerOps = [0, 0];
     this.playerOps = [
@@ -46,6 +45,7 @@ class MyGameOrchestrator {
       AIvAI: 3,
     };
     this.selectedPlayerOps = 0;
+    this.aiMoveReq = null; // current AI movement request (if any)
   }
 
   /* || START */
@@ -74,11 +74,16 @@ class MyGameOrchestrator {
 
   start() {
     if (this.state == GameState.PRESTART) {
+      // workaround for Interface buttons starting clicked
       this.state = GameState.NOTSTARTED;
     } else if (this.state == GameState.NOTSTARTED) {
+      // real start
       this.innerStart();
-    } else if (this.state == GameState.ENDED) {
+    } else {
       // restart
+      // cancel AI move request (if any)
+      if (this.aiMoveReq) this.aiMoveReq.abort();
+
       this.gameSequence = new MyGameSequence();
       this.animator = new MyAnimator(this, this.gameSequence);
 
@@ -197,7 +202,7 @@ class MyGameOrchestrator {
   aiMove() {
     // starts an AI move if it's the AI's turn
     if (this.savedPlayerOps[this.player]) {
-      this.prolog.requestAIMove(
+      this.aiMoveReq = this.prolog.requestAIMove(
         this.gameboard,
         this.player,
         1,
@@ -234,6 +239,10 @@ class MyGameOrchestrator {
   }
 
   onAIMove(data) {
+    // reset the state
+    // TODO WAITINGFORAI game state?
+    this.aiMoveReq = null;
+
     if (data.target.response == "Bad Request") {
       console.log("Couldn't get AI move");
       return;

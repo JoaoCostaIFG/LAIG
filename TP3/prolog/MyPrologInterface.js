@@ -23,6 +23,8 @@ class MyPrologInterface {
       "application/x-www-form-urlencoded; charset=UTF-8"
     );
     request.send();
+
+    return request;
   }
 
   genGameState(board, player) {
@@ -44,7 +46,7 @@ class MyPrologInterface {
       "move(" + this.genGameState(board, player) + "," + move.toString() + ")";
     console.log("Request: " + req);
 
-    this.getPrologRequest(req, this.parseMove);
+    return this.getPrologRequest(req, this.parseMove);
   }
 
   parseMove(data) {
@@ -64,7 +66,7 @@ class MyPrologInterface {
       ")";
     console.log("Request: " + req);
 
-    this.getPrologRequest(req, onSuccess);
+    return this.getPrologRequest(req, onSuccess);
   }
 
   /* || VALID MOVES */
@@ -78,7 +80,7 @@ class MyPrologInterface {
       ")";
     console.log("Request: " + req);
 
-    this.getPrologRequest(req, onSuccess);
+    return this.getPrologRequest(req, onSuccess);
   }
 
   /* || SCORE */
@@ -87,7 +89,7 @@ class MyPrologInterface {
     let req = "score(" + this.genGameState(board, "_") + ")";
     console.log("Request: " + req);
 
-    this.getPrologRequest(req, onSuccess);
+    return this.getPrologRequest(req, onSuccess);
   }
 
   /* || AI MOVE */
@@ -103,6 +105,6 @@ class MyPrologInterface {
       ")";
     console.log("Request: " + req);
 
-    this.getPrologRequest(req, onSuccess);
+    return this.getPrologRequest(req, onSuccess);
   }
 }

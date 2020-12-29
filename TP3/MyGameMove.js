@@ -14,13 +14,18 @@ class MyGameMove {
     let diffY = this.tileI.getCoords()[1] - this.tileF.getCoords()[1];
 
     // Create animations
-    let animationI = new MovePieceAnimation(this.pieceI.scene, [
-      -diffX,
-      -diffY,
-    ]);
+    let animationI = new MovePieceAnimation(
+      this.pieceI.scene,
+      [-diffX, -diffY],
+      true
+    );
     this.pieceI.setAnimation(animationI);
 
-    let animationF = new MovePieceAnimation(this.pieceI.scene, [diffX, diffY]);
+    let animationF = new MovePieceAnimation(
+      this.pieceI.scene,
+      [diffX, diffY],
+      false
+    );
     this.pieceF.setAnimation(animationF);
   }
 
