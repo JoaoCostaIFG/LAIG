@@ -9,6 +9,7 @@ class MyInterface extends CGFinterface {
     super();
     this.lightsDir = null;
     this.cameras = null;
+    this.replayButton = null;
   }
 
   /**
@@ -57,6 +58,10 @@ class MyInterface extends CGFinterface {
   }
 
   instGuiButtons() {
+    this.replayButton = this.gui
+      .add(this.scene.gameOrchestrator, "gameMovie")
+      .name("Replay");
+
     // scene list
     this.gui
       .add(this.scene, "selectedGraph", this.scene.graphNames)
@@ -89,21 +94,9 @@ class MyInterface extends CGFinterface {
       )
       .name("Board size");
     // undo
-    gameDir
-      .add(
-        this.scene.gameOrchestrator,
-        "undo",
-        this.scene.gameOrchestrator.undo()
-      )
-      .name("Undo");
+    gameDir.add(this.scene.gameOrchestrator, "undo").name("Undo");
     // start
-    gameDir
-      .add(
-        this.scene.gameOrchestrator,
-        "start",
-        this.scene.gameOrchestrator.start()
-      )
-      .name("New game");
+    gameDir.add(this.scene.gameOrchestrator, "start").name("New game");
 
     // debug buttons
     let debugDir = this.gui.addFolder("Debug");

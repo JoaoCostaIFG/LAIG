@@ -8,10 +8,14 @@ class MyGameMove {
     this.pieceF = pieceF;
     this.tileF = pieceF.tile;
 
-    this.isDone = false;
+    this.isDone = false; // move finished animating or hasn't started
+    this.isRunning = false; // move is not currently animation
   }
 
   doMove() {
+    // move needs to be "undone" before is "done" again
+    if (this.isDone) return;
+
     let diffX = this.tileI.getCoords()[0] - this.tileF.getCoords()[0];
     let diffY = this.tileI.getCoords()[1] - this.tileF.getCoords()[1];
 
@@ -29,11 +33,14 @@ class MyGameMove {
       false
     );
     this.pieceF.setAnimation(animationF);
+
+    this.isRunning = true;
   }
 
   undoMove() {
     this.tileI.setPiece(this.pieceI);
     this.tileF.setPiece(this.pieceF);
+    this.isDone = false;
   }
 
   update(t) {
@@ -52,6 +59,7 @@ class MyGameMove {
       this.orch.onAnimationDone();
 
       this.isDone = true;
+      this.isRunning = false;
     }
   }
 

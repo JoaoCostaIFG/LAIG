@@ -1652,6 +1652,12 @@ class MySceneGraph {
     }
   }
 
+  resetAnims() {
+    this.updatables.forEach((updatable) => {
+      updatable.reset();
+    });
+  }
+
   update(t) {
     this.updatables.forEach((updatable) => {
       updatable.update(t);

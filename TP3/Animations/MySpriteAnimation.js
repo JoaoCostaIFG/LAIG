@@ -2,9 +2,6 @@ class MySpriteAnimation {
   constructor(scene, spriteSheet, duration, startCell, endCell) {
     this.scene = scene;
 
-    this.lastTime = Date.now() / 1000; // current time in seconds
-    this.sumT = 0;
-
     this.spriteSheet = spriteSheet;
     this.rect = new MyRectangle(this.scene, 0, 0, 1, 1);
 
@@ -12,9 +9,17 @@ class MySpriteAnimation {
     this.startCell = startCell;
     this.endCell = endCell;
 
-    this.currCell = this.startCell;
     this.animDirec = this.startCell < this.endCell ? 1 : -1;
     this.stepDuration = this.duration / Math.abs(this.endCell - this.startCell);
+
+    this.reset();
+  }
+
+  reset() {
+    this.lastTime = Date.now() / 1000; // current time in seconds
+    this.sumT = 0;
+
+    this.currCell = this.startCell;
   }
 
   update(t) {

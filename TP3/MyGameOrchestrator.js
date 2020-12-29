@@ -1,5 +1,4 @@
 const GameState = {
-  PRESTART: -1,
   NOTSTARTED: 0,
   RUNNING: 1,
   PAUSED: 2,
@@ -10,7 +9,7 @@ class MyGameOrchestrator {
   constructor(scene) {
     this.scene = scene;
     scene.gameOrchestrator = this;
-    this.state = GameState.PRESTART;
+    this.state = GameState.NOTSTARTED;
 
     this.gameSequence = new MyGameSequence();
     this.animator = new MyAnimator(this, this.gameSequence);
@@ -73,10 +72,7 @@ class MyGameOrchestrator {
   }
 
   start() {
-    if (this.state == GameState.PRESTART) {
-      // workaround for Interface buttons starting clicked
-      this.state = GameState.NOTSTARTED;
-    } else if (this.state == GameState.NOTSTARTED) {
+    if (this.state == GameState.NOTSTARTED) {
       // real start
       this.innerStart();
     } else {
@@ -85,13 +81,21 @@ class MyGameOrchestrator {
       if (this.aiMoveReq) this.aiMoveReq.abort();
 
       this.gameSequence = new MyGameSequence();
-      this.animator = new MyAnimator(this, this.gameSequence);
+      this.animator.reset(this.gameSequence);
 
       this.player = 0;
       this.selectedPieces = [];
 
       this.innerStart();
     }
+  }
+
+  gameMovie() {
+    if (this.state != GameState.ENDED) return;
+    console.log("Start replay");
+
+    this.gameSequence.undoAll();
+    this.animator.startMovie();
   }
 
   /* || PICKING */
@@ -311,6 +315,7 @@ class MyGameOrchestrator {
   gameEnded() {
     this.scoreBoard.end();
     this.gameboard.togglePicking(false);
+    this.togglePossibleMoveIndicators(false);
     this.state = GameState.ENDED;
   }
 

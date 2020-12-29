@@ -2,10 +2,25 @@ class KeyframeAnimation extends Animation {
   constructor(scene, id, keyframes) {
     super(keyframes[0], keyframes[1]);
     this.keyframes = keyframes;
-    this.lastKF = keyframes[keyframes.length - 1];
 
     this.scene = scene;
     this.id = id;
+
+    this.reset();
+  }
+
+  genMatrix() {
+    this.tgMatrix = mat4.create();
+    mat4.translate(this.tgMatrix, this.tgMatrix, this.translation);
+    mat4.rotateX(this.tgMatrix, this.tgMatrix, this.rotation[0]);
+    mat4.rotateY(this.tgMatrix, this.tgMatrix, this.rotation[1]);
+    mat4.rotateZ(this.tgMatrix, this.tgMatrix, this.rotation[2]);
+    mat4.scale(this.tgMatrix, this.tgMatrix, this.scale);
+  }
+
+  reset() {
+    this.lastKF = this.keyframes[this.keyframes.length - 1];
+
     this.lastTime = Date.now() / 1000; // current time in seconds
     this.sumT = 0;
 
@@ -18,15 +33,6 @@ class KeyframeAnimation extends Animation {
     this.isDone = this.keyframes.length <= 0; // don't do anything if we don't have KF
     if (this.keyframeF != null && this.keyframeI != null)
       this.currKFDuration = this.keyframeF.instant - this.keyframeI.instant;
-  }
-
-  genMatrix() {
-    this.tgMatrix = mat4.create();
-    mat4.translate(this.tgMatrix, this.tgMatrix, this.translation);
-    mat4.rotateX(this.tgMatrix, this.tgMatrix, this.rotation[0]);
-    mat4.rotateY(this.tgMatrix, this.tgMatrix, this.rotation[1]);
-    mat4.rotateZ(this.tgMatrix, this.tgMatrix, this.rotation[2]);
-    mat4.scale(this.tgMatrix, this.tgMatrix, this.scale);
   }
 
   interpollateTgs(timePerc) {
