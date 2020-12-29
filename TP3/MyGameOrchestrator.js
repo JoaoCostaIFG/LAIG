@@ -188,8 +188,18 @@ class MyGameOrchestrator {
       console.log("No move to undo.");
     } else {
       console.log("Undo last move.");
+      // clear current highlights
+      this.togglePossibleMoveIndicators(false);
+      if (this.selectedPieces.length > 0)
+        this.selectedPieces[0].tile.toggleHightlight();
+      this.selectedPieces.splice(0, this.selectedPieces.length);
+
       move.undoMove();
       this.nextPlayer();
+
+      // get previous valid moves and toggle indicators
+      this.validMoves = move.validMoves;
+      this.togglePossibleMoveIndicators(true);
 
       // update score
       this.prolog.requestScore(

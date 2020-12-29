@@ -1,6 +1,8 @@
 class MyGameMove {
   constructor(orch, pieceI, pieceF) {
     this.orch = orch;
+    this.validMoves = this.orch.validMoves;
+
     this.pieceI = pieceI;
     this.tileI = pieceI.tile;
     this.pieceF = pieceF;
