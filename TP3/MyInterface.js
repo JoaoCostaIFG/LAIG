@@ -58,9 +58,8 @@ class MyInterface extends CGFinterface {
   }
 
   instGuiButtons() {
-    this.replayButton = this.gui
-      .add(this.scene.gameOrchestrator, "gameMovie")
-      .name("Replay");
+    this.replayButton = this.gui.add(this.scene.gameOrchestrator, "gameMovie");
+    this.replayButton.name("Replay");
 
     // scene list
     this.gui
@@ -111,6 +110,13 @@ class MyInterface extends CGFinterface {
       .name("Show lights");
 
     this.updateGUI(); // TODO redundant?
+  }
+
+  toggleReplayButton(isReplaying) {
+    if (!this.replayButton) return;
+
+    if (isReplaying) this.replayButton.name("Stop Replay");
+    else this.replayButton.name("Replay");
   }
 
   /**

@@ -40,10 +40,14 @@ class MyGameMove {
   undoMove() {
     this.tileI.setPiece(this.pieceI);
     this.tileF.setPiece(this.pieceF);
+
+    this.pieceI.setAnimation(null);
+    this.pieceF.setAnimation(null);
+
     this.isDone = false;
   }
 
-  update(t) {
+  update(t, notifyOrchestrator = true) {
     if (this.isDone) return;
 
     this.pieceI.update(t);
@@ -55,8 +59,8 @@ class MyGameMove {
       this.tileI.setPiece(this.pieceF);
       this.tileF.setPiece(this.pieceI);
 
-      // notify orchestrator
-      this.orch.onAnimationDone();
+      // notify orchestrator on finish
+      if (notifyOrchestrator) this.orch.onAnimationDone();
 
       this.isDone = true;
       this.isRunning = false;

@@ -41,6 +41,9 @@ class MyScoreBoard {
   }
 
   timedOut(timedOutPlayer) {
+    // don't time out when game already ended
+    if (this.gameEnded == 1) return;
+
     this.gameEnded = 2;
     this.timedOutPlayer = timedOutPlayer;
   }

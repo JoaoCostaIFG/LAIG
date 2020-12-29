@@ -65,7 +65,7 @@ class MyGameOrchestrator {
 
     // if AI is first player
     this.savedPlayerOps = this.playerOps[this.selectedPlayerOps];
-    this.aiMove(); // if is AI
+    this.getNextMove();
 
     // start game
     this.state = GameState.RUNNING;
@@ -91,11 +91,20 @@ class MyGameOrchestrator {
   }
 
   gameMovie() {
+    // Uncomment this
     if (this.state != GameState.ENDED) return;
     console.log("Start replay");
 
-    this.gameSequence.undoAll();
-    this.animator.startMovie();
+    if (this.animator.running == 2) {
+      // currently replaying
+      this.scene.interface.toggleReplayButton(false);
+      this.gameSequence.undoAll();
+      this.animator.reset();
+    } else {
+      this.scene.interface.toggleReplayButton(true);
+      this.gameSequence.undoAll();
+      this.animator.startMovie();
+    }
   }
 
   /* || PICKING */
@@ -187,35 +196,43 @@ class MyGameOrchestrator {
   }
 
   undo() {
+    if (this.state == GameState.ENDED) {
+      console.log("Game ended. Can't undo.");
+      return;
+    }
+
     let move = this.gameSequence.undo();
     if (move == null) {
       console.log("No move to undo.");
     } else {
       console.log("Undo last move.");
+      if (this.aiMoveReq) this.aiMoveReq.abort();
+      this.aiMoveReq = null;
+
       // clear current highlights
       this.togglePossibleMoveIndicators(false);
       if (this.selectedPieces.length > 0)
         this.selectedPieces[0].tile.toggleHightlight();
       this.selectedPieces.splice(0, this.selectedPieces.length);
 
+      // change board and orchestrator to previous state
       move.undoMove();
       this.nextPlayer();
+
+      // update score
+      this.updateScoreboardInfo();
 
       // get previous valid moves and toggle indicators
       this.validMoves = move.validMoves;
       this.togglePossibleMoveIndicators(true);
 
-      // update score
-      this.prolog.requestScore(
-        this.gameboard,
-        this.scoreBoard.parseScore.bind(this.scoreBoard)
-      );
+      this.getNextMove();
     }
   }
 
-  aiMove() {
-    // starts an AI move if it's the AI's turn
+  getNextMove() {
     if (this.savedPlayerOps[this.player]) {
+      // starts an AI move if it's the AI's turn
       this.aiMoveReq = this.prolog.requestAIMove(
         this.gameboard,
         this.player,
@@ -223,6 +240,9 @@ class MyGameOrchestrator {
         this.onAIMove.bind(this)
       );
       this.gameboard.togglePicking(false);
+    } else {
+      // otherwise, wait for player input (toggle picking on)
+      this.gameboard.togglePicking(true);
     }
   }
 
@@ -246,6 +266,7 @@ class MyGameOrchestrator {
       console.log("No more valid moves.");
       this.validMoves = [];
       this.gameEnded();
+      return;
     }
 
     this.validMoves = JSON.parse(data.target.response);
@@ -299,19 +320,23 @@ class MyGameOrchestrator {
     );
 
     // update score
+    this.updateScoreboardInfo();
+
+    this.state = GameState.RUNNING;
+
+    this.getNextMove();
+  }
+
+  /* || OTHER */
+  updateScoreboardInfo() {
+    // update score
     this.prolog.requestScore(
       this.gameboard,
       this.scoreBoard.parseScore.bind(this.scoreBoard)
     );
     this.scoreBoard.reset(); // reset timer
-
-    this.gameboard.togglePicking(true);
-    this.state = GameState.RUNNING;
-
-    this.aiMove(); // if is AI
   }
 
-  /* || OTHER */
   gameEnded() {
     this.scoreBoard.end();
     this.gameboard.togglePicking(false);

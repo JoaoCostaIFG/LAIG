@@ -57,7 +57,7 @@ class MovePieceAnimation {
       case 2:
         tgArray = [
           this.targetPos[0],
-          Math.sqrt(1 - Math.pow(timePerc, 2)) * this.maxHeight,
+          (1 - Math.pow(timePerc, 5)) * this.maxHeight,
           this.targetPos[1],
         ];
         break;

@@ -29,7 +29,8 @@ class MyAnimator {
 
   update(t) {
     // check if running / there's anything to update
-    if (!this.running || this.sequenceIndex >= this.gameSequence.length()) return;
+    if (!this.running || this.sequenceIndex >= this.gameSequence.length())
+      return;
 
     if (this.running == 1) {
       // running with game
@@ -39,7 +40,7 @@ class MyAnimator {
       let move = this.gameSequence.getMoveByInd(this.sequenceIndex);
       // start move if not started yet
       if (!move.isDone && !move.isRunning) move.doMove();
-      move.update(t);
+      move.update(t, false); // don't notify orchestrator on finish
       // go to next move when the current one is over
       if (move.isDone && !move.isRunning) this.sequenceIndex++;
     }
