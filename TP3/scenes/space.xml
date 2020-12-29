@@ -7,25 +7,35 @@
     <!-- identifier of root node of the scene graph; this node -->
     <!-- must be defined in one of the following NODE declarations -->
   </initials>
-  <views default="cam1">
-    <!-- at least one of the following type of cameras must be declared -->
-    <perspective id="cam1" near="0.1" far="500" angle="45">
-      <from x="0" y="120" z="100"/>
+  <views default="orthoCam">
+    <perspective id="camCenter" near="0.1" far="500" angle="45">
+      <from x="0" y="50" z="70"/>
+      <to x="0" y="0" z="-20"/>
+    </perspective>
+    <perspective id="camLeft" near="0.1" far="500" angle="45">
+      <from x="-30" y="60" z="60"/>
       <to x="0" y="0" z="0"/>
     </perspective>
-    <perspective id="cam2" near="0.1" far="500" angle="45">
-      <from x="1" y="120" z="-100"/>
+    <perspective id="camRight" near="0.1" far="500" angle="45">
+      <from x="30" y="60" z="60"/>
       <to x="0" y="0" z="0"/>
     </perspective>
-    <perspective id="originCam" near="0.1" far="500" angle="45">
-      <from x="0" y="20" z="5"/>
+    <perspective id="camCenter2" near="0.1" far="500" angle="45">
+      <from x="1" y="50" z="-70"/>
+      <to x="0" y="0" z="20"/>
+    </perspective>
+    <perspective id="camLeft2" near="0.1" far="500" angle="45">
+      <from x="30" y="60" z="-60"/>
+      <to x="0" y="0" z="0"/>
+    </perspective>
+    <perspective id="camRight2" near="0.1" far="500" angle="45">
+      <from x="-30" y="60" z="-60"/>
       <to x="0" y="0" z="0"/>
     </perspective>
     <ortho id="orthoCam" near="0.1" far="500" left="-50" right="50" top="50" bottom="-50">
       <from x="50" y="20" z="60"/>
       <to x="5" y="0" z="0"/>
-      <up x="0" y="1" z="0"/>
-      <!-- optional, default 0,1,0 -->
+      <up x="0" y="1" z="0"/> <!-- optional, default 0,1,0 -->
     </ortho>
   </views>
   <illumination>

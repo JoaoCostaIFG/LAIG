@@ -29,7 +29,7 @@ class MySpriteText {
     }
   }
 
-  display() {
+  display(isVertical = false) {
     this.scene.pushMatrix();
     // center text
     this.scene.translate(-this.text.length / 2.0, -0.5, 0.0);
@@ -38,7 +38,8 @@ class MySpriteText {
     for (let i = 0; i < this.text.length; ++i) {
       this.spriteSheet.activateCellP(this.text[i]);
       this.rect.display();
-      this.scene.translate(1.0, 0.0, 0.0);
+      if (isVertical) this.scene.translate(0.0, -1.0, 0.0);
+      else this.scene.translate(1.0, 0.0, 0.0);
     }
     this.spriteSheet.deactivate();
 
