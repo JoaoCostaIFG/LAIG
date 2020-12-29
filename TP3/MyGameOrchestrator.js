@@ -49,30 +49,43 @@ class MyGameOrchestrator {
   }
 
   /* || START */
+  innerStart() {
+    // create board and score board according to game options
+    this.scoreBoard = new MyScoreBoard(
+      this.scene,
+      this.difficultyTimes[this.selectedDifficulty]
+    );
+    this.gameboard = new MyGameBoard(this.scene, this.boardSize);
+
+    // initial valid moves
+    this.prolog.requestValidMoves(
+      this.gameboard,
+      this.player,
+      this.parseValidMoves.bind(this)
+    );
+
+    // if AI is first player
+    this.savedPlayerOps = this.playerOps[this.selectedPlayerOps];
+    this.aiMove(); // if is AI
+
+    // start game
+    this.state = GameState.RUNNING;
+  }
+
   start() {
     if (this.state == GameState.PRESTART) {
       this.state = GameState.NOTSTARTED;
     } else if (this.state == GameState.NOTSTARTED) {
-      // create board and score board according to game options
-      this.scoreBoard = new MyScoreBoard(
-        this.scene,
-        this.difficultyTimes[this.selectedDifficulty]
-      );
-      this.gameboard = new MyGameBoard(this.scene, this.boardSize);
+      this.innerStart();
+    } else if (this.state == GameState.ENDED) {
+      // restart
+      this.gameSequence = new MyGameSequence();
+      this.animator = new MyAnimator(this, this.gameSequence);
 
-      // initial valid moves
-      this.prolog.requestValidMoves(
-        this.gameboard,
-        this.player,
-        this.parseValidMoves.bind(this)
-      );
+      this.player = 0;
+      this.selectedPieces = [];
 
-      // if AI is first player
-      this.savedPlayerOps = this.playerOps[this.selectedPlayerOps];
-      this.aiMove(); // if is AI
-
-      // start game
-      this.state = GameState.RUNNING;
+      this.innerStart();
     }
   }
 

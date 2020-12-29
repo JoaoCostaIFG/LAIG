@@ -10,11 +10,17 @@ class MyGameMove {
   }
 
   doMove() {
+    let diffX = this.tileI.getCoords()[0] - this.tileF.getCoords()[0];
+    let diffY = this.tileI.getCoords()[1] - this.tileF.getCoords()[1];
+
     // Create animations
-    let animationI = new MovePieceAnimation(this.pieceI.scene);
+    let animationI = new MovePieceAnimation(this.pieceI.scene, [
+      -diffX,
+      -diffY,
+    ]);
     this.pieceI.setAnimation(animationI);
 
-    let animationF = new MovePieceAnimation(this.pieceI.scene);
+    let animationF = new MovePieceAnimation(this.pieceI.scene, [diffX, diffY]);
     this.pieceF.setAnimation(animationF);
   }
 

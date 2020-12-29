@@ -28,6 +28,8 @@ class XMLscene extends CGFscene {
   }
 
   updateSelectedGraph() {
+    this.turnOffAllLights();
+
     this.graph = this.graphs[this.selectedGraph];
     this.gameOrchestrator.theme = this.graph;
 
@@ -37,6 +39,7 @@ class XMLscene extends CGFscene {
 
     this.setGlobalAmbientLight(...this.graph.ambient);
 
+    this.camera.reset(); // this will cancel any camera animation currently running
     this.initCameras();
     this.updateCurrentCamera();
     this.initLights();
@@ -53,7 +56,6 @@ class XMLscene extends CGFscene {
 
     this.sceneInited = false;
 
-    // this.initCameras();
     // default camera
     this.camera = new MyCGFcamera(
       0.4,
@@ -94,9 +96,9 @@ class XMLscene extends CGFscene {
     this.xmlLight7 = false;
 
     // cameras
+    this.waitingForCamAnim = false;
     this.cameras = [];
     this.selectedCamera = -1;
-    this.lastCamera = -1;
     this.cameraList = {};
 
     this.defaultTex = new CGFtexture(this, "./scenes/images/test.jpg"); // missing texture
@@ -145,6 +147,7 @@ class XMLscene extends CGFscene {
 
       this.cameras.push(cam);
       this.cameraList[camInfo[1]] = i;
+      // select default camera
       if (camInfo[1] == this.graph.defaultCameraId) this.selectedCamera = i;
 
       ++i;
@@ -155,12 +158,14 @@ class XMLscene extends CGFscene {
    * Updates which camera is selected
    */
   updateCurrentCamera() {
-    if (this.lastCamera == this.selectedCamera) return;
-
-    this.lastCamera = this.selectedCamera;
     this.camera = this.cameras[this.selectedCamera];
     this.camera.reset();
     this.interface.setActiveCamera(this.camera);
+  }
+
+  animSwitchCamera() {
+    this.waitingForCamAnim = true;
+    this.camera.startAnim(this.cameras[this.selectedCamera]);
   }
 
   /**
@@ -215,6 +220,19 @@ class XMLscene extends CGFscene {
     }
   }
 
+  turnOffAllLights() {
+    let i = 0;
+    for (let key in this.graph.lights) {
+      if (i >= 8) break; // Only eight lights allowed by WebCGF on default shaders.
+
+      this.lights[i].setVisible(false);
+      this.lights[i].disable();
+      this.lights[i].update();
+
+      ++i;
+    }
+  }
+
   /** Handler called when the graph is finally loaded.
    * As loading is asynchronous, this may be called already after the application has started the run loop
    */
@@ -244,7 +262,7 @@ class XMLscene extends CGFscene {
     // Clear image and depth buffer everytime we update the scene
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-    this.gl.enable(this.gl.DEPTH_TEST); // TODO ?
+    this.gl.enable(this.gl.DEPTH_TEST);
 
     // Initialize Model-View matrix as identity (no transformation
     this.updateProjectionMatrix();
@@ -286,8 +304,13 @@ class XMLscene extends CGFscene {
 
   update(time) {
     if (!this.sceneInited) return;
-
     let t = time / 1000;
+
+    this.camera.update(t);
+    if (this.waitingForCamAnim && !this.camera.isAnimating) {
+      this.waitingForCamAnim = false;
+      this.updateCurrentCamera();
+    }
 
     this.gameOrchestrator.update(t);
   }

@@ -52,7 +52,8 @@ class MyInterface extends CGFinterface {
       this.scene.cameraList
     );
     this.cameras.name("Selected camera");
-    this.cameras.onChange(this.scene.updateCurrentCamera.bind(this.scene));
+    // this.cameras.onChange(this.scene.updateCurrentCamera.bind(this.scene));
+    this.cameras.onChange(this.scene.animSwitchCamera.bind(this.scene));
   }
 
   instGuiButtons() {

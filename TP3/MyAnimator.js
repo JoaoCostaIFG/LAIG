@@ -23,14 +23,13 @@ class MyAnimator {
     if (!this.running || this.sequenceIndex >= this.gameSequence.length) return;
 
     let move = this.gameSequence.getLastMove();
-    move.update(time);
+    if (move) move.update(time);
   }
 
-  /*
-   *   display() {
-   *     if (!this.running) return;
-   *
-   *     let move = this.gameSequence.getLastMove();
-   *   }
-   */
+  // display() {
+  // if (!this.running) return;
+
+  // let move = this.gameSequence.getLastMove();
+  // // if (move)
+  // }
 }
