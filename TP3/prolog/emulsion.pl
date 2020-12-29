@@ -5,6 +5,7 @@
 :-use_module(library(between)).
 :-use_module(library(system)).
 :-use_module(library(random)).
+:-use_module(library(samsort)).
 
 :-include('emulsion_ai.pl').
 :-include('emulsion_board.pl').
@@ -226,17 +227,18 @@ piece_value([X, Y], State, V) :-
   V is (NeighbNum - 1) + PieceVal.
 
 % converts a list of groups to a list of values of each group
-getAllGroupsValues(_, [], []).
-getAllGroupsValues(State, [G|Groups], [R|Res]) :-
+getAllGroupsValues([], []).
+getAllGroupsValues([G|Groups], [R|Res]) :-
   length(G, R),
-  getAllGroupsValues(State, Groups, Res).
+  getAllGroupsValues(Groups, Res).
 
 % Returns sorted (desc.) list of the values of all groups
 % of a given player
 value(GameState, Player, Value) :-
-  getAllGroups(GameState, Player, G),
-  getAllGroupsValues(GameState, G, ListOfVals),
-  sort(ListOfVals, SortedVals), reverse(SortedVals, Value).
+  getAllGroups(GameState, Player, G), !,
+  getAllGroupsValues(G, ListOfVals),
+  samsort(@>=, ListOfVals, Value).
+  % sort(ListOfVals, SortedVals), reverse(SortedVals, Value).
 
 % Receives 2 lists of group sizes (calculated by the value predicate)
 % Returns the 2 final scores (one for each player)

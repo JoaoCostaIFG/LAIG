@@ -52,7 +52,8 @@ class MyGameOrchestrator {
     // create board and score board according to game options
     this.scoreBoard = new MyScoreBoard(
       this.scene,
-      this.difficultyTimes[this.selectedDifficulty]
+      this.difficultyTimes[this.selectedDifficulty],
+      this.boardSize
     );
     this.gameboard = new MyGameBoard(this.scene, this.boardSize);
 

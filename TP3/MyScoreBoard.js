@@ -1,12 +1,14 @@
 class MyScoreBoard {
   // TODO show current player
 
-  constructor(scene, maxTime) {
+  constructor(scene, maxTime, boardSize) {
     this.scene = scene;
     this.maxTime = maxTime;
     this.txt = new MySpriteText(scene, "");
-    this.score = [1, 1];
-    this.scoreStr = "B:1 - W:1";
+
+    let numPlayerPieces = boardSize * boardSize / 2;
+    this.score = [numPlayerPieces, numPlayerPieces];
+    this.scoreStr = "B:" + numPlayerPieces + " - W:" + numPlayerPieces;
 
     this.reset();
   }
@@ -90,6 +92,7 @@ class MyScoreBoard {
       if (this.gameEnded) this.txt.setText("White wins!");
       else this.txt.setText("White is winning!");
     } else {
+      // TODO when game ends, players are not tied. Last play wins
       if (this.gameEnded) this.txt.setText("The players tied!");
       else this.txt.setText("The players are tied!");
     }

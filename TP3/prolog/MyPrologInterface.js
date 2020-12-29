@@ -39,20 +39,6 @@ class MyPrologInterface {
     );
   }
 
-  /* || MOVE */
-  requestMove(board, player, move) {
-    // http://localhost:8081/move(gameState([0,0],2,[[0,1],[1,0]],0),[[0,0],[0,1]])
-    let req =
-      "move(" + this.genGameState(board, player) + "," + move.toString() + ")";
-    console.log("Request: " + req);
-
-    return this.getPrologRequest(req, this.parseMove);
-  }
-
-  parseMove(data) {
-    console.log(data.target.response);
-  }
-
   /* || MOVE IF VALID */
   requestValidMove(board, player, move, onSuccess) {
     // http://localhost:8081/valid_move(gameState([0,0],2,[[0,1],[1,0]],0),[[0,0],[0,1]])
