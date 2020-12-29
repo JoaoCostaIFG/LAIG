@@ -8,9 +8,14 @@ class MyGameBoard {
     this.primitive = new MyCube(scene, 0.5);
     this.border = new MyBorder(scene, size);
     this.tex = new CGFtexture(scene, MyGameBoard.tex);
-
+    this.genLinesIndexes();
     this.pickingEnabled = true;
     this.genTiles();
+  }
+
+  genLinesIndexes(){
+      let indexes_string = Array(this.size).fill().map((v,i)=>i.toString());
+      this.indexes = new MySpriteText(this.scene, indexes_string);
   }
 
   togglePicking(isEnabled) {
@@ -62,7 +67,7 @@ class MyGameBoard {
     this.displayBorder();
     this.displayBoardBottom();
     this.scene.popTexture();
-
+    this.displayIndexes();
     this.displayTiles();
   }
 
@@ -73,7 +78,7 @@ class MyGameBoard {
     // Up
     this.scene.pushMatrix();
     this.scene.translate(
-      -aux - MyPiece.size / 4.0,
+      -aux - MyPiece.size/4.0,
       halfPiece,
       -aux - MyPiece.size / 4.0
     );
@@ -102,7 +107,7 @@ class MyGameBoard {
     );
     this.scene.rotate(Math.PI / 2.0, 0, 1, 0);
     this.border.display();
-    this.scene.popMatrix();
+    this.scene.popMatrix(); 
   }
 
   displayBoardBottom() {
@@ -143,6 +148,38 @@ class MyGameBoard {
       this.scene.translate(-MyPiece.size * this.size, 0.0, MyPiece.size);
     }
 
+    this.scene.popMatrix();
+  }
+
+  displayIndexes(){
+    this.scene.pushMatrix();
+    this.scene.translate(0, 5, this.size * 2.2);
+    this.scene.rotate(-Math.PI/2, 1, 0, 0);
+    this.scene.scale(this.size/2.5, this.size/2.5, this.size/2.5);
+    this.indexes.display();
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+    this.scene.translate(0, 5, -this.size * 2.2);
+    this.scene.rotate(Math.PI, 0, 1, 0);
+    this.scene.rotate(-Math.PI/2, 1, 0, 0);
+    this.scene.scale(this.size/2.5, this.size/2.5, this.size/2.5);
+    this.indexes.display();
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+    this.scene.translate(this.size/2.0, 5, this.size * 1.8);
+    this.scene.rotate(Math.PI, 0, 1, 0);
+    this.scene.rotate(-Math.PI/2, 1, 0, 0);
+    this.scene.scale(this.size/2.5, this.size/2.5, this.size/2.5);
+    this.indexes.display(true);
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+    this.scene.translate(-this.size/2.0, 5, -this.size * 1.8);
+    this.scene.rotate(-Math.PI/2, 1, 0, 0);
+    this.scene.scale(this.size/2.5, this.size/2.5, this.size/2.5);
+    this.indexes.display(true);
     this.scene.popMatrix();
   }
 
