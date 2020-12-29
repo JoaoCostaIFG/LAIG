@@ -53,7 +53,6 @@ class MyInterface extends CGFinterface {
       this.scene.cameraList
     );
     this.cameras.name("Selected camera");
-    // this.cameras.onChange(this.scene.updateCurrentCamera.bind(this.scene));
     this.cameras.onChange(this.scene.animSwitchCamera.bind(this.scene));
   }
 
@@ -89,24 +88,23 @@ class MyInterface extends CGFinterface {
       .add(
         this.scene.gameOrchestrator,
         "boardSize",
-        this.scene.gameOrchestrator.boardSize
       )
       .name("Board size");
     // undo
     gameDir.add(this.scene.gameOrchestrator, "undo").name("Undo");
     // start
-    gameDir.add(this.scene.gameOrchestrator, "start").name("New game");
+    gameDir.add(this.scene.gameOrchestrator, "newGame").name("New game");
 
     // debug buttons
     let debugDir = this.gui.addFolder("Debug");
     // toggle to show object normals
     debugDir
-      .add(this.scene.graph, "showNormals", this.scene.graph.showNormals)
+      .add(this.scene.graph, "showNormals")
       .name("Show normals")
       .onChange(this.scene.graph.toggleObjectNormals.bind(this.scene.graph));
     // toggle to show lights as objects
     debugDir
-      .add(this.scene, "areLightsVisible", this.scene.areLightsVisible)
+      .add(this.scene, "areLightsVisible")
       .name("Show lights");
 
     this.updateGUI(); // TODO redundant?

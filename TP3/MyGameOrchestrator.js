@@ -48,7 +48,7 @@ class MyGameOrchestrator {
   }
 
   /* || START */
-  innerStart() {
+  start() {
     // create board and score board according to game options
     this.scoreBoard = new MyScoreBoard(
       this.scene,
@@ -72,10 +72,9 @@ class MyGameOrchestrator {
     this.state = GameState.RUNNING;
   }
 
-  start() {
+  newGame() {
     if (this.state == GameState.NOTSTARTED) {
-      // real start
-      this.innerStart();
+      this.start(); // start game
     } else {
       // restart
       // cancel AI move request (if any)
@@ -87,7 +86,7 @@ class MyGameOrchestrator {
       this.player = 0;
       this.selectedPieces = [];
 
-      this.innerStart();
+      this.start();
     }
   }
 
@@ -373,8 +372,8 @@ class MyGameOrchestrator {
       this.selectedPieces.splice(0, this.selectedPieces.length);
     } else if (this.scoreBoard.time <= 0) {
       // current player timed out
-      this.gameEnded();
       this.scoreBoard.timedOut(this.player);
+      this.gameEnded();
     }
   }
 

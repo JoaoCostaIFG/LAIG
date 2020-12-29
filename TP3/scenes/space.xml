@@ -35,7 +35,8 @@
     <ortho id="orthoCam" near="0.1" far="500" left="-40" right="40" top="40" bottom="-40">
       <from x="1" y="50" z="0"/>
       <to x="0" y="0" z="0"/>
-      <up x="0" y="1" z="-1"/> <!-- optional, default 0,1,0 -->
+      <up x="0" y="1" z="-1"/>
+      <!-- optional, default 0,1,0 -->
     </ortho>
   </views>
   <illumination>
@@ -99,7 +100,7 @@
     <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material
          requires a distinct "id". At least one material should be present. -->
     <material id="metalMaterial">
-      <shininess value="10.0"/>
+      <shininess value="30.0"/>
       <ambient r="1.0" g="1.0" b="1.0" a="1.0"/>
       <diffuse r="1.0" g="1.0" b="1.0" a="1.0"/>
       <specular r="1.0" g="1.0" b="1.0" a="1.0"/>
@@ -112,9 +113,16 @@
       <specular r="0.0" g="0.0" b="0.0" a="1.0"/>
       <emissive r="0.7" g="0.8" b="0.69" a="1.0"/>
     </material>
+    <material id="woodMaterial">
+      <shininess value="1.0"/>
+      <ambient r="0.09" g="0.06" b="0.05" a="1.0"/>
+      <diffuse r="0.09" g="0.06" b="0.05" a="1.0"/>
+      <specular r="0.09" g="0.06" b="0.05" a="1.0"/>
+      <emissive r="0.7" g="0.8" b="0.69" a="1.0"/>
+    </material>
   </materials>
   <animations>
-      <animation id="rightChairAnim">
+    <animation id="rightChairAnim">
       <keyframe instant="0.0">
         <translation x="0.0" y="-5.0" z="0.0"/>
         <rotation axis="x" angle="0.0"/>
@@ -130,7 +138,7 @@
         <scale sx="1.0" sy="1.0" sz="1.0"/>
       </keyframe>
     </animation>
-      <animation id="leftChairAnim">
+    <animation id="leftChairAnim">
       <keyframe instant="0.0">
         <translation x="0.0" y="0.0" z="0.0"/>
         <rotation axis="x" angle="0.0"/>
@@ -167,8 +175,9 @@
         <leaf type="gameboard" x="0" y="0" z="0"/>
       </descendants>
     </node>
+    <!-- || CHAIRS -->
     <node id="chairRight">
-      <material id="null"/>
+      <material id="woodMaterial"/>
       <texture id="woodTex">
         <amplification afs="1.0" aft="1.0"/>
       </texture>
@@ -176,7 +185,7 @@
         <translation x="60.0" y="0.0" z="0.0"/>
         <rotation axis="y" angle="-110"/>
         <rotation axis="z" angle="-110"/>
-        <scale sx="4.5" sy="4.5" sz="4.5"/>  
+        <scale sx="4.5" sy="4.5" sz="4.5"/>
       </transformations>
       <animationref id="rightChairAnim"/>
       <descendants>
@@ -186,7 +195,7 @@
       </descendants>
     </node>
     <node id="chairLeft">
-      <material id="null"/>
+      <material id="woodMaterial"/>
       <texture id="woodTex">
         <amplification afs="1.0" aft="1.0"/>
       </texture>
@@ -195,7 +204,7 @@
         <rotation axis="y" angle="90"/>
         <rotation axis="z" angle="-50"/>
         <rotation axis="y" angle="-50"/>
-        <scale sx="4.5" sy="4.5" sz="4.5"/>  
+        <scale sx="4.5" sy="4.5" sz="4.5"/>
       </transformations>
       <animationref id="leftChairAnim"/>
       <descendants>
@@ -210,7 +219,7 @@
         <amplification afs="1.0" aft="1.0"/>
       </texture>
       <transformations>
-        <scale sx="0.6" sy="6" sz="0.6"/>  
+        <scale sx="0.6" sy="6" sz="0.6"/>
       </transformations>
       <descendants>
         <noderef id="chairUpperLeftLeg"/>
@@ -329,7 +338,7 @@
       </texture>
       <transformations>
         <translation x="-4-5" y="8" z="-3.3"/>
-        <scale sx="13" sy="1.4" sz="1"/>  
+        <scale sx="13" sy="1.4" sz="1"/>
       </transformations>
       <descendants>
         <leaf type="cube" side="0.3"/>
@@ -354,28 +363,44 @@
       </texture>
       <transformations>
         <translation x="-3.2" y="-0.1" z="-3.2"/>
-        <scale sx="1" sy="0.1" sz="1"/>  
+        <scale sx="1" sy="0.1" sz="1"/>
       </transformations>
       <descendants>
         <leaf type="cube" side="3.2"/>
       </descendants>
     </node>
+    <!-- || PILLOW -->
     <node id="pillow">
-      <material id="null"/>
+      <material id="metalMaterial"/>
       <texture id="pillowTex">
         <amplification afs="1.0" aft="1.0"/>
       </texture>
       <transformations>
         <rotation axis="z" angle="180"/>
         <translation x="0.0" y="-0.2" z="0.0"/>
-        <scale sx="1" sy="0.2" sz="1"/>  
+        <scale sx="1" sy="0.2" sz="1"/>
       </transformations>
       <descendants>
         <leaf type="sphere" radius="3" slices="20" stacks="20"/>
       </descendants>
     </node>
+    <!-- || SCOREBOARD -->
+    <node id="scoreboard">
+      <material id="metalMaterial"/>
+      <texture id="woodTex">
+        <amplification afs="30.0" aft="30.0"/>
+      </texture>
+      <transformations>
+        <translation x="-24.0" y="2.0" z="-24.0"/>
+        <scale sx="2" sy="1" sz="0.25"/>
+      </transformations>
+      <descendants>
+        <leaf type="cube" side="3"/>
+      </descendants>
+    </node>
+    <!-- || TABLE -->
     <node id="table">
-      <material id="null"/>
+      <material id="woodMaterial"/>
       <texture id="woodTex">
         <amplification afs="1.0" aft="1.0"/>
       </texture>
@@ -384,6 +409,7 @@
       <descendants>
         <noderef id="tableTop"/>
         <noderef id="tableLegs"/>
+        <noderef id="scoreboard"/>
       </descendants>
     </node>
     <node id="tableTop">
@@ -420,7 +446,7 @@
         <amplification afs="10.0" aft="10.0"/>
       </texture>
       <transformations>
-          <translation x="-26.0" y="-2.1" z="22.0"/>
+        <translation x="-26.0" y="-2.1" z="22.0"/>
       </transformations>
       <descendants>
         <leaf type="cube" side="2"/>
@@ -432,7 +458,7 @@
         <amplification afs="10.0" aft="10.0"/>
       </texture>
       <transformations>
-          <translation x="-26.0" y="-2.1" z="-26.0"/>
+        <translation x="-26.0" y="-2.1" z="-26.0"/>
       </transformations>
       <descendants>
         <leaf type="cube" side="2"/>
@@ -444,7 +470,7 @@
         <amplification afs="10.0" aft="10.0"/>
       </texture>
       <transformations>
-          <translation x="22.0" y="-2.1" z="22.0"/>
+        <translation x="22.0" y="-2.1" z="22.0"/>
       </transformations>
       <descendants>
         <leaf type="cube" side="2"/>
@@ -456,13 +482,13 @@
         <amplification afs="10.0" aft="10.0"/>
       </texture>
       <transformations>
-          <translation x="22.0" y="-2.1" z="-26.0"/>
+        <translation x="22.0" y="-2.1" z="-26.0"/>
       </transformations>
       <descendants>
         <leaf type="cube" side="2"/>
       </descendants>
     </node>
-    <!-- SKYBOX -->
+    <!-- || SKYBOX -->
     <node id="skybox">
       <material id="skyboxMaterial"/>
       <texture id="clear">

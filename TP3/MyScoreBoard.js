@@ -5,8 +5,9 @@ class MyScoreBoard {
     this.scene = scene;
     this.maxTime = maxTime;
     this.txt = new MySpriteText(scene, "");
+    this.rect = new MyRectangle(scene, -5, -5, 5, 5);
 
-    let numPlayerPieces = boardSize * boardSize / 2;
+    let numPlayerPieces = (boardSize * boardSize) / 2;
     this.score = [numPlayerPieces, numPlayerPieces];
     this.scoreStr = "B:" + numPlayerPieces + " - W:" + numPlayerPieces;
 
@@ -38,8 +39,9 @@ class MyScoreBoard {
     this.running = false;
   }
 
-  end() {
+  end(lastPlayer) {
     this.gameEnded = 1;
+    this.lastPlayer = lastPlayer;
   }
 
   timedOut(timedOutPlayer) {
@@ -57,45 +59,44 @@ class MyScoreBoard {
     if (this.time < 0) this.time = 0;
   }
 
-  displayBoard(isBack = false) {
-    this.scene.pushMatrix();
+  getTimeStr() {
+    return (this.time < 10 ? "0" : "") + this.time.toFixed(1);
+  }
 
-    this.scene.translate(0, 20, 0);
-    this.scene.scale(3, 3, 0);
-    if (isBack) this.scene.rotate(Math.PI, 0, 1, 0);
-
-    if (this.gameEnded) {
-      this.txt.setText(this.scoreStr);
-    } else {
-      let timerStr = (this.time < 10 ? "0" : "") + this.time.toFixed(1);
-      this.txt.setText(this.scoreStr + " " + timerStr);
-    }
-    this.txt.display();
-
-    this.scene.popMatrix();
-
-    this.scene.pushMatrix();
-    this.scene.translate(0, 15, 0);
-    this.scene.scale(3, 3, 0);
-    if (isBack) this.scene.rotate(Math.PI, 0, 1, 0);
-
+  getWinnerStr() {
     if (this.gameEnded == 2) {
       // timed out player loses
-      this.txt.setText(
+      return (
         (this.timedOutPlayer == 0 ? "Black" : "White") +
-          " lost (ran out of time)!"
+        " lost (ran out of time)!"
       );
     } else if (this.score[0] > this.score[1]) {
-      if (this.gameEnded == 1) this.txt.setText("Black wins!");
-      else this.txt.setText("Black is winning!");
+      if (this.gameEnded == 1) return "Black wins!";
+      else return "Black is winning!";
     } else if (this.score[0] < this.score[1]) {
-      if (this.gameEnded) this.txt.setText("White wins!");
-      else this.txt.setText("White is winning!");
+      if (this.gameEnded) return "White wins!";
+      else return "White is winning!";
     } else {
-      // TODO when game ends, players are not tied. Last play wins
-      if (this.gameEnded) this.txt.setText("The players tied!");
-      else this.txt.setText("The players are tied!");
+      if (this.gameEnded)
+        return (this.lastPlayer == 0 ? "White" : "Black") + " wins!";
+      else return "The players are tied!";
     }
+  }
+
+  displayBoard() {
+    this.scene.pushMatrix();
+    this.scene.scale(3, 3, 0);
+
+    this.scene.translate(0, 6, 0);
+    this.txt.setText(this.getTimeStr());
+    this.txt.display();
+
+    this.scene.translate(0, -1, 0);
+    this.txt.setText(this.scoreStr);
+    this.txt.display();
+
+    this.scene.translate(0, -1, 0);
+    this.txt.setText(this.getWinnerStr());
     this.txt.display();
 
     this.scene.popMatrix();
@@ -103,6 +104,5 @@ class MyScoreBoard {
 
   display() {
     this.displayBoard();
-    this.displayBoard(true);
   }
 }
