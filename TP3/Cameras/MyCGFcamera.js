@@ -11,14 +11,9 @@ class MyCGFcamera extends CGFcamera {
   constructor(fov, near, far, position, target) {
     super(fov, near, far, position, target);
 
-    this.initPosition = vec4.fromValues(
-      position[0],
-      position[1],
-      position[2],
-      0
-    );
-    this.initTarget = vec4.fromValues(target[0], target[1], target[2], 0);
-    this.initUp = [0, 1, 0];
+    this.initPosition = vec4.fromValues(...position, 0);
+    this.initTarget = vec4.fromValues(...target, 0);
+    this.initUp = vec3.fromValues(0, 1, 0);
     this.initFov = fov;
     this.initNear = near;
     this.initFar = far;
@@ -46,7 +41,7 @@ class MyCGFcamera extends CGFcamera {
   reset() {
     vec4.copy(this.position, this.initPosition);
     vec4.copy(this.target, this.initTarget);
-    vec4.copy(this._up, this.initUp);
+    vec3.copy(this._up, this.initUp);
     this.direction = this.calculateDirection();
 
     this.fov = this.initFov;
