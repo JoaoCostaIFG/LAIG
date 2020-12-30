@@ -195,7 +195,7 @@
       </transformations>
       <descendants>
         <leaf type="cube" side="10"/>
-        <leaf type="scoreboard" x="0" y="20" z="-97"/>
+        <leaf type="scoreboard" x="0" y="30" z="-97"/>
       </descendants>
     </node>
     <!-- || CHAIRS -->

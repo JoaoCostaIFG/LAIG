@@ -49,12 +49,18 @@ class MyGameOrchestrator {
 
   /* || START */
   start() {
-    // create board and score board according to game options
-    this.scoreBoard = new MyScoreBoard(
-      this.scene,
-      this.difficultyTimes[this.selectedDifficulty],
-      this.boardSize
-    );
+    // create or reset scoreBoard according to game options
+    if (this.scoreBoard) {
+      this.scoreBoard.reset(this.difficultyTimes[this.selectedDifficulty]);
+    } else {
+      this.scoreBoard = new MyScoreBoard(
+        this.scene,
+        this.difficultyTimes[this.selectedDifficulty],
+        this.boardSize
+      );
+    }
+
+    // create board according to game options
     this.gameboard = new MyGameBoard(this.scene, this.boardSize);
 
     // initial valid moves
@@ -367,15 +373,16 @@ class MyGameOrchestrator {
       this.gameboard,
       this.scoreBoard.parseScore.bind(this.scoreBoard)
     );
-    this.scoreBoard.reset(); // reset timer
+    this.scoreBoard.resetTimer(); // reset timer
   }
 
-  gameEnded() {
+  gameEnded(isTimeout = false) {
     // only end once
     if (this.state == GameState.ENDED) return;
 
     this.cancelAIMove(); // for safety
-    this.scoreBoard.end();
+    if (isTimeout) this.scoreBoard.timedOut(this.player);
+    else this.scoreBoard.end();
     this.gameboard.togglePicking(false);
     this.togglePossibleMoveIndicators(false);
     this.state = GameState.ENDED;
@@ -406,8 +413,7 @@ class MyGameOrchestrator {
       this.selectedPieces.splice(0, this.selectedPieces.length);
     } else if (this.scoreBoard.time <= 0) {
       // current player timed out
-      this.scoreBoard.timedOut(this.player);
-      this.gameEnded();
+      this.gameEnded(true);
     }
   }
 

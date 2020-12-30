@@ -3,14 +3,14 @@ class MyScoreBoard {
 
   constructor(scene, maxTime, boardSize) {
     this.scene = scene;
-    this.maxTime = maxTime;
     this.txt = new MySpriteText(scene, "");
 
     let numPlayerPieces = (boardSize * boardSize) / 2;
     this.score = [numPlayerPieces, numPlayerPieces];
     this.scoreStr = "B:" + numPlayerPieces + " - W:" + numPlayerPieces;
 
-    this.reset();
+    this.history = [];
+    this.reset(maxTime);
   }
 
   parseScore(data) {
@@ -23,10 +23,15 @@ class MyScoreBoard {
     this.scoreStr = "B:" + this.score[0] + " - W:" + this.score[1];
   }
 
-  reset() {
+  resetTimer() {
     this.lastTime = Date.now() / 1000;
     this.time = this.maxTime;
     this.running = true;
+  }
+
+  reset(maxTime) {
+    this.maxTime = maxTime;
+    this.resetTimer();
     this.gameEnded = 0;
   }
 
@@ -39,13 +44,20 @@ class MyScoreBoard {
   }
 
   end(lastPlayer) {
+    // only end once
+    if (this.gameEnded) return;
+
+    this.history.push(this.scoreStr);
+
     this.gameEnded = 1;
     this.lastPlayer = lastPlayer;
   }
 
   timedOut(timedOutPlayer) {
     // don't time out when game already ended
-    if (this.gameEnded == 1) return;
+    if (this.gameEnded) return;
+
+    this.history.push(this.scoreStr);
 
     this.gameEnded = 2;
     this.timedOutPlayer = timedOutPlayer;
@@ -65,7 +77,7 @@ class MyScoreBoard {
   getWinnerStr() {
     if (this.gameEnded == 2) {
       // timed out player loses
-      return (this.timedOutPlayer == 0 ? "White" : "Black") + "wins (timeout)!";
+      return (this.timedOutPlayer == 0 ? "White" : "Black") + " wins timeout!";
     } else if (this.score[0] > this.score[1]) {
       if (this.gameEnded == 1) return "Black wins!";
       else return "Black is winning!";
@@ -82,8 +94,17 @@ class MyScoreBoard {
   display() {
     this.scene.pushMatrix();
     this.scene.scale(5, 5, 1);
+
+    let histStr = "";
+    for (let i = 0; i < this.history.length; ++i)
+      histStr += this.history[i] + "\n";
     this.txt.setText(
-      this.getTimeStr() + "\n" + this.scoreStr + "\n" + this.getWinnerStr()
+      histStr +
+        this.getTimeStr() +
+        "\n" +
+        this.scoreStr +
+        "\n" +
+        this.getWinnerStr()
     );
     this.txt.display();
 
