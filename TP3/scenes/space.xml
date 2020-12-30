@@ -115,10 +115,17 @@
     </material>
     <material id="woodMaterial">
       <shininess value="1.0"/>
-      <ambient r="0.09" g="0.06" b="0.05" a="1.0"/>
-      <diffuse r="0.09" g="0.06" b="0.05" a="1.0"/>
+      <ambient r="1.0" g="1.0" b="1.0" a="1.0"/>
+      <diffuse r="0.27" g="0.18" b="0.15" a="1.0"/>
       <specular r="0.09" g="0.06" b="0.05" a="1.0"/>
-      <emissive r="0.7" g="0.8" b="0.69" a="1.0"/>
+      <emissive r="0.0" g="0.0" b="0.0" a="1.0"/>
+    </material>
+    <material id="scoreboardMaterial">
+      <shininess value="1.0"/>
+      <ambient r="1.0" g="1.0" b="1.0" a="1.0"/>
+      <diffuse r="1.0" g="1.0" b="1.0" a="1.0"/>
+      <specular r="0.0" g="0.0" b="0.0" a="1.0"/>
+      <emissive r="0.0" g="0.0" b="0.0" a="1.0"/>
     </material>
   </materials>
   <animations>
@@ -386,13 +393,14 @@
     </node>
     <!-- || SCOREBOARD -->
     <node id="scoreboard">
-      <material id="metalMaterial"/>
-      <texture id="woodTex">
-        <amplification afs="30.0" aft="30.0"/>
+      <material id="scoreboardMaterial"/>
+      <texture id="clear">
+        <amplification afs="10.0" aft="10.0"/>
       </texture>
       <transformations>
-        <translation x="-24.0" y="2.0" z="-24.0"/>
-        <scale sx="2" sy="1" sz="0.25"/>
+        <translation x="-28.0" y="5.0" z="-20.0"/>
+        <rotation axis="y" angle="45"/>
+        <scale sx="2" sy="2" sz="0.25"/>
       </transformations>
       <descendants>
         <leaf type="cube" side="3"/>
@@ -418,8 +426,8 @@
         <amplification afs="60.0" aft="60.0"/>
       </texture>
       <transformations>
-        <translation x="-30.0" y="-1.0" z="-30.0"/>
-        <scale sx="1" sy="0.02" sz="1"/>
+        <translation x="-36.0" y="-1.0" z="-36.0"/>
+        <scale sx="1.2" sy="0.02" sz="1.2"/>
       </transformations>
       <descendants>
         <leaf type="cube" side="30"/>

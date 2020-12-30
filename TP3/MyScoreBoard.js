@@ -5,7 +5,6 @@ class MyScoreBoard {
     this.scene = scene;
     this.maxTime = maxTime;
     this.txt = new MySpriteText(scene, "");
-    this.rect = new MyRectangle(scene, -5, -5, 5, 5);
 
     let numPlayerPieces = (boardSize * boardSize) / 2;
     this.score = [numPlayerPieces, numPlayerPieces];
