@@ -32,6 +32,14 @@
       <from x="-50" y="60" z="-80"/>
       <to x="0" y="-10" z="0"/>
     </perspective>
+    <perspective id="poolCam" near="0.1" far="500" angle="45">
+      <from x="20.0" y="0.0" z="0.0"/>
+      <to x="-30" y="-20" z="-50"/>
+    </perspective>
+    <perspective id="scoreBoard" near="0.1" far="500" angle="45">
+      <from x="-80" y="-50" z="50"/>
+      <to x="-30" y="0" z="-50"/>
+    </perspective>
     <ortho id="orthoCam" near="0.1" far="500" left="-40" right="40" top="40" bottom="-40">
       <from x="1" y="50" z="0"/>
       <to x="0" y="0" z="0"/>
