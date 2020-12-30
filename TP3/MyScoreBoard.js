@@ -3,14 +3,10 @@ class MyScoreBoard {
 
   constructor(scene, maxTime, boardSize) {
     this.scene = scene;
-    this.txt = new MySpriteText(scene, "");
-
-    let numPlayerPieces = (boardSize * boardSize) / 2;
-    this.score = [numPlayerPieces, numPlayerPieces];
-    this.scoreStr = "B:" + numPlayerPieces + " - W:" + numPlayerPieces;
+    this.txt = new MySpriteText(scene, "", 0.5, 1.0);
 
     this.history = [];
-    this.reset(maxTime);
+    this.reset(maxTime, boardSize);
   }
 
   parseScore(data) {
@@ -29,7 +25,11 @@ class MyScoreBoard {
     this.running = true;
   }
 
-  reset(maxTime) {
+  reset(maxTime, boardSize) {
+    let numPlayerPieces = (boardSize * boardSize) / 2;
+    this.score = [numPlayerPieces, numPlayerPieces];
+    this.scoreStr = "B:" + numPlayerPieces + " - W:" + numPlayerPieces;
+
     this.maxTime = maxTime;
     this.resetTimer();
     this.gameEnded = 0;
@@ -43,24 +43,31 @@ class MyScoreBoard {
     this.running = false;
   }
 
-  end(lastPlayer) {
-    // only end once
-    if (this.gameEnded) return;
+  saveToHistory(isTimeout) {
+    let histEntry;
+    if (isTimeout && this.lastPlayer == 0)
+      histEntry = "B:" + this.score[0] + "-W:" + this.score[1] + " White";
+    else if (isTimeout && this.lastPlayer == 1)
+      histEntry = "B:" + this.score[0] + "-W:" + this.score[1] + " Black";
+    else if (this.score[0] > this.score[1])
+      histEntry = "B:" + this.score[0] + "-W:" + this.score[1] + " Black";
+    else if (this.score[0] < this.score[1])
+      histEntry = "B:" + this.score[0] + "-W:" + this.score[1] + " White";
+    else if (this.lastPlayer == 0)
+      histEntry = "B:" + this.score[0] + "-W:" + this.score[1] + " White";
+    else histEntry = "B:" + this.score[0] + "-W:" + this.score[1] + " Black";
 
-    this.history.push(this.scoreStr);
-
-    this.gameEnded = 1;
-    this.lastPlayer = lastPlayer;
+    this.history.push(histEntry);
   }
 
-  timedOut(timedOutPlayer) {
-    // don't time out when game already ended
+  end(lastPlayer, isTimeout = false) {
+    // only end once && don't time out when game already ended
     if (this.gameEnded) return;
 
-    this.history.push(this.scoreStr);
+    this.gameEnded = isTimeout ? 2 : 1;
+    this.lastPlayer = lastPlayer;
 
-    this.gameEnded = 2;
-    this.timedOutPlayer = timedOutPlayer;
+    this.saveToHistory(isTimeout);
   }
 
   update(t) {
@@ -71,13 +78,17 @@ class MyScoreBoard {
   }
 
   getTimeStr() {
-    return (this.time < 10 ? "0" : "") + this.time.toFixed(1);
+    return this.time.toLocaleString("en-GB", {
+      minimumIntegerDigits: 2,
+      maximumFractionDigits: 1,
+      minimumFractionDigits: 1,
+    });
   }
 
   getWinnerStr() {
     if (this.gameEnded == 2) {
       // timed out player loses
-      return (this.timedOutPlayer == 0 ? "White" : "Black") + " wins timeout!";
+      return (this.lastPlayer == 0 ? "White" : "Black") + " wins timeout!";
     } else if (this.score[0] > this.score[1]) {
       if (this.gameEnded == 1) return "Black wins!";
       else return "Black is winning!";
@@ -91,18 +102,33 @@ class MyScoreBoard {
     }
   }
 
+  getHistory(maxEntries) {
+    let histStr = "History\n";
+    let numEntries = 0;
+    for (
+      let i = this.history.length - 1;
+      i >= 0 && this.history.length - 1 - i < maxEntries;
+      --i, ++numEntries
+    ) {
+      histStr += this.history[i] + "\n";
+    }
+
+    if (numEntries == 0) histStr += "- - -";
+    for (; numEntries < maxEntries; ++numEntries) histStr += "\n";
+
+    return histStr;
+  }
+
   display() {
     this.scene.pushMatrix();
     this.scene.scale(5, 5, 1);
 
-    let histStr = "";
-    for (let i = 0; i < this.history.length; ++i)
-      histStr += this.history[i] + "\n";
     this.txt.setText(
-      histStr +
-        this.getTimeStr() +
+      this.getHistory(3) +
         "\n" +
         this.scoreStr +
+        " " +
+        this.getTimeStr() +
         "\n" +
         this.getWinnerStr()
     );

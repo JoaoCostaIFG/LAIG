@@ -51,7 +51,10 @@ class MyGameOrchestrator {
   start() {
     // create or reset scoreBoard according to game options
     if (this.scoreBoard) {
-      this.scoreBoard.reset(this.difficultyTimes[this.selectedDifficulty]);
+      this.scoreBoard.reset(
+        this.difficultyTimes[this.selectedDifficulty],
+        this.boardSize
+      );
     } else {
       this.scoreBoard = new MyScoreBoard(
         this.scene,
@@ -381,8 +384,7 @@ class MyGameOrchestrator {
     if (this.state == GameState.ENDED) return;
 
     this.cancelAIMove(); // for safety
-    if (isTimeout) this.scoreBoard.timedOut(this.player);
-    else this.scoreBoard.end();
+    this.scoreBoard.end(this.player, isTimeout);
     this.gameboard.togglePicking(false);
     this.togglePossibleMoveIndicators(false);
     this.state = GameState.ENDED;

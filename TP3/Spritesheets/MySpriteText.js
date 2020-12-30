@@ -1,6 +1,7 @@
 class MySpriteText {
-  constructor(scene, text) {
+  constructor(scene, text, spacingH = 1.0, spacingV = 1.0) {
     this.scene = scene;
+    this.spacing = [spacingH, spacingV];
     this.parseText(text);
     this.rect = new MyRectangle(this.scene, 0, 0, 1, 1);
 
@@ -40,14 +41,14 @@ class MySpriteText {
   displayLine(line, isVertical) {
     this.scene.pushMatrix();
     // center text
-    this.scene.translate(-line.length / 2.0, -0.5, 0.0);
+    this.scene.translate((-line.length * this.spacing[0]) / 2.0, -0.5, 0.0);
 
     // render text
     for (let i = 0; i < line.length; ++i) {
       this.spriteSheet.activateCellP(line[i]);
       this.rect.display();
-      if (isVertical) this.scene.translate(0.0, -1.0, 0.0);
-      else this.scene.translate(1.0, 0.0, 0.0);
+      if (isVertical) this.scene.translate(0.0, -this.spacing[1], 0.0);
+      else this.scene.translate(this.spacing[0], 0.0, 0.0);
     }
     this.spriteSheet.deactivate();
 
@@ -58,7 +59,7 @@ class MySpriteText {
     this.scene.pushMatrix();
     for (let i = 0; i < this.text.length; ++i) {
       this.displayLine(this.text[i], isVertical);
-      this.scene.translate(0.0, -1.0, 0.0);
+      this.scene.translate(0.0, -this.spacing[1], 0.0);
     }
     this.scene.popMatrix();
   }
