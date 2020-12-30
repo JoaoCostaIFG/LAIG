@@ -64,12 +64,12 @@ class MyGameOrchestrator {
       this.parseValidMoves.bind(this)
     );
 
+    // start game
+    this.state = GameState.RUNNING;
+
     // if AI is first player
     this.savedPlayerOps = this.playerOps[this.selectedPlayerOps];
     this.getNextMove();
-
-    // start game
-    this.state = GameState.RUNNING;
   }
 
   newGame() {
@@ -312,6 +312,11 @@ class MyGameOrchestrator {
     }
 
     let moveCoords = JSON.parse(data.target.response);
+    if (moveCoords.length == 0) {
+      console.log("AI: No more moves (waiting for game end)");
+      return;
+    }
+
     let pieceI = this.gameboard.getPieceByCoord(
       moveCoords[0][0],
       moveCoords[0][1]
