@@ -9,10 +9,10 @@ class MySpriteAnimation {
     this.startCell = startCell;
     this.endCell = endCell;
 
-    this.animDirec = this.startCell < this.endCell ? 1 : -1;
-    this.stepDuration = this.duration / Math.abs(this.endCell - this.startCell);
-
-    this.reset();
+    this.currCell = this.startCell;
+    this.isForward = this.startCell <= this.endCell ? true : false;
+    this.cellNum = Math.abs(this.endCell - this.startCell);
+    this.stepDuration = this.duration / this.cellNum;
   }
 
   reset() {
@@ -30,15 +30,24 @@ class MySpriteAnimation {
 
     // check if it's time for a step
     if (this.sumT < this.stepDuration) return;
-    this.sumT -= this.stepDuration; // TODO maybe 0 ?
 
-    // step in animation
-    this.currCell += this.animDirec;
+    // there can be more than 1 complete steps since the last update
+    while (this.sumT > this.stepDuration) {
+      // step in animation
+      this.sumT -= this.stepDuration;
+      if (this.isForward) ++this.currCell;
+      else --this.currCell;
+    }
 
     // reset animation
-    if (this.animDirec > 0) {
-      if (this.currCell > this.endCell) this.currCell = this.startCell;
-    } else if (this.currCell < this.endCell) this.currCell = this.startCell;
+    // console.log(this.startCell - (this.currCell % this.cellNum));
+    if (this.isForward) {
+      this.currCell = this.startCell + (this.currCell % this.cellNum);
+    } else {
+      this.currCell = this.endCell + (this.currCell % this.cellNum);
+      while (this.currCell < this.endCell)
+        this.currCell = this.startCell + this.currCell;
+    }
   }
 
   apply() {
