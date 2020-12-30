@@ -46,9 +46,7 @@ class XMLscene extends CGFscene {
     this.gameOrchestrator.theme = this.graph;
 
     this.axis = new CGFaxis(this, this.graph.referenceLength);
-
     this.gl.clearColor(...this.graph.background);
-
     this.setGlobalAmbientLight(...this.graph.ambient);
 
     this.camera.reset(); // this will cancel any camera animation currently running
@@ -146,8 +144,10 @@ class XMLscene extends CGFscene {
    * Initializes the scene cameras.
    */
   initCameras() {
-    var i = 0;
+    this.cameras = [];
+    this.cameraList = {};
 
+    var i = 0;
     for (var key in this.graph.cameras) {
       var camInfo = this.graph.cameras[key];
       var cam;
