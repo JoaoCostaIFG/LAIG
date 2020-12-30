@@ -65,10 +65,7 @@ class MyScoreBoard {
   getWinnerStr() {
     if (this.gameEnded == 2) {
       // timed out player loses
-      return (
-        (this.timedOutPlayer == 0 ? "Black" : "White") +
-        " lost (ran out of time)!"
-      );
+      return (this.timedOutPlayer == 0 ? "Black" : "White") + " (timeout)!";
     } else if (this.score[0] > this.score[1]) {
       if (this.gameEnded == 1) return "Black wins!";
       else return "Black is winning!";
@@ -78,30 +75,18 @@ class MyScoreBoard {
     } else {
       if (this.gameEnded)
         return (this.lastPlayer == 0 ? "White" : "Black") + " wins!";
-      else return "The players are tied!";
+      else return "Tie!";
     }
   }
 
-  displayBoard() {
+  display() {
     this.scene.pushMatrix();
-    this.scene.scale(3, 3, 0);
-
-    this.scene.translate(0, 6, 0);
-    this.txt.setText(this.getTimeStr());
-    this.txt.display();
-
-    this.scene.translate(0, -1, 0);
-    this.txt.setText(this.scoreStr);
-    this.txt.display();
-
-    this.scene.translate(0, -1, 0);
-    this.txt.setText(this.getWinnerStr());
+    this.scene.scale(5, 5, 1);
+    this.txt.setText(
+      this.getTimeStr() + "\n" + this.scoreStr + "\n" + this.getWinnerStr()
+    );
     this.txt.display();
 
     this.scene.popMatrix();
-  }
-
-  display() {
-    this.displayBoard();
   }
 }

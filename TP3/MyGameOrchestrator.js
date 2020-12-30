@@ -387,6 +387,10 @@ class MyGameOrchestrator {
     this.scene.pushMatrix();
     this.scene.translate(...this.theme.boardPos);
     this.gameboard.display();
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+    this.scene.translate(...this.theme.scorePos);
     this.scoreBoard.display();
     this.scene.popMatrix();
   }

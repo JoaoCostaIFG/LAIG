@@ -48,6 +48,7 @@ class MySceneGraph {
      */
     this.reader.open("scenes/" + filename, this);
     this.boardPos = [0, 0, 0];
+    this.scorePos = [0, 0, 0];
     this.updatables = []; // the objects that need to be updated each frame
   }
 
@@ -940,6 +941,9 @@ class MySceneGraph {
    * @param {leaf block element} leafNode
    * @param afs - texture amplification in s axis
    * @param aft - texture amplification in t axis
+   * @returns obj, on successful obj instanciation,
+   *          null, on success with no obj instanciation
+   *          undefined, on failure
    */
   parseLeaf(leafNode, afs = 1.0, aft = 1.0) {
     let attributeNames = [];
@@ -992,13 +996,17 @@ class MySceneGraph {
         attributeNames = ["base", "middle", "height", "slices", "stacks"];
         attributeTypes = ["float", "float", "float", "int", "int"];
         break;
+      case "cube":
+        attributeNames = ["side"];
+        attributeTypes = ["float"];
+        break;
       case "gameboard":
         attributeNames = ["x", "y", "z"];
         attributeTypes = ["float", "float", "float"];
         break;
-      case "cube":
-        attributeNames = ["side"];
-        attributeTypes = ["float"];
+      case "scoreboard":
+        attributeNames = ["x", "y", "z"];
+        attributeTypes = ["float", "float", "float"];
         break;
       default:
         return "unknown leaf type: " + objType + ".";
@@ -1062,7 +1070,7 @@ class MySceneGraph {
         break;
       case "spriteanim":
         if (this.spritesheets[global[0]] == null) {
-          obj = null;
+          obj = undefined;
         } else {
           obj = new MySpriteAnimation(
             this.scene,
@@ -1119,15 +1127,19 @@ class MySceneGraph {
       case "defbarrel":
         obj = new Defbarrel(this.scene, ...global);
         break;
+      case "cube":
+        obj = new MyCube(this.scene, ...global, afs, aft);
+        break;
       case "gameboard":
         this.boardPos = global;
         obj = null;
         break;
-      case "cube":
-        obj = new MyCube(this.scene, ...global, afs, aft);
+      case "scoreboard":
+        this.scorePos = global;
+        obj = null;
         break;
       default:
-        obj = null;
+        obj = undefined;
         break;
     }
 
@@ -1364,12 +1376,12 @@ class MySceneGraph {
             var leafObj = this.parseLeaf(grandgrandChildren[j], afs, aft);
             if (typeof leafObj === "string" || leafObj instanceof String)
               return leafObj;
-            else if (leafObj == null)
-              // TODO this was causing problems for gameboard (it is null)
+            else if (leafObj == undefined)
               this.onXMLMinorError(
                 "Failed instanciating leaf of: " + nodeID + "."
               );
-            else nodeObj.addDescendantLeaf(leafObj);
+            // ignore game options
+            else if (leafObj != null) nodeObj.addDescendantLeaf(leafObj);
           } else {
             this.onXMLMinorError("unknown descendant type: " + descType + ".");
           }

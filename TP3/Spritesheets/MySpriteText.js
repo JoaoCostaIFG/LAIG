@@ -24,25 +24,43 @@ class MySpriteText {
 
   parseText(text) {
     this.text = [];
+    let line = [];
     for (let i = 0; i < text.length; ++i) {
-      this.text.push(this.getCharacterPosition(text[i]));
+      let newChar = this.getCharacterPosition(text[i]);
+      if (newChar == 10) {
+        this.text.push(line);
+        line = [];
+      } else {
+        line.push(newChar);
+      }
     }
+    this.text.push(line);
+    console.log(this.text);
   }
 
-  display(isVertical = false) {
+  displayLine(line, isVertical) {
     this.scene.pushMatrix();
     // center text
-    this.scene.translate(-this.text.length / 2.0, -0.5, 0.0);
+    this.scene.translate(-line.length / 2.0, -0.5, 0.0);
 
     // render text
-    for (let i = 0; i < this.text.length; ++i) {
-      this.spriteSheet.activateCellP(this.text[i]);
+    for (let i = 0; i < line.length; ++i) {
+      this.spriteSheet.activateCellP(line[i]);
       this.rect.display();
       if (isVertical) this.scene.translate(0.0, -1.0, 0.0);
       else this.scene.translate(1.0, 0.0, 0.0);
     }
     this.spriteSheet.deactivate();
 
+    this.scene.popMatrix();
+  }
+
+  display(isVertical = false) {
+    this.scene.pushMatrix();
+    for (let i = 0; i < this.text.length; ++i) {
+      this.displayLine(this.text[i], isVertical);
+      this.scene.translate(0.0, -1.0, 0.0);
+    }
     this.scene.popMatrix();
   }
 
