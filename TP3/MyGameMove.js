@@ -12,6 +12,15 @@ class MyGameMove {
     this.isRunning = false; // move is not currently animation
   }
 
+  isMoveDone() {
+    /*
+     * !isDone && !isRunning => not started
+     * isDone && !isRunning => finished
+     * !isDone && isRunning => currently animating
+     */
+    return this.isDone && !this.isRunning;
+  }
+
   doMove() {
     // move needs to be "undone" before is "done" again
     if (this.isDone) return;
@@ -46,6 +55,13 @@ class MyGameMove {
     this.isRunning = false;
   }
 
+  forceFinish() {
+    if (!this.isMoveDone()) {
+      this.doMoveInstant();
+      this.orch.onAnimationDone(false);
+    }
+  }
+
   undoMove() {
     this.tileI.setPiece(this.pieceI);
     this.tileF.setPiece(this.pieceF);
@@ -65,8 +81,7 @@ class MyGameMove {
     // animations ended
     if (this.pieceI.animation == null && this.pieceF.animation == null) {
       // at the end, switch the initial tiles
-      this.doMoveInstant();
-
+      this.doMoveInstant(notifyOrchestrator);
       // notify orchestrator on finish
       if (notifyOrchestrator) this.orch.onAnimationDone();
     }

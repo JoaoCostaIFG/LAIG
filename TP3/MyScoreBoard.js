@@ -1,6 +1,4 @@
 class MyScoreBoard {
-  // TODO show current player
-
   constructor(scene, maxTime, boardSize) {
     this.scene = scene;
     this.txt = new MySpriteText(scene, "", 0.5, 1.0);
@@ -36,11 +34,24 @@ class MyScoreBoard {
   }
 
   start() {
+    if (this.gameEnded) return;
     this.running = true;
   }
 
   pause() {
+    if (this.gameEnded) return;
     this.running = false;
+  }
+
+  end(lastPlayer, isTimeout = false) {
+    // only end once && don't time out when game already ended
+    if (this.gameEnded) return;
+
+    this.running = false;
+    this.gameEnded = isTimeout ? 2 : 1;
+    this.lastPlayer = lastPlayer;
+
+    this.saveToHistory(isTimeout);
   }
 
   saveToHistory(isTimeout) {
@@ -58,16 +69,6 @@ class MyScoreBoard {
     else histEntry = "B:" + this.score[0] + "-W:" + this.score[1] + " Black";
 
     this.history.push(histEntry);
-  }
-
-  end(lastPlayer, isTimeout = false) {
-    // only end once && don't time out when game already ended
-    if (this.gameEnded) return;
-
-    this.gameEnded = isTimeout ? 2 : 1;
-    this.lastPlayer = lastPlayer;
-
-    this.saveToHistory(isTimeout);
   }
 
   update(t) {
@@ -113,7 +114,7 @@ class MyScoreBoard {
       histStr += this.history[i] + "\n";
     }
 
-    if (numEntries == 0) histStr += "- - -";
+    if (numEntries == 0) histStr += "- - - - -";
     for (; numEntries < maxEntries; ++numEntries) histStr += "\n";
 
     return histStr;

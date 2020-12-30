@@ -28,7 +28,7 @@ class MyGameOrchestrator {
       hard: 2,
     };
     this.selectedDifficulty = 0; // default difficulty: easy
-    this.boardSize = 10; // default boardsize: 10
+    this.boardSize = 3; // default boardsize: 10
     // AI options
     this.savedPlayerOps = [0, 0];
     this.playerOps = [
@@ -101,17 +101,20 @@ class MyGameOrchestrator {
   endGameMovie() {
     // restore state
     // stops replay
+    this.scoreBoard.start();
     this.scene.interface.toggleReplayButton(false);
     this.gameSequence.doAll();
     this.animator.reset();
 
-    // TODO we request the valid moves here because they might not
-    // have been requested before the replay (replay started in middle of animation)
-    this.prolog.requestValidMoves(
-      this.gameboard,
-      this.player,
-      this.parseValidMoves.bind(this)
-    );
+    if (this.state != GameState.ENDED) {
+      // we request the valid moves here because they might not
+      // have been requested before the replay (replay started in middle of animation)
+      this.prolog.requestValidMoves(
+        this.gameboard,
+        this.player,
+        this.parseValidMoves.bind(this)
+      );
+    }
 
     // proceed with gameplay
     this.getNextMove();
@@ -119,18 +122,28 @@ class MyGameOrchestrator {
 
   gameMovie() {
     if (this.state == GameState.NOTSTARTED) return;
-    console.log("Start replay");
 
     if (this.animator.running == 2) {
+      console.log("Stop replay");
       this.endGameMovie();
     } else {
+      // Doesn't let the game movie start during animations
+      //if (this.state != GameState.PAUSED) {
+
+      // starts replay
+      console.log("Start replay");
+      this.scene.interface.toggleReplayButton(true);
+
+      // finish current move (if isn't finished it)
+      let lastMove = this.gameSequence.getLastMove();
+      if (lastMove) lastMove.forceFinish();
+
       // save state and cancel pending moves
       this.cancelAIMove();
+      this.scoreBoard.pause();
       this.gameboard.togglePicking(false);
       this.togglePossibleMoveIndicators(false);
 
-      // starts replay
-      this.scene.interface.toggleReplayButton(true);
       this.gameSequence.undoAll();
       this.animator.startMovie();
     }
@@ -310,6 +323,7 @@ class MyGameOrchestrator {
     else this.togglePossibleMoveIndicators(true); // active
   }
 
+  /* called when we get an AI move */
   onAIMove(data) {
     // reset the state
     // TODO WAITINGFORAI game state?
@@ -339,6 +353,7 @@ class MyGameOrchestrator {
     this.startMove(move);
   }
 
+  /* called when we get a PLAYER move */
   onValidMove(move, data) {
     if (data.target.response == "Bad Request") {
       console.log("Invalid move");
@@ -350,16 +365,18 @@ class MyGameOrchestrator {
   }
 
   /* called after every move */
-  onAnimationDone() {
+  onAnimationDone(highlightMoves = true) {
     // next player
     this.nextPlayer();
 
     // new valid moves
-    this.prolog.requestValidMoves(
-      this.gameboard,
-      this.player,
-      this.parseValidMoves.bind(this)
-    );
+    if (highlightMoves) {
+      this.prolog.requestValidMoves(
+        this.gameboard,
+        this.player,
+        this.parseValidMoves.bind(this)
+      );
+    }
 
     // update score
     this.updateScoreboardInfo();

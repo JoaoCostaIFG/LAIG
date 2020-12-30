@@ -10,12 +10,12 @@ class MyPrologInterface {
     request.onload =
       onSuccess ||
       function (data) {
-        console.log("Request successful. Reply: " + data.target.response);
+        console.debug("Request successful. Reply: " + data.target.response);
       };
     request.onerror =
       onError ||
       function () {
-        console.log("Error waiting for response");
+        console.debug("Error waiting for response");
       };
 
     request.setRequestHeader(
@@ -50,7 +50,7 @@ class MyPrologInterface {
       "," +
       move.toString() +
       ")";
-    console.log("Request: " + req);
+    console.debug("Request: " + req);
 
     return this.getPrologRequest(req, onSuccess);
   }
@@ -64,7 +64,7 @@ class MyPrologInterface {
       "," +
       player +
       ")";
-    console.log("Request: " + req);
+    console.debug("Request: " + req);
 
     return this.getPrologRequest(req, onSuccess);
   }
@@ -73,7 +73,7 @@ class MyPrologInterface {
   requestScore(board, onSuccess) {
     // http://localhost:8081/score(gameState([0,0],2,[[0,1],[1,0]],0))
     let req = "score(" + this.genGameState(board, "_") + ")";
-    console.log("Request: " + req);
+    console.debug("Request: " + req);
 
     return this.getPrologRequest(req, onSuccess);
   }
@@ -89,7 +89,7 @@ class MyPrologInterface {
       "," +
       difficulty +
       ")";
-    console.log("Request: " + req);
+    console.debug("Request: " + req);
 
     return this.getPrologRequest(req, onSuccess);
   }
