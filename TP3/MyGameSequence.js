@@ -36,7 +36,6 @@ class MyGameSequence {
   }
 
   doAll() {
-    this.undoAll();
     for (let i = 0; i < this.moves.length; ++i) this.moves[i].doMoveInstant();
   }
 }

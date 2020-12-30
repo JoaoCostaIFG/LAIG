@@ -77,8 +77,7 @@ class MyGameOrchestrator {
       this.start(); // start game
     } else {
       // restart
-      // cancel AI move request (if any)
-      if (this.aiMoveReq) this.aiMoveReq.abort();
+      this.cancelAIMove();
 
       this.gameSequence = new MyGameSequence();
       this.animator.reset(this.gameSequence);
@@ -90,16 +89,37 @@ class MyGameOrchestrator {
     }
   }
 
+  endGameMovie() {
+    // restore state
+    // stops replay
+    this.scene.interface.toggleReplayButton(false);
+    this.gameSequence.doAll();
+    this.animator.reset();
+
+    // TODO we request the valid moves here because they might not
+    // have been requested before the replay (replay started in middle of animation)
+    this.prolog.requestValidMoves(
+      this.gameboard,
+      this.player,
+      this.parseValidMoves.bind(this)
+    );
+
+    // proceed with gameplay
+    this.getNextMove();
+  }
+
   gameMovie() {
-    if (this.state != GameState.ENDED) return;
+    if (this.state == GameState.NOTSTARTED) return;
     console.log("Start replay");
 
     if (this.animator.running == 2) {
-      // stops replay
-      this.scene.interface.toggleReplayButton(false);
-      this.gameSequence.doAll();
-      this.animator.reset();
+      this.endGameMovie();
     } else {
+      // save state and cancel pending moves
+      this.cancelAIMove();
+      this.gameboard.togglePicking(false);
+      this.togglePossibleMoveIndicators(false);
+
       // starts replay
       this.scene.interface.toggleReplayButton(true);
       this.gameSequence.undoAll();
@@ -206,8 +226,7 @@ class MyGameOrchestrator {
       console.log("No move to undo.");
     } else {
       console.log("Undo last move.");
-      if (this.aiMoveReq) this.aiMoveReq.abort();
-      this.aiMoveReq = null;
+      this.cancelAIMove();
 
       // clear current highlights
       this.togglePossibleMoveIndicators(false);
@@ -231,6 +250,8 @@ class MyGameOrchestrator {
   }
 
   getNextMove() {
+    if (this.state != GameState.RUNNING) return;
+
     if (this.savedPlayerOps[this.player]) {
       // starts an AI move if it's the AI's turn
       this.aiMoveReq = this.prolog.requestAIMove(
@@ -244,6 +265,12 @@ class MyGameOrchestrator {
       // otherwise, wait for player input (toggle picking on)
       this.gameboard.togglePicking(true);
     }
+  }
+
+  cancelAIMove() {
+    // cancel AI move request (if any)
+    if (this.aiMoveReq) this.aiMoveReq.abort();
+    this.aiMoveReq = null;
   }
 
   startMove(move) {
@@ -270,7 +297,8 @@ class MyGameOrchestrator {
     }
 
     this.validMoves = JSON.parse(data.target.response);
-    this.togglePossibleMoveIndicators(true); // active
+    if (this.validMoves.length == 0) this.gameEnded();
+    else this.togglePossibleMoveIndicators(true); // active
   }
 
   onAIMove(data) {
@@ -341,6 +369,7 @@ class MyGameOrchestrator {
     // only end once
     if (this.state == GameState.ENDED) return;
 
+    this.cancelAIMove(); // for safety
     this.scoreBoard.end();
     this.gameboard.togglePicking(false);
     this.togglePossibleMoveIndicators(false);

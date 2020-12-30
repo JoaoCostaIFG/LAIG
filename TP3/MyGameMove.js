@@ -38,6 +38,8 @@ class MyGameMove {
   }
 
   doMoveInstant() {
+    this.pieceI.setAnimation(null);
+    this.pieceF.setAnimation(null);
     this.tileI.setPiece(this.pieceF);
     this.tileF.setPiece(this.pieceI);
     this.isDone = true;

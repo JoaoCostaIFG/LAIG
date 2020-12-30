@@ -35,7 +35,6 @@ class MySpriteText {
       }
     }
     this.text.push(line);
-    console.log(this.text);
   }
 
   displayLine(line, isVertical) {
