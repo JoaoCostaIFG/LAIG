@@ -70,13 +70,13 @@ class MyInterface extends CGFinterface {
     let gameDir = this.gui.addFolder("Game");
     gameDir.open();
     // game options
-    gameDir
-      .add(
-        this.scene.gameOrchestrator,
-        "selectedPlayerOps",
-        this.scene.gameOrchestrator.playerOpsInd
-      )
-      .name("Players");
+    // gameDir
+      // .add(
+        // this.scene.gameOrchestrator,
+        // "selectedPlayerOps",
+        // this.scene.gameOrchestrator.playerOpsInd
+      // )
+      // .name("Players");
     gameDir
       .add(
         this.scene.gameOrchestrator,

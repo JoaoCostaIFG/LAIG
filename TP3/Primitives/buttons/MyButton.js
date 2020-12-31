@@ -37,9 +37,11 @@ class MyButton extends CGFobject {
     }
   }
 
-  onClick() {
+  onClick(args = []) {
+    // the ags argument is optional
+    // it should contain arguments to be passed to the on click functions
     this.startAnim();
-    this.onClickFunc();
+    this.onClickFunc(...args);
   }
 
   update(t) {

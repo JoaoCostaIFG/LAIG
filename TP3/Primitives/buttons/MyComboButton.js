@@ -16,11 +16,11 @@ class MyComboButton extends MyButton {
   }
 
   onClick() {
-    super.onClick();
-
     ++this.selected;
     if (this.selected >= this.items.length) this.selected = 0;
     this.txt.setText(this.items[this.selected]);
+
+    super.onClick([this.selected]);
   }
 
   getSelection() {

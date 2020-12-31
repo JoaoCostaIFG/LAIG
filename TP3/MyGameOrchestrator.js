@@ -35,24 +35,19 @@ class MyGameOrchestrator {
     };
     this.selectedDifficulty = 0; // default difficulty: easy
     this.boardSize = 10; // default boardsize: 10
-    // AI options
-    this.savedPlayerOps = [0, 0];
+    // game mode options
+    this.selectedPlayerOps = [0, 0];
     this.playerOps = [
       [0, 0],
       [0, 1],
       [1, 0],
       [1, 1],
     ];
-    this.playerOpsInd = {
-      PvP: 0,
-      PvAI: 1,
-      AIvP: 2,
-      AIvAI: 3,
-    };
-    this.selectedPlayerOps = 0;
+    // AI
     this.aiMoveReq = null; // current AI movement request (if any)
   }
 
+  /* || BUTTONS */
   genButtons() {
     this.scoreBoard.addButton(
       new MyButton(this.scene, "New Game", this.newGame.bind(this))
@@ -73,13 +68,16 @@ class MyGameOrchestrator {
         this.scene,
         ["PvP", "PvAI", "AIvP", "AIvAI"],
         0,
-        this.a.bind(this)
+        this.onGameModeChange.bind(this)
       )
     );
   }
 
-  a() {
-    console.error("ABBBC");
+  onGameModeChange(selectedGameMode) {
+    if (this.state != GameState.NOTSTARTED && this.state != GameState.ENDED)
+      return;
+
+    this.selectedPlayerOps = this.playerOps[selectedGameMode];
   }
 
   /* || START */
@@ -103,8 +101,7 @@ class MyGameOrchestrator {
     // start game
     this.state = GameState.RUNNING;
 
-    // if AI is first player
-    this.savedPlayerOps = this.playerOps[this.selectedPlayerOps];
+    // get first move (AI or player)
     this.getNextMove();
   }
 
@@ -305,7 +302,7 @@ class MyGameOrchestrator {
   getNextMove() {
     if (this.state != GameState.RUNNING) return;
 
-    if (this.savedPlayerOps[this.player]) {
+    if (this.selectedPlayerOps[this.player]) {
       // starts an AI move if it's the AI's turn
       this.aiMoveReq = this.prolog.requestAIMove(
         this.gameboard,

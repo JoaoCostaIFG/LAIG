@@ -173,7 +173,7 @@ class MyScoreBoard {
       this.scene.registerForPick(currButtonInd - i, buttonLine[i]);
       buttonLine[i].display();
 
-      this.scene.translate(this.buttons[i].buttonSize * 2 + padding, 0, 0);
+      this.scene.translate(buttonLine[i].buttonSize * 2 + padding, 0, 0);
     }
 
     this.scene.popMatrix();

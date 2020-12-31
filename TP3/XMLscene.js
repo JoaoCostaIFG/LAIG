@@ -267,8 +267,6 @@ class XMLscene extends CGFscene {
     this.gameOrchestrator.handlePicking();
     this.clearPickRegistration();
 
-    // this.gameOrchestrator.orchestrate(); // TODO ?
-
     // ---- BEGIN Background, camera and axis setup
 
     // Clear image and depth buffer everytime we update the scene
@@ -298,7 +296,7 @@ class XMLscene extends CGFscene {
 
       this.defaultAppearance.apply();
 
-      // Displays the scene (MySceneGraph function).
+      // Displays the scene and game.
       this.gameOrchestrator.display();
     } else {
       // Show some "loading" visuals
