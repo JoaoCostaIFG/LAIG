@@ -15,8 +15,12 @@ class MyCheckboxButton extends MyButton {
   onClick() {
     super.onClick();
 
-    this.clicked = !this.clicked;
     if (this.clicked) this.txt.setText(this.text);
     else this.txt.setText(this.altText);
+    this.clicked = !this.clicked;
+  }
+
+  isClicked() {
+    return this.clicked;
   }
 }
