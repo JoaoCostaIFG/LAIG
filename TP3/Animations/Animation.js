@@ -7,6 +7,14 @@ class Animation {
 
     this.keyframeI = keyframeI == undefined ? null : keyframeI;
     this.keyframeF = keyframeF == undefined ? null : keyframeF;
+
+    this.initKeyframeI = this.keyframeI;
+    this.initKeyframeF = this.keyframeF;
+  }
+
+  reset() {
+    this.keyframeI = this.initKeyframeI;
+    this.keyframeF = this.initKeyframeF;
   }
 
   update(t) {

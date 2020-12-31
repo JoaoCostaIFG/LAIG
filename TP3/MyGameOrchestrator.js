@@ -420,12 +420,12 @@ class MyGameOrchestrator {
 
   update(t) {
     this.theme.update(t);
+    this.scoreBoard.update(t);
 
     if (this.state == GameState.PRESTART || this.state == GameState.NOTSTARTED)
       return;
 
     this.animator.update(t);
-    this.scoreBoard.update(t);
 
     if (this.selectedPieces.length == 2) {
       // 2 pieces selected

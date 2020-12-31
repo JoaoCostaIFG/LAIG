@@ -19,20 +19,29 @@ class KeyframeAnimation extends Animation {
   }
 
   reset() {
+    super.reset();
+
     this.lastKF = this.keyframes[this.keyframes.length - 1];
-
-    this.lastTime = Date.now() / 1000; // current time in seconds
-    this.sumT = 0;
-
-    this.translation = [0, 0, 0];
-    this.rotation = [0, 0, 0];
-    this.scale = [0, 0, 0];
-    this.genMatrix();
 
     this.seg = 0;
     this.isDone = this.keyframes.length <= 0; // don't do anything if we don't have KF
     if (this.keyframeF != null && this.keyframeI != null)
       this.currKFDuration = this.keyframeF.instant - this.keyframeI.instant;
+
+    // in case of animations that start immediatly, this preventes initial flickering
+    if (this.keyframeI && this.keyframeI.instant == 0) {
+      this.translation = vec3.fromValues(...this.keyframeI.translation);
+      this.rotation = vec3.fromValues(...this.keyframeI.rotation);
+      this.scale = vec3.fromValues(...this.keyframeI.scale);
+    } else {
+      this.translation = vec3.create();
+      this.rotation = vec3.create();
+      this.scale = vec3.create();
+    }
+    this.genMatrix();
+
+    this.lastTime = Date.now() / 1000; // current time in seconds
+    this.sumT = 0;
   }
 
   interpollateTgs(timePerc) {

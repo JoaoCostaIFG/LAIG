@@ -93,10 +93,32 @@ class MyScoreBoard {
   }
 
   update(t) {
+    // update timer
     if (this.running) this.time -= t - this.lastTime;
     this.lastTime = t;
-
     if (this.time < 0) this.time = 0;
+
+    // update UI buttons
+    for (let i = 0; i < this.buttons.length; ++i) this.buttons[i].update(t);
+  }
+
+  display() {
+    this.scene.pushMatrix();
+    this.scene.translate(25, 0, 0);
+    this.scene.scale(5, 5, 5);
+    this.txt.setText(
+      this.getHistory(3) +
+        "\n" +
+        this.scoreStr +
+        " " +
+        this.getTimeStr() +
+        "\n" +
+        this.getWinnerStr()
+    );
+    this.txt.display();
+    this.scene.popMatrix();
+
+    this.displayButtons();
   }
 
   getTimeStr() {
@@ -183,24 +205,5 @@ class MyScoreBoard {
     this.displayButtonLine(currSpace, buttonLine); // last line
     this.scene.clearPickRegistration();
     this.scene.popMatrix();
-  }
-
-  display() {
-    this.scene.pushMatrix();
-    this.scene.translate(25, 0, 0);
-    this.scene.scale(5, 5, 5);
-    this.txt.setText(
-      this.getHistory(3) +
-        "\n" +
-        this.scoreStr +
-        " " +
-        this.getTimeStr() +
-        "\n" +
-        this.getWinnerStr()
-    );
-    this.txt.display();
-    this.scene.popMatrix();
-
-    this.displayButtons();
   }
 }

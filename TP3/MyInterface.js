@@ -86,9 +86,9 @@ class MyInterface extends CGFinterface {
       .name("Difficulty");
     gameDir.add(this.scene.gameOrchestrator, "boardSize").name("Board size");
     // undo
-    gameDir.add(this.scene.gameOrchestrator, "undo").name("Undo");
+    // gameDir.add(this.scene.gameOrchestrator, "undo").name("Undo");
     // start
-    gameDir.add(this.scene.gameOrchestrator, "newGame").name("New game");
+    // gameDir.add(this.scene.gameOrchestrator, "newGame").name("New game");
 
     // debug buttons
     let debugDir = this.gui.addFolder("Debug");
