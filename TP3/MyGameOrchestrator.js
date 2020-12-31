@@ -43,6 +43,7 @@ class MyGameOrchestrator {
       [1, 0],
       [1, 1],
     ];
+    this.selectedPlayerOpsInd = 0; // used by the UI button
     // AI
     this.aiMoveReq = null; // current AI movement request (if any)
   }
@@ -74,10 +75,7 @@ class MyGameOrchestrator {
   }
 
   onGameModeChange(selectedGameMode) {
-    if (this.state != GameState.NOTSTARTED && this.state != GameState.ENDED)
-      return;
-
-    this.selectedPlayerOps = this.playerOps[selectedGameMode];
+    this.selectedPlayerOpsInd = selectedGameMode;
   }
 
   /* || START */
@@ -101,6 +99,7 @@ class MyGameOrchestrator {
     // start game
     this.state = GameState.RUNNING;
 
+    this.selectedPlayerOps = this.playerOps[this.selectedPlayerOpsInd];
     // get first move (AI or player)
     this.getNextMove();
   }
