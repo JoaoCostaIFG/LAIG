@@ -1,5 +1,5 @@
 class MyScoreBoard {
-  constructor(scene, maxTime, boardSize) {
+  constructor(scene, maxTime, boardSize = 0) {
     this.scene = scene;
     this.txt = new MySpriteText(scene, "", 0.5, 1.0);
 
@@ -19,7 +19,15 @@ class MyScoreBoard {
     }
 
     this.score = data.target.response.split("-");
-    this.scoreStr = "B:" + this.score[0] + " - W:" + this.score[1];
+    this.scoreStr =
+      "B:" +
+      this.score[0].toLocaleString("en-GB", {
+        minimumIntegerDigits: 2,
+      }) +
+      " - W:" +
+      this.score[1].toLocaleString("en-GB", {
+        minimumIntegerDigits: 2,
+      });
   }
 
   resetTimer() {
@@ -31,7 +39,15 @@ class MyScoreBoard {
   reset(maxTime, boardSize) {
     let numPlayerPieces = (boardSize * boardSize) / 2;
     this.score = [numPlayerPieces, numPlayerPieces];
-    this.scoreStr = "B:" + numPlayerPieces + " - W:" + numPlayerPieces;
+    this.scoreStr =
+      "B:" +
+      numPlayerPieces.toLocaleString("en-GB", {
+        minimumIntegerDigits: 2,
+      }) +
+      " - W:" +
+      numPlayerPieces.toLocaleString("en-GB", {
+        minimumIntegerDigits: 2,
+      });
 
     this.maxTime = maxTime;
     this.resetTimer();
@@ -125,19 +141,54 @@ class MyScoreBoard {
     return histStr;
   }
 
-  displayButtons() {
-    for (let i = 0; i < this.buttons.length; ++i) {
-      this.buttons[i].display();
+  displayButtonLine(freeSpace, buttonLine) {
+    this.scene.pushMatrix();
+
+    let padding = freeSpace / (buttonLine.length + 1);
+    this.scene.translate(padding, 0, 0);
+
+    for (let i = 0; i < buttonLine.length; ++i) {
+      this.scene.registerForPick(i + 1, buttonLine[i]);
+      buttonLine[i].display();
+
+      this.scene.translate(this.buttons[i].buttonSize * 2 + padding, 0, 0);
     }
+
+    this.scene.popMatrix();
+  }
+
+  displayButtons() {
+    this.scene.pushMatrix();
+    this.scene.translate(-50, -28, 0);
+    this.scene.scale(3, 3, 3);
+
+    let lineLen = 50 / 3; // we have to divide by the scale factor
+
+    let currSpace = lineLen;
+    let buttonLine = [];
+    for (let i = 0; i < this.buttons.length; ++i) {
+      let buttonSize = this.buttons[i].buttonSize * 2;
+      if (buttonSize > currSpace) {
+        this.displayButtonLine(currSpace, buttonLine);
+        this.scene.translate(0, 4, 0);
+
+        buttonLine = [this.buttons[i]];
+        currSpace = lineLen - buttonSize;
+      } else {
+        currSpace -= buttonSize;
+        buttonLine.push(this.buttons[i]);
+      }
+    }
+
+    this.displayButtonLine(currSpace, buttonLine); // last line
+    this.scene.clearPickRegistration();
+    this.scene.popMatrix();
   }
 
   display() {
-    // new MyButton(scene, "New Game", this.newGame.bind(this))
     this.scene.pushMatrix();
-    this.scene.scale(5, 5, 1);
-
-    this.scene.pushMatrix();
-    this.scene.translate(10, 0, 0);
+    this.scene.translate(25, 0, 0);
+    this.scene.scale(5, 5, 5);
     this.txt.setText(
       this.getHistory(3) +
         "\n" +
@@ -150,11 +201,6 @@ class MyScoreBoard {
     this.txt.display();
     this.scene.popMatrix();
 
-    this.scene.pushMatrix();
-    this.scene.translate(-10, 0, 0);
     this.displayButtons();
-    this.scene.popMatrix();
-
-    this.scene.popMatrix();
   }
 }

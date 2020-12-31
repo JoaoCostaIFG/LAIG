@@ -1376,7 +1376,7 @@ class MySceneGraph {
             var leafObj = this.parseLeaf(grandgrandChildren[j], afs, aft);
             if (typeof leafObj === "string" || leafObj instanceof String)
               return leafObj;
-            else if (leafObj == undefined)
+            else if (leafObj === undefined)
               this.onXMLMinorError(
                 "Failed instanciating leaf of: " + nodeID + "."
               );

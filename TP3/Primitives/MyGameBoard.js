@@ -138,23 +138,22 @@ class MyGameBoard {
     for (let i = 0; i < this.size; ++i) {
       for (let j = 0; j < this.size; ++j) {
         let tileIndex = i * this.size + j;
-        // TODO we leave 100 ids reserved for other objs
+        // leave some ids reserved for UI objs
         if (this.pickingEnabled) {
           this.scene.registerForPick(
-            100 + tileIndex + 1,
+            MyGameOrchestrator.reservedUIPickIds + tileIndex + 1,
             this.tiles[tileIndex]
           );
         }
 
         this.tiles[tileIndex].display();
-        if (this.pickingEnabled) this.scene.clearPickRegistration(); // stop picking
-
         this.scene.translate(MyPiece.size, 0.0, 0.0);
       }
       // go to next line start
       this.scene.translate(-MyPiece.size * this.size, 0.0, MyPiece.size);
     }
 
+    if (this.pickingEnabled) this.scene.clearPickRegistration(); // stop picking
     this.scene.popMatrix();
   }
 

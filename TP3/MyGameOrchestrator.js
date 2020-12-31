@@ -6,6 +6,9 @@ const GameState = {
 };
 
 class MyGameOrchestrator {
+  static reservedUIPickIds = 100;
+
+  /* || CONSTRUCTOR */
   constructor(scene) {
     this.scene = scene;
     scene.gameOrchestrator = this;
@@ -15,9 +18,12 @@ class MyGameOrchestrator {
     this.animator = new MyAnimator(this, this.gameSequence);
     this.theme = scene.graphs[0];
     this.prolog = new MyPrologInterface("localhost", 8081);
+    this.scoreBoard = new MyScoreBoard(this.scene, 0);
+    this.genButtons();
 
     this.player = 0; // player 0 (Black) is always first
     this.selectedPieces = []; // list of picked pieces (max 2)
+    this.validMoves = []; // the list of the game's valid moves
 
     // game options
     // turn time (in seconds)
@@ -47,21 +53,22 @@ class MyGameOrchestrator {
     this.aiMoveReq = null; // current AI movement request (if any)
   }
 
+  genButtons() {
+    this.scoreBoard.addButton(
+      new MyButton(this.scene, "New Game", this.newGame.bind(this))
+    );
+    this.scoreBoard.addButton(
+      new MyButton(this.scene, "Undo", this.undo.bind(this))
+    );
+  }
+
   /* || START */
   start() {
     // create or reset scoreBoard according to game options
-    if (this.scoreBoard) {
-      this.scoreBoard.reset(
-        this.difficultyTimes[this.selectedDifficulty],
-        this.boardSize
-      );
-    } else {
-      this.scoreBoard = new MyScoreBoard(
-        this.scene,
-        this.difficultyTimes[this.selectedDifficulty],
-        this.boardSize
-      );
-    }
+    this.scoreBoard.reset(
+      this.difficultyTimes[this.selectedDifficulty],
+      this.boardSize
+    );
 
     // create board according to game options
     this.gameboard = new MyGameBoard(this.scene, this.boardSize);
@@ -191,8 +198,8 @@ class MyGameOrchestrator {
         }
       }
       obj.toggleHightlight();
-    } else if (obj instanceof MyPiece) {
-      // piece
+    } else if (obj instanceof MyButton) {
+      obj.onClick();
     } else {
       // error
     }
@@ -242,6 +249,10 @@ class MyGameOrchestrator {
       console.log("Game ended. Can't undo.");
       return;
     }
+
+    // finish current move (if isn't finished it)
+    let lastMove = this.gameSequence.getLastMove();
+    if (lastMove) lastMove.forceFinish();
 
     let move = this.gameSequence.undo();
     if (move == null) {
@@ -440,17 +451,18 @@ class MyGameOrchestrator {
     // scene graph is always drawn
     this.theme.display();
 
+    // scoreboard is always drawn
+    this.scene.pushMatrix();
+    this.scene.translate(...this.theme.scorePos);
+    this.scoreBoard.display();
+    this.scene.popMatrix();
+
     if (this.state == GameState.PRESTART || this.state == GameState.NOTSTARTED)
       return;
 
     this.scene.pushMatrix();
     this.scene.translate(...this.theme.boardPos);
     this.gameboard.display();
-    this.scene.popMatrix();
-
-    this.scene.pushMatrix();
-    this.scene.translate(...this.theme.scorePos);
-    this.scoreBoard.display();
     this.scene.popMatrix();
   }
 }
