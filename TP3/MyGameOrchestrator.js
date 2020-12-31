@@ -60,6 +60,26 @@ class MyGameOrchestrator {
     this.scoreBoard.addButton(
       new MyButton(this.scene, "Undo", this.undo.bind(this))
     );
+    this.scoreBoard.addButton(
+      new MyCheckboxButton(
+        this.scene,
+        "Start Replay",
+        "Stop Replay",
+        this.gameMovie.bind(this)
+      )
+    );
+    this.scoreBoard.addButton(
+      new MyComboButton(
+        this.scene,
+        ["PvP", "PvAI", "AIvP", "AIvAI"],
+        0,
+        this.a.bind(this)
+      )
+    );
+  }
+
+  a() {
+    console.error("ABBBC");
   }
 
   /* || START */
@@ -109,7 +129,7 @@ class MyGameOrchestrator {
     // restore state
     // stops replay
     this.scoreBoard.start();
-    this.scene.interface.toggleReplayButton(false);
+    // this.scene.interface.toggleReplayButton(false);
     this.gameSequence.doAll();
     this.animator.reset();
 
@@ -139,7 +159,7 @@ class MyGameOrchestrator {
 
       // starts replay
       console.log("Start replay");
-      this.scene.interface.toggleReplayButton(true);
+      // this.scene.interface.toggleReplayButton(true);
 
       // finish current move (if isn't finished it)
       let lastMove = this.gameSequence.getLastMove();

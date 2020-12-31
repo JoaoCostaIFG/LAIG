@@ -163,14 +163,14 @@ class MyScoreBoard {
     return histStr;
   }
 
-  displayButtonLine(freeSpace, buttonLine) {
+  displayButtonLine(freeSpace, buttonLine, currButtonInd) {
     this.scene.pushMatrix();
 
     let padding = freeSpace / (buttonLine.length + 1);
     this.scene.translate(padding, 0, 0);
 
     for (let i = 0; i < buttonLine.length; ++i) {
-      this.scene.registerForPick(i + 1, buttonLine[i]);
+      this.scene.registerForPick(currButtonInd - i, buttonLine[i]);
       buttonLine[i].display();
 
       this.scene.translate(this.buttons[i].buttonSize * 2 + padding, 0, 0);
@@ -188,10 +188,11 @@ class MyScoreBoard {
 
     let currSpace = lineLen;
     let buttonLine = [];
-    for (let i = 0; i < this.buttons.length; ++i) {
+    let i = 0;
+    for (; i < this.buttons.length; ++i) {
       let buttonSize = this.buttons[i].buttonSize * 2;
       if (buttonSize > currSpace) {
-        this.displayButtonLine(currSpace, buttonLine);
+        this.displayButtonLine(currSpace, buttonLine, i);
         this.scene.translate(0, 4, 0);
 
         buttonLine = [this.buttons[i]];
@@ -201,9 +202,9 @@ class MyScoreBoard {
         buttonLine.push(this.buttons[i]);
       }
     }
+    this.displayButtonLine(currSpace, buttonLine, i); // last line
 
-    this.displayButtonLine(currSpace, buttonLine); // last line
     this.scene.clearPickRegistration();
     this.scene.popMatrix();
   }
-}
+ }

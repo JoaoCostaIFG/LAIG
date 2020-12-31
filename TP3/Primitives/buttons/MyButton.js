@@ -4,9 +4,19 @@ class MyButton extends CGFobject {
     this.scene = scene;
     this.onClickFunc = onClickFunc;
 
-    this.buttonSize = text.length / 4.0 + 1.0; // 1.0 is the padding
+    this.setButtonLenFromText(text);
     this.txt = new MySpriteText(this.scene, text, 0.5);
     this.body = new MyCube(this.scene, 1.0);
+  }
+
+  setButtonLen(len) {
+    // text has half width (0.5 Hpadding)
+    // and we start with a cube of side 1.0 (can have 2 chars)
+    this.buttonSize = len / 4.0 + 1.0; // 1.0 is the padding
+  }
+
+  setButtonLenFromText(text) {
+    this.setButtonLen(text.length);
   }
 
   startAnim() {
@@ -22,8 +32,7 @@ class MyButton extends CGFobject {
         this.txt.text + "UIButton",
         kfs
       );
-    }
-    else {
+    } else {
       this.clickAnimation.reset();
     }
   }
