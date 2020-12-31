@@ -20,6 +20,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MyNode.js', 'MySceneGraph.js', '
 'MyGameMove.js', 'MyGameSequence.js', 'MyGameOrchestrator.js', 'MyAnimator.js', './Primitives/MyBorder.js',
 'prolog/MyPrologInterface.js', 'Animations/MovePieceAnimation.js', 'MyScoreBoard.js',
 './Primitives/MyInsignia.js', './Primitives/MyBlackInsignia.js', './Primitives/MyWhiteInsignia.js',
+'./Primitives/MyButton.js',
 main=function()
 {
 	// Standard application, scene and interface setup

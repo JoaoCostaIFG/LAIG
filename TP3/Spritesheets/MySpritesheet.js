@@ -1,6 +1,4 @@
 class MySpritesheet {
-  // TODO webgl warning dos uniform values acontece no setUniformsValues do activateCellMN
-
   constructor(scene, texture, sizeM, sizeN) {
     this.scene = scene;
     this.tex = texture;

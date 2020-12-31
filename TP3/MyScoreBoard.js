@@ -3,8 +3,13 @@ class MyScoreBoard {
     this.scene = scene;
     this.txt = new MySpriteText(scene, "", 0.5, 1.0);
 
+    this.buttons = [];
     this.history = [];
     this.reset(maxTime, boardSize);
+  }
+
+  addButton(newButton) {
+    this.buttons.push(newButton);
   }
 
   parseScore(data) {
@@ -120,10 +125,19 @@ class MyScoreBoard {
     return histStr;
   }
 
+  displayButtons() {
+    for (let i = 0; i < this.buttons.length; ++i) {
+      this.buttons[i].display();
+    }
+  }
+
   display() {
+    // new MyButton(scene, "New Game", this.newGame.bind(this))
     this.scene.pushMatrix();
     this.scene.scale(5, 5, 1);
 
+    this.scene.pushMatrix();
+    this.scene.translate(10, 0, 0);
     this.txt.setText(
       this.getHistory(3) +
         "\n" +
@@ -134,6 +148,12 @@ class MyScoreBoard {
         this.getWinnerStr()
     );
     this.txt.display();
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+    this.scene.translate(-10, 0, 0);
+    this.displayButtons();
+    this.scene.popMatrix();
 
     this.scene.popMatrix();
   }

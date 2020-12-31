@@ -138,8 +138,13 @@ class MyGameBoard {
     for (let i = 0; i < this.size; ++i) {
       for (let j = 0; j < this.size; ++j) {
         let tileIndex = i * this.size + j;
-        if (this.pickingEnabled)
-          this.scene.registerForPick(tileIndex + 1, this.tiles[tileIndex]);
+        // TODO we leave 100 ids reserved for other objs
+        if (this.pickingEnabled) {
+          this.scene.registerForPick(
+            100 + tileIndex + 1,
+            this.tiles[tileIndex]
+          );
+        }
 
         this.tiles[tileIndex].display();
         if (this.pickingEnabled) this.scene.clearPickRegistration(); // stop picking

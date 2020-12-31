@@ -28,7 +28,7 @@ class MyGameOrchestrator {
       hard: 2,
     };
     this.selectedDifficulty = 0; // default difficulty: easy
-    this.boardSize = 3; // default boardsize: 10
+    this.boardSize = 10; // default boardsize: 10
     // AI options
     this.savedPlayerOps = [0, 0];
     this.playerOps = [
