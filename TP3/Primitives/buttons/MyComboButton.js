@@ -20,7 +20,7 @@ class MyComboButton extends MyButton {
     if (this.selected >= this.items.length) this.selected = 0;
     this.txt.setText(this.items[this.selected]);
 
-    super.onClick([this.selected]);
+    return super.onClick([this.selected]);
   }
 
   getSelection() {
