@@ -12,6 +12,9 @@
  * @param up - up component
  */
 class MyCGFcameraOrtho extends CGFcameraOrtho {
+  // TODO lerp left, right, bottom, top?
+  // TODO lerp FOV (how?)
+
   constructor(name, left, right, bottom, top, near, far, position, target, up) {
     super(left, right, bottom, top, near, far, position, target, up);
 
@@ -89,12 +92,14 @@ class MyCGFcameraOrtho extends CGFcameraOrtho {
       this.isAnimating = false;
     }
 
-    vec4.lerp(this.position, this.currPos, this.endPos, timePerc);
-    vec4.lerp(this.target, this.currTarget, this.endTarget, timePerc);
-    vec3.lerp(this._up, this.currUp, this.endUp, timePerc);
+    let lerpT = -(Math.cos(Math.PI * timePerc) - 1) / 2;
+
+    vec4.lerp(this.position, this.currPos, this.endPos, lerpT);
+    vec4.lerp(this.target, this.currTarget, this.endTarget, lerpT);
+    vec3.lerp(this._up, this.currUp, this.endUp, lerpT);
     this.direction = this.calculateDirection();
 
-    this.near = this.currNear + (this.endNear - this.currNear) * timePerc;
-    this.far = this.currFar + (this.endFar - this.currFar) * timePerc;
+    this.near = this.currNear + (this.endNear - this.currNear) * lerpT;
+    this.far = this.currFar + (this.endFar - this.currFar) * lerpT;
   }
 }
