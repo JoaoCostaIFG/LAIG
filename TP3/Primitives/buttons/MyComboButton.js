@@ -18,14 +18,15 @@ class MyComboButton extends MyButton {
       "./Shaders/ComboBoxShader.vert",
       "./Shaders/ComboBoxShader.frag"
     );
-
     this.updateColor();
   }
 
   updateColor() {
+    this.scene.setActiveShaderSimple(this.shader);
     this.shader.setUniformsValues({
       perc: this.selected / (this.items.length - 1),
     });
+    this.scene.setActiveShader(this.scene.defaultShader);
   }
 
   onClick() {

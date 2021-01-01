@@ -1,5 +1,4 @@
 class MyCheckboxButton extends MyButton {
-  // TODO colors
   constructor(scene, text, altText, onClickFunc) {
     super(scene, text, onClickFunc);
 
@@ -10,6 +9,21 @@ class MyCheckboxButton extends MyButton {
     // buttons should be sized around the largest element
     if (this.altText.length > this.text.length)
       this.setButtonLenFromText(altText);
+
+    this.shader = new CGFshader(
+      this.scene.gl,
+      "./Shaders/ComboBoxShader.vert",
+      "./Shaders/ComboBoxShader.frag"
+    );
+    this.updateColor();
+  }
+
+  updateColor() {
+    this.scene.setActiveShaderSimple(this.shader);
+    this.shader.setUniformsValues({
+      perc: this.clicked ? 1.0 : 0.0,
+    });
+    this.scene.setActiveShader(this.scene.defaultShader);
   }
 
   onClick() {
@@ -21,11 +35,18 @@ class MyCheckboxButton extends MyButton {
       if (this.clicked) this.txt.setText(this.altText);
       else this.txt.setText(this.text);
     }
+    this.updateColor();
 
     return ret;
   }
 
   isClicked() {
     return this.clicked;
+  }
+
+  display() {
+    this.scene.setActiveShaderSimple(this.shader);
+    super.display();
+    this.scene.setActiveShader(this.scene.defaultShader);
   }
 }
