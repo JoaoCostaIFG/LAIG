@@ -27,21 +27,16 @@ class MyGameOrchestrator {
 
     // game options
     // turn time (in seconds)
-    this.difficultyTimes = [30, 20, 10];
-    this.difficultyInd = {
-      easy: 0,
-      medium: 1,
-      hard: 2,
-    };
+    this.difficultyTimes = [30, 20, 10]; // easy, medium, hard
     this.selectedDifficulty = 0; // default difficulty: easy
     this.boardSize = 10; // default boardsize: 10
     // game mode options
     this.selectedPlayerOps = [0, 0];
     this.playerOps = [
-      [0, 0],
-      [0, 1],
-      [1, 0],
-      [1, 1],
+      [0, 0], // PvP
+      [0, 1], // PvAI
+      [1, 0], // AIvP
+      [1, 1], // AIvAI
     ];
     this.selectedPlayerOpsInd = 0; // used by the UI button
     // AI
@@ -72,10 +67,22 @@ class MyGameOrchestrator {
         this.onGameModeChange.bind(this)
       )
     );
+    this.scoreBoard.addButton(
+      new MyComboButton(
+        this.scene,
+        ["Easy", "Medium", "Hard"],
+        0,
+        this.onDifficultyChange.bind(this)
+      )
+    );
   }
 
   onGameModeChange(selectedGameMode) {
     this.selectedPlayerOpsInd = selectedGameMode;
+  }
+
+  onDifficultyChange(selectedDifficulty) {
+    this.selectedDifficulty = selectedDifficulty;
   }
 
   /* || START */
@@ -125,7 +132,6 @@ class MyGameOrchestrator {
     // restore state
     // stops replay
     this.scoreBoard.start();
-    // this.scene.interface.toggleReplayButton(false);
     this.gameSequence.doAll();
     this.animator.reset();
 
@@ -144,18 +150,14 @@ class MyGameOrchestrator {
   }
 
   gameMovie() {
-    if (this.state == GameState.NOTSTARTED) return;
+    if (this.state == GameState.NOTSTARTED) return false;
 
     if (this.animator.running == 2) {
       console.log("Stop replay");
       this.endGameMovie();
     } else {
-      // Doesn't let the game movie start during animations
-      //if (this.state != GameState.PAUSED) {
-
       // starts replay
       console.log("Start replay");
-      // this.scene.interface.toggleReplayButton(true);
 
       // finish current move (if isn't finished it)
       let lastMove = this.gameSequence.getLastMove();
@@ -170,6 +172,8 @@ class MyGameOrchestrator {
       this.gameSequence.undoAll();
       this.animator.startMovie();
     }
+
+    return true;
   }
 
   /* || PICKING */

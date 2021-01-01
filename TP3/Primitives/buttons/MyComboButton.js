@@ -1,5 +1,4 @@
 class MyComboButton extends MyButton {
-  // TODO colors
   constructor(scene, items, selected, onClickFunc) {
     super(scene, items[0], onClickFunc);
 
@@ -13,6 +12,21 @@ class MyComboButton extends MyButton {
       if (max < this.items[i].length) max = this.items[i].length;
     }
     this.setButtonLen(max);
+
+    this.shader = new CGFshader(
+      this.scene.gl,
+      "./Shaders/ComboBoxShader.vert",
+      "./Shaders/ComboBoxShader.frag"
+    );
+    this.updateColor();
+  }
+
+  updateColor() {
+    this.scene.setActiveShaderSimple(this.shader);
+    this.shader.setUniformsValues({
+      perc: this.selected / (this.items.length - 1),
+    });
+    this.scene.setActiveShader(this.scene.defaultShader);
   }
 
   onClick() {
@@ -20,10 +34,17 @@ class MyComboButton extends MyButton {
     if (this.selected >= this.items.length) this.selected = 0;
     this.txt.setText(this.items[this.selected]);
 
-    super.onClick([this.selected]);
+    this.updateColor();
+    return super.onClick([this.selected]);
   }
 
   getSelection() {
     return this.selected;
+  }
+
+  display() {
+    this.scene.setActiveShaderSimple(this.shader);
+    super.display();
+    this.scene.setActiveShader(this.scene.defaultShader);
   }
 }

@@ -192,11 +192,17 @@ class MyScoreBoard {
     for (; i < this.buttons.length; ++i) {
       let buttonSize = this.buttons[i].buttonSize * 2;
       if (buttonSize > currSpace) {
-        this.displayButtonLine(currSpace, buttonLine, i);
-        this.scene.translate(0, 4, 0);
+        if (buttonLine.length == 0) {
+          // if first button is too big
+          this.displayButtonLine(0, [this.buttons[i]], i);
+        } else {
+          this.displayButtonLine(currSpace, buttonLine, i);
 
-        buttonLine = [this.buttons[i]];
-        currSpace = lineLen - buttonSize;
+          buttonLine = [this.buttons[i]];
+          currSpace = lineLen - buttonSize;
+        }
+
+        this.scene.translate(0, 4, 0);
       } else {
         currSpace -= buttonSize;
         buttonLine.push(this.buttons[i]);
@@ -207,4 +213,4 @@ class MyScoreBoard {
     this.scene.clearPickRegistration();
     this.scene.popMatrix();
   }
- }
+}
