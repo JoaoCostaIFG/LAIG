@@ -12,9 +12,10 @@
  * @param up - up component
  */
 class MyCGFcameraOrtho extends CGFcameraOrtho {
-  constructor(left, right, bottom, top, near, far, position, target, up) {
+  constructor(name, left, right, bottom, top, near, far, position, target, up) {
     super(left, right, bottom, top, near, far, position, target, up);
 
+    this.name = name;
     this.initPosition = vec4.fromValues(...position, 0);
     this.initTarget = vec4.fromValues(...target, 0);
     this.initUp = vec3.fromValues(...up);

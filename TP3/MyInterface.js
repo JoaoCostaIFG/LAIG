@@ -56,6 +56,8 @@ class MyInterface extends CGFinterface {
   }
 
   instGuiButtons() {
+    // camera related buttons show be kept here in case the user
+    // loses track of the screen
     this.gui.add(this.scene, "resetCamera");
 
     // game buttons

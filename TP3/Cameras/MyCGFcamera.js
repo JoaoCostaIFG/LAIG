@@ -8,9 +8,10 @@
  * @param target - camera's target
  */
 class MyCGFcamera extends CGFcamera {
-  constructor(fov, near, far, position, target) {
+  constructor(name, fov, near, far, position, target) {
     super(fov, near, far, position, target);
 
+    this.name = name;
     this.initPosition = vec4.fromValues(...position, 0);
     this.initTarget = vec4.fromValues(...target, 0);
     this.initUp = vec3.fromValues(0, 1, 0);
