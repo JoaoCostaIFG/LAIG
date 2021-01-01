@@ -68,6 +68,7 @@ class XMLscene extends CGFscene {
 
     // default camera
     this.camera = new MyCGFcamera(
+      "default",
       0.4,
       0.1,
       500,
@@ -108,6 +109,7 @@ class XMLscene extends CGFscene {
     // cameras
     this.waitingForCamAnim = false;
     this.cameras = [];
+    this.graphCameras = {};
     this.selectedCamera = -1;
     this.cameraList = {};
 
@@ -144,17 +146,31 @@ class XMLscene extends CGFscene {
    * Initializes the scene cameras.
    */
   initCameras() {
-    this.cameras = [];
     this.cameraList = {};
 
-    var i = 0;
-    for (var key in this.graph.cameras) {
-      var camInfo = this.graph.cameras[key];
-      var cam;
+    // "recover" cameras already created (avoids reloading cameras afetr every scene change)
+    if (this.graphCameras[this.selectedGraph]) {
+      this.cameras = this.graphCameras[this.selectedGraph];
+      for (let i = 0; i < this.cameras.length; ++i) {
+        let cam = this.cameras[i];
+        this.cameraList[cam.name] = i;
+        // select default camera
+        if (cam.name == this.graph.defaultCameraId) this.selectedCamera = i;
+      }
+      return;
+    }
+
+    this.graphCameras[this.selectedGraph] = [];
+    this.cameras = this.graphCameras[this.selectedGraph];
+
+    let i = 0;
+    for (let key in this.graph.cameras) {
+      let camInfo = this.graph.cameras[key];
+      let cam;
       if (camInfo[0] == "perspective") {
-        cam = new MyCGFcamera(...camInfo.slice(2));
+        cam = new MyCGFcamera(...camInfo.slice(1));
       } else {
-        cam = new MyCGFcameraOrtho(...camInfo.slice(2));
+        cam = new MyCGFcameraOrtho(...camInfo.slice(1));
       }
 
       this.cameras.push(cam);
@@ -178,6 +194,10 @@ class XMLscene extends CGFscene {
   animSwitchCamera() {
     this.waitingForCamAnim = true;
     this.camera.startAnim(this.cameras[this.selectedCamera]);
+  }
+
+  resetCamera() {
+    this.camera.resetAnim();
   }
 
   /**

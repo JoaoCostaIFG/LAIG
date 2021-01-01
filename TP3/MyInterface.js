@@ -9,7 +9,6 @@ class MyInterface extends CGFinterface {
     super();
     this.lightsDir = null;
     this.cameras = null;
-    // this.replayButton = null;
   }
 
   /**
@@ -57,38 +56,20 @@ class MyInterface extends CGFinterface {
   }
 
   instGuiButtons() {
-    // this.replayButton = this.gui.add(this.scene.gameOrchestrator, "gameMovie");
-    // this.replayButton.name("Replay");
-
-    // scene list
-    this.gui
-      .add(this.scene, "selectedGraph", this.scene.graphNames)
-      .name("Selected theme")
-      .onChange(this.scene.updateSelectedGraph.bind(this.scene));
+    // camera related buttons show be kept here in case the user
+    // loses track of the screen
+    this.gui.add(this.scene, "resetCamera");
 
     // game buttons
     let gameDir = this.gui.addFolder("Game");
     gameDir.open();
-    // game options
-    // gameDir
-      // .add(
-        // this.scene.gameOrchestrator,
-        // "selectedPlayerOps",
-        // this.scene.gameOrchestrator.playerOpsInd
-      // )
-      // .name("Players");
+    // scene list
     gameDir
-      .add(
-        this.scene.gameOrchestrator,
-        "selectedDifficulty",
-        this.scene.gameOrchestrator.difficultyInd
-      )
-      .name("Difficulty");
+      .add(this.scene, "selectedGraph", this.scene.graphNames)
+      .name("Selected theme")
+      .onChange(this.scene.updateSelectedGraph.bind(this.scene));
+    // board size
     gameDir.add(this.scene.gameOrchestrator, "boardSize").name("Board size");
-    // undo
-    // gameDir.add(this.scene.gameOrchestrator, "undo").name("Undo");
-    // start
-    // gameDir.add(this.scene.gameOrchestrator, "newGame").name("New game");
 
     // debug buttons
     let debugDir = this.gui.addFolder("Debug");
@@ -102,13 +83,6 @@ class MyInterface extends CGFinterface {
 
     this.updateGUI(); // TODO redundant?
   }
-
-  // toggleReplayButton(isReplaying) {
-  // if (!this.replayButton) return;
-
-  // if (isReplaying) this.replayButton.name("Stop Replay");
-  // else this.replayButton.name("Replay");
-  // }
 
   /**
    * initKeys

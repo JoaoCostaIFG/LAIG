@@ -8,9 +8,10 @@
  * @param target - camera's target
  */
 class MyCGFcamera extends CGFcamera {
-  constructor(fov, near, far, position, target) {
+  constructor(name, fov, near, far, position, target) {
     super(fov, near, far, position, target);
 
+    this.name = name;
     this.initPosition = vec4.fromValues(...position, 0);
     this.initTarget = vec4.fromValues(...target, 0);
     this.initUp = vec3.fromValues(0, 1, 0);
@@ -51,6 +52,10 @@ class MyCGFcamera extends CGFcamera {
     this.isAnimating = false;
   }
 
+  resetAnim() {
+    this.startAnim(this);
+  }
+
   startAnim(endCam) {
     // start
     vec4.copy(this.currPos, this.position);
@@ -87,14 +92,16 @@ class MyCGFcamera extends CGFcamera {
       this.isAnimating = false;
     }
 
-    vec4.lerp(this.position, this.currPos, this.endPos, timePerc);
-    vec4.lerp(this.target, this.currTarget, this.endTarget, timePerc);
-    vec3.lerp(this._up, this.currUp, this.endUp, timePerc);
+    let lerpT = -(Math.cos(Math.PI * timePerc) - 1) / 2;
+
+    vec4.lerp(this.position, this.currPos, this.endPos, lerpT);
+    vec4.lerp(this.target, this.currTarget, this.endTarget, lerpT);
+    vec3.lerp(this._up, this.currUp, this.endUp, lerpT);
     this.direction = this.calculateDirection();
 
     if (this.endFov)
-      this.fov = this.currFov + (this.endFov - this.currFov) * timePerc;
-    this.near = this.currNear + (this.endNear - this.currNear) * timePerc;
-    this.far = this.currFar + (this.endFar - this.currFar) * timePerc;
+      this.fov = this.currFov + (this.endFov - this.currFov) * lerpT;
+    this.near = this.currNear + (this.endNear - this.currNear) * lerpT;
+    this.far = this.currFar + (this.endFar - this.currFar) * lerpT;
   }
 }
