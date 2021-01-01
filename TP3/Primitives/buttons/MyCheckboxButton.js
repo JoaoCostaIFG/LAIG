@@ -12,8 +12,8 @@ class MyCheckboxButton extends MyButton {
 
     this.shader = new CGFshader(
       this.scene.gl,
-      "./Shaders/ComboBoxShader.vert",
-      "./Shaders/ComboBoxShader.frag"
+      "./Shaders/GradientShader.vert",
+      "./Shaders/GradientShader.frag"
     );
     this.updateColor();
   }
