@@ -132,7 +132,6 @@ class MyGameOrchestrator {
     // restore state
     // stops replay
     this.scoreBoard.start();
-    // this.scene.interface.toggleReplayButton(false);
     this.gameSequence.doAll();
     this.animator.reset();
 
@@ -157,12 +156,8 @@ class MyGameOrchestrator {
       console.log("Stop replay");
       this.endGameMovie();
     } else {
-      // Doesn't let the game movie start during animations
-      //if (this.state != GameState.PAUSED) {
-
       // starts replay
       console.log("Start replay");
-      // this.scene.interface.toggleReplayButton(true);
 
       // finish current move (if isn't finished it)
       let lastMove = this.gameSequence.getLastMove();

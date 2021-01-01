@@ -180,6 +180,10 @@ class XMLscene extends CGFscene {
     this.camera.startAnim(this.cameras[this.selectedCamera]);
   }
 
+  resetCamera() {
+    this.camera.resetAnim();
+  }
+
   /**
    * Initializes the scene lights with the values read from the XML file.
    */

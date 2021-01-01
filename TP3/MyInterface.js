@@ -56,6 +56,8 @@ class MyInterface extends CGFinterface {
   }
 
   instGuiButtons() {
+    this.gui.add(this.scene, "resetCamera");
+
     // game buttons
     let gameDir = this.gui.addFolder("Game");
     gameDir.open();

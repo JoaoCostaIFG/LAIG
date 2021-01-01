@@ -55,4 +55,12 @@ class MyCube extends CGFobject {
 
     this.scene.popMatrix();
   }
+
+  enableNormalViz() {
+    this.rect.enableNormalViz();
+  }
+
+  disableNormalViz() {
+    this.rect.disableNormalViz();
+  }
 }

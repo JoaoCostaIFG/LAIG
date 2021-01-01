@@ -404,7 +404,7 @@
         <scale sx="1" sy="0.2" sz="1"/>
       </transformations>
       <descendants>
-        <leaf type="sphere" radius="3" slices="20" stacks="20"/>
+        <leaf type="sphere" radius="3" slices="20" stacks="5"/>
       </descendants>
     </node>
     <!-- || TABLE -->

@@ -51,6 +51,10 @@ class MyCGFcameraOrtho extends CGFcameraOrtho {
     this.isAnimating = false;
   }
 
+  resetAnim() {
+    this.startAnim(this);
+  }
+
   startAnim(endCam) {
     // start
     vec4.copy(this.currPos, this.position);
