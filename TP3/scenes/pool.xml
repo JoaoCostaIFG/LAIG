@@ -8,8 +8,8 @@
     <!-- must be defined in one of the following NODE declarations -->
   </initials>
 <views default="camCenter">
-    <perspective id="camCenter" near="0.1" far="500" angle="45">
-      <from x="1" y="50" z="110"/>
+    <perspective id="camCenter" near="0.1" far="500" angle="60">
+      <from x="1" y="50" z="70"/>
       <to x="0" y="-10" z="-20"/>
     </perspective>
     <perspective id="camLeft" near="0.1" far="500" angle="45">
@@ -248,11 +248,42 @@
         <amplification afs="1.0" aft="1.0"/>
       </texture>
       <transformations>
-        <translation x="25.0" y="-45.0" z="-25.0"/>
+        <translation x="25.0" y="-44.9" z="-25.0"/>
+        <rotation axis="y" angle="-25" />
+        <rotation axis="z" angle="75" />
       </transformations>
       <descendants>
         <noderef id="cone"/>
         <noderef id="ballStrawberry"/>
+        <noderef id="poolStrawberry"/>
+      </descendants>
+    </node>
+    <node id="poolStrawberry">
+      <material id="null"/>
+      <texture id="strawberryTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="-3.3" y="12.0" z="0.0"/>
+        <rotation axis="z" angle="15" />
+      </transformations>
+      <descendants>
+        <leaf type="patch" npointsU="3" npointsV="4" npartsU="5" npartsV="5">
+          <controlpoint x="0.0" y="3.0" z="7"/>
+          <controlpoint x="0.0" y="4.0" z="4"/>
+          <controlpoint x="0.0" y="6.0" z="2"/>
+          <controlpoint x="0.0" y="3.0" z="0"/>
+
+          <controlpoint x="0.0" y="1.5" z="10"/>
+          <controlpoint x="0.0" y="1.0" z="4"/>
+          <controlpoint x="0.0" y="1.0" z="2"/>
+          <controlpoint x="0.0" y="1.0" z="-2"/>
+
+          <controlpoint x="0.0" y="0.0" z="8"/>
+          <controlpoint x="0.0" y="-3.0" z="4"/>
+          <controlpoint x="0.0" y="-4.0" z="2"/>
+          <controlpoint x="0.0" y="-2.0" z="0"/>
+        </leaf>
       </descendants>
     </node>
     <node id="ballStrawberry">
@@ -263,10 +294,10 @@
       <transformations>
         <translation x="0.0" y="13.0" z="0.0"/>
         <rotation axis="y" angle="-90"/>
-        <rotation axis="z" angle="-180"/>
+        <rotation axis="z" angle="180"/>
       </transformations>
       <descendants>
-        <leaf type="sphere" radius="3.5" slices="20" stacks="20"/>
+        <leaf type="sphere" radius="3.5" slices="15" stacks="15"/>
       </descendants>
     </node>
     <node id="cone">
@@ -278,7 +309,7 @@
         <rotation axis="x" angle="-90"/>
       </transformations>
       <descendants>
-        <leaf type="cylinder" height="12" topRadius="3.3" bottomRadius="0.1" stacks="10" slices="10"/>
+        <leaf type="cylinder" height="12" topRadius="3.3" bottomRadius="0.1" stacks="4" slices="10"/>
       </descendants>
     </node>
     <node id="boia">
@@ -287,7 +318,7 @@
         <amplification afs="1.0" aft="1.0"/>
       </texture>
       <transformations>
-        <translation x="-50.0" y="-100.0" z="-70.0"/>
+        <translation x="-50.0" y="-90.0" z="-70.0"/>
         <rotation axis="x" angle="90"/>
       </transformations>
       <descendants>

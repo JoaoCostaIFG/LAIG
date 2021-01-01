@@ -17,7 +17,7 @@ void main() {
     color = vec4(0.47, 0.63 + 0.17 * perc2, 0.83 - 0.04 * perc2, 1.0);
   }
   else {
-    float perc2 = perc * 2.0;
+    float perc2 = (perc - 0.5) * 2.0;
     color = vec4(0.47 + 0.43 * perc2, 0.80 - 0.28 * perc2, 0.79 - 0.11 * perc2, 1.0);
   }
 

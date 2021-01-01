@@ -2,7 +2,7 @@ class MyWhiteInsignia extends MyInsignia {
   constructor(scene) {
     super(scene);
 
-    this.triangle = new MyCylinder(scene, 0.5, 0.5, 0.1, 3, 4);
+    this.triangle = new MyCylinder(scene, 0.5, 0.5, 0.1, 3, 1);
   }
 
   display() {
