@@ -36,7 +36,7 @@
       <from x="20.0" y="0.0" z="0.0"/>
       <to x="-30" y="-20" z="-50"/>
     </perspective>
-    <perspective id="scoreBoard" near="0.1" far="500" angle="45">
+    <perspective id="chairCam" near="0.1" far="500" angle="45">
       <from x="-80" y="-50" z="50"/>
       <to x="-30" y="0" z="-50"/>
     </perspective>
@@ -106,6 +106,7 @@
     <texture id="tableBotTex" path="./scenes/images/botTable.jpeg"/>
     <texture id="coneTex" path="./scenes/images/cone.jpeg"/>
     <texture id="strawberryTex" path="./scenes/images/strawberry.jpeg"/>
+    <texture id="chairSeatTex" path="./scenes/images/chairSeat.jpeg"/>
   </textures>
   <spritesheets>
   </spritesheets>
@@ -132,6 +133,13 @@
       <diffuse r="0.01" g="0.01" b="0.01" a="1.0"/>
       <specular r="0.0" g="0.0" b="0.0" a="1.0"/>
       <emissive r="0.0" g="0.0" b="0.0" a="1.0"/>
+    </material>
+    <material id="clothMaterial">
+      <shininess value="1.0"/>
+      <ambient r="0.2" g="0.2" b="1.0" a="1.0"/>
+      <diffuse r="0.1" g="0.1" b="0.1" a="1.0"/>
+      <specular r="0.1" g="0.1" b="0.1" a="1.0"/>
+      <emissive r="0.1" g="0.1" b="0.1" a="1.0"/>
     </material>
   </materials>
   <animations>
@@ -185,8 +193,268 @@
         <noderef id="boia"/>
         <noderef id="table"/>
         <noderef id="icecream"/>
-        <noderef id="scoreboard"/>
+        <noderef id="scoreboard"/> 
+        <noderef id="chair"/>
+        <noderef id="chair2"/>
         <leaf type="gameboard" x="0" y="-44" z="0"/>
+      </descendants>
+    </node>
+    <node id="chair2">
+      <material id="null"/>
+      <texture id="woodTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="-110.0" y="0.0" z="0.0"/>
+        <rotation axis="y" angle="-20"/>
+      </transformations>
+      <descendants>
+        <noderef id="chair"/>
+      </descendants>
+    </node>
+    <node id="chair">
+      <material id="null"/>
+      <texture id="woodTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="40.0" y="-78.0" z="0.0"/>
+        <rotation axis="y" angle="20"/>
+      </transformations>
+      <descendants>
+        <noderef id="chairWoodTop"/>
+        <noderef id="chairWoodCylinder"/>
+        <noderef id="chairSides"/>
+        <noderef id="chairWoodMidConnection"/>
+        <noderef id="chairWoodFrontConnection"/>
+        <noderef id="chairWoodBackConnection"/>
+        <noderef id="chairSeat"/>
+      </descendants>
+    </node>
+    <node id="chairSides">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+      </transformations>
+      <descendants>
+        <noderef id="chairWoodSide"/>
+        <noderef id="chairWoodSide2"/>
+        <noderef id="chairWoodSideBottom"/>
+        <noderef id="chairWoodSideBottom2"/>
+        <noderef id="chairWoodSideMid"/>
+        <noderef id="chairWoodSideMid2"/> 
+      </descendants>
+    </node>
+    <node id="chairWoodBackConnection">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="-18.0" z="50.0"/>
+        <scale sx="1" sy="2" sz="2"/>
+      </transformations>
+      <descendants>
+        <noderef id="chairWoodCylinder"/>
+      </descendants>
+    </node>
+    <node id="chairWoodFrontConnection">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="-15.0" z="8.0"/>
+        <scale sx="1" sy="2" sz="2"/>
+      </transformations>
+      <descendants>
+        <noderef id="chairWoodCylinder"/>
+      </descendants>
+    </node>
+    <node id="chairWoodMidConnection">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="-12.0" z="35.0"/>
+        <scale sx="1" sy="2" sz="2"/>
+      </transformations>
+      <descendants>
+        <noderef id="chairWoodCylinder"/>
+      </descendants>
+    </node>
+    <node id="chairWoodSideMid2">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="32" y="0.0" z="0.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="chairWoodSideMid"/>
+      </descendants>
+    </node>
+    <node id="chairWoodSideMid">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="30.0" aft="30.0"/>
+      </texture>
+      <transformations>
+        <translation x="-2" y="23.0" z="35.0"/>
+        <rotation axis="x" angle="90"/>
+        <scale sx="1" sy="1" sz="18"/>
+      </transformations>
+      <descendants>
+        <leaf type="cube" side="1"/>
+      </descendants>
+    </node>
+    <node id="chairWoodSideBottom2">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="32" y="0.0" z="0.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="chairWoodSideBottom"/>
+      </descendants>
+    </node>
+    <node id="chairWoodSideBottom">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="30.0" aft="30.0"/>
+      </texture>
+      <transformations>
+        <translation x="-2" y="0.0" z="0.0"/>
+        <rotation axis="x" angle="20"/>
+        <scale sx="1" sy="1" sz="30"/>
+      </transformations>
+      <descendants>
+        <leaf type="cube" side="1"/>
+      </descendants>
+    </node>
+    <node id="chairWoodSide2">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="32" y="0.0" z="0.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="chairWoodSide"/>
+      </descendants>
+    </node>
+    <node id="chairWoodSide">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="45.0" aft="45.0"/>
+      </texture>
+      <transformations>
+        <translation x="-2" y="-28.0" z="-0.8"/>
+        <rotation axis="x" angle="-55"/>
+        <scale sx="1" sy="1" sz="45"/>
+      </transformations>
+      <descendants>
+        <leaf type="cube" side="1"/>
+      </descendants>
+    </node>
+    <node id="chairWoodTop">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <translation x="0.0" y="45.0" z="50.0"/>
+      </transformations>
+      <descendants>
+        <noderef id="chairWoodCylinder"/>
+      </descendants>
+    </node>
+    <node id="chairWoodCylinder">
+      <material id="null"/>
+      <texture id="null">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <rotation axis="y" angle="90"/>
+      </transformations>
+      <descendants>
+        <leaf type="cylinder" height="30" topRadius="0.7" bottomRadius="0.7" stacks="1" slices="5"/>
+      </descendants>
+    </node>
+    <node id="chairSeat">
+      <material id="clothMaterial"/>
+      <texture id="clear">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+        <scale sx="10" sy="10" sz="10"/>
+      </transformations>
+      <descendants>
+        <noderef id="chairSeatFront"/>
+        <noderef id="chairSeatBack"/>
+      </descendants>
+    </node>
+    <node id="chairSeatBack">
+      <material id="null"/>
+      <texture id="chairSeatTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+      </transformations>
+      <descendants>
+        <leaf type="patch" npointsU="3" npointsV="5" npartsU="10" npartsV="10">
+          <controlpoint x="3" y="4.5" z="5"/>
+          <controlpoint x="3" y="2.5" z="4"/>
+          <controlpoint x="3" y="-1.0" z="3"/>
+          <controlpoint x="3" y="-1.0" z="2"/>
+          <controlpoint x="3" y="0.0" z="0"/>
+          <controlpoint x="1.5" y="4.5" z="5"/>
+          <controlpoint x="1.5" y="2.5" z="4"/>
+          <controlpoint x="1.5" y="-1.0" z="3"/>
+          <controlpoint x="1.5" y="-1.0" z="2"/>
+          <controlpoint x="1.5" y="0.0" z="0"/>
+          <controlpoint x="0" y="4.5" z="5"/>
+          <controlpoint x="0" y="2.5" z="4"/>
+          <controlpoint x="0" y="-1.0" z="3"/>
+          <controlpoint x="0" y="-1.0" z="2"/>
+          <controlpoint x="0" y="0.0" z="0"/>
+        </leaf>
+      </descendants>
+    </node>
+    <node id="chairSeatFront">
+      <material id="null"/>
+      <texture id="chairSeatTex">
+        <amplification afs="1.0" aft="1.0"/>
+      </texture>
+      <transformations>
+      </transformations>
+      <descendants>
+         <leaf type="patch" npointsU="3" npointsV="5" npartsU="10" npartsV="10">
+          <controlpoint x="0" y="4.5" z="5"/>
+          <controlpoint x="0" y="2.5" z="4"/>
+          <controlpoint x="0" y="-1.0" z="3"/>
+          <controlpoint x="0" y="-1.0" z="2"/>
+          <controlpoint x="0" y="0.0" z="0"/>
+
+          <controlpoint x="1.5" y="4.5" z="5"/>
+          <controlpoint x="1.5" y="2.5" z="4"/>
+          <controlpoint x="1.5" y="-1.0" z="3"/>
+          <controlpoint x="1.5" y="-1.0" z="2"/>
+          <controlpoint x="1.5" y="0.0" z="0"/>
+
+          <controlpoint x="3" y="4.5" z="5"/>
+          <controlpoint x="3" y="2.5" z="4"/>
+          <controlpoint x="3" y="-1.0" z="3"/>
+          <controlpoint x="3" y="-1.0" z="2"/>
+          <controlpoint x="3" y="0.0" z="0"/>
+        </leaf>
       </descendants>
     </node>
     <!-- || SCOREBOARD -->
