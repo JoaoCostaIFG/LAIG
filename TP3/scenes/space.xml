@@ -6,6 +6,7 @@
     <root id="root"/>
     <!-- identifier of root node of the scene graph; this node -->
     <!-- must be defined in one of the following NODE declarations -->
+    <name name="Space"/>
   </initials>
   <views default="camCenter">
     <perspective id="camCenter" near="0.1" far="500" angle="45">
@@ -180,7 +181,6 @@
         <noderef id="table"/>
         <noderef id="skybox"/>
         <noderef id="scoreboard"/>
-        <leaf type="gameboard" x="0" y="0" z="0"/>
       </descendants>
     </node>
     <!-- || SCOREBOARD -->
@@ -195,7 +195,6 @@
       </transformations>
       <descendants>
         <leaf type="cube" side="10"/>
-        <leaf type="scoreboard" x="0" y="35" z="-97.9"/>
       </descendants>
     </node>
     <!-- || CHAIRS -->
@@ -608,4 +607,8 @@
       </descendants>
     </node>
   </nodes>
+  <gameoptions>
+    <gameboard x="0" y="0" z="0"/>
+    <scoreboard x="0" y="35" z="-97.9"/>
+  </gameoptions>
 </lsf>

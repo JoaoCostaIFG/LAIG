@@ -16,26 +16,19 @@ class XMLscene extends CGFscene {
     this.graphs = [];
     this.graphNames = {};
     this.selectedGraph = 0;
+
+    // scene is ready when all graphs report being loaded
+    this.loadedGraphCnt = 0;
   }
 
-  addGraph(graph, graphName) {
+  addGraph(graph) {
     if (this.graphs.length == 0) {
       this.graph = graph;
       this.selectedGraph = 0;
     }
 
-    if (this.graphNames[graphName]) {
-      // prevent for scene graph conflicts
-      console.error(
-        "Already have a scene graph with that name: " +
-          graphName +
-          ". This scene graph will be ignored"
-      );
-      return;
-    }
-
-    this.graphNames[graphName] = this.graphs.length;
     this.graphs.push(graph);
+    return this.graphs.length - 1;
   }
 
   updateSelectedGraph() {
@@ -113,6 +106,13 @@ class XMLscene extends CGFscene {
     this.selectedCamera = -1;
     this.cameraList = {};
 
+    this.initHelperObjs();
+  }
+
+  initHelperObjs() {
+    // objects used in multiple places throughtout the game
+    // prevents having multiple equal objects
+
     this.defaultTex = new CGFtexture(this, "./scenes/images/test.jpg"); // missing texture
     this.defaultTex.bind();
     this.textSheet = new CGFtexture(this, "./scenes/images/text.png"); // spritesheet for text
@@ -129,9 +129,6 @@ class XMLscene extends CGFscene {
 
     // Highlights
     this.redHighlightMat = new CGFappearance(this);
-    // this.redHighlightMat.setAmbient(1.0, 0.0, 0.0, 1.0);
-    // this.redHighlightMat.setDiffuse(1.0, 0.0, 0.0, 1.0);
-    // this.redHighlightMat.setSpecular(1.0, 0.0, 0.0, 1.0);
     this.redHighlightMat.setEmission(1.0, 0.0, 0.0, 1.0);
     this.redHighlightMat.setShininess(100.0);
 
@@ -269,8 +266,34 @@ class XMLscene extends CGFscene {
    * As loading is asynchronous, this may be called already after the application has started the run loop
    */
   onGraphLoaded(loadedGraph) {
-    // scene is only ready when selected graph is ready
-    if (this.sceneInited || this.graph != loadedGraph) return;
+    ++this.loadedGraphCnt;
+    let graphName = loadedGraph.name;
+    let graphInd = loadedGraph.sceneIndex;
+
+    if (this.graphNames[graphName] !== undefined) {
+      // prevent for scene graph conflicts
+      if (graphInd == this.selectedGraph) {
+        // default graph is mandatory
+        console.warn(
+          "The name of the default graph (" +
+            graphName +
+            ") is conflicting with another graph's name. The conflicting graph will be ignored."
+        );
+        this.graphNames[graphName] = this.selectedGraph; // override conflicting graph
+      } else {
+        // not default graphs are skipped
+        console.warn(
+          "Already have a scene graph with that name: " +
+            graphName +
+            ". This scene graph will be ignored/skipped."
+        );
+      }
+    } else {
+      this.graphNames[graphName] = graphInd;
+    }
+
+    // scene is only ready when all graphs are loaded and ready
+    if (this.sceneInited || this.loadedGraphCnt != this.graphs.length) return;
 
     this.interface.instGuiButtons();
     this.updateSelectedGraph();
@@ -278,6 +301,19 @@ class XMLscene extends CGFscene {
     // this.setUpdatePeriod(100);
     this.setUpdatePeriod(30);
     this.sceneInited = true;
+  }
+
+  update(time) {
+    if (!this.sceneInited) return;
+    let t = time / 1000;
+
+    this.camera.update(t);
+    if (this.waitingForCamAnim && !this.camera.isAnimating) {
+      this.waitingForCamAnim = false;
+      this.updateCurrentCamera();
+    }
+
+    this.gameOrchestrator.update(t);
   }
 
   /**
@@ -330,19 +366,6 @@ class XMLscene extends CGFscene {
 
     this.popMatrix();
     // ---- END Background, camera and axis setup
-  }
-
-  update(time) {
-    if (!this.sceneInited) return;
-    let t = time / 1000;
-
-    this.camera.update(t);
-    if (this.waitingForCamAnim && !this.camera.isAnimating) {
-      this.waitingForCamAnim = false;
-      this.updateCurrentCamera();
-    }
-
-    this.gameOrchestrator.update(t);
   }
 
   /**

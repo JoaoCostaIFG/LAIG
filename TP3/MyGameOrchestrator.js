@@ -17,7 +17,7 @@ class MyGameOrchestrator {
     this.gameSequence = new MyGameSequence();
     this.animator = new MyAnimator(this, this.gameSequence);
     this.theme = scene.graphs[0];
-    this.prolog = new MyPrologInterface("localhost", 8081);
+    this.prolog = new MyPrologInterface("0.0.0.0", 8081);
     this.scoreBoard = new MyScoreBoard(this.scene, 0);
     this.genButtons();
 

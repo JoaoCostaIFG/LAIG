@@ -46,13 +46,10 @@ class MyInterface extends CGFinterface {
     // camera list
     if (this.cameras) this.gui.remove(this.cameras);
 
-    this.cameras = this.gui.add(
-      this.scene,
-      "selectedCamera",
-      this.scene.cameraList
-    );
-    this.cameras.name("Selected camera");
-    this.cameras.onChange(this.scene.animSwitchCamera.bind(this.scene));
+    this.cameras = this.gui
+      .add(this.scene, "selectedCamera", this.scene.cameraList)
+      .name("Selected camera")
+      .onChange(this.scene.animSwitchCamera.bind(this.scene));
   }
 
   instGuiButtons() {
@@ -69,7 +66,10 @@ class MyInterface extends CGFinterface {
       .name("Selected theme")
       .onChange(this.scene.updateSelectedGraph.bind(this.scene));
     // board size
-    gameDir.add(this.scene.gameOrchestrator, "boardSize").name("Board size");
+    gameDir
+      .add(this.scene.gameOrchestrator, "boardSize")
+      .name("Board size")
+      .min(1);
 
     // debug buttons
     let debugDir = this.gui.addFolder("Debug");
@@ -80,8 +80,6 @@ class MyInterface extends CGFinterface {
       .onChange(this.scene.graph.toggleObjectNormals.bind(this.scene.graph));
     // toggle to show lights as objects
     debugDir.add(this.scene, "areLightsVisible").name("Show lights");
-
-    this.updateGUI(); // TODO redundant?
   }
 
   /**

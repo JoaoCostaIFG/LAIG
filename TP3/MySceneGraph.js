@@ -10,6 +10,7 @@ var SPRITESHEETS_INDEX = 5;
 var MATERIALS_INDEX = 6;
 var ANIMATIONS_INDEX = 7;
 var NODES_INDEX = 8;
+var GAMEOPTS_INDEX = 9;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -21,12 +22,13 @@ class MySceneGraph {
    * @param {string} filename - File that defines the 3D scene
    * @param {XMLScene} scene
    */
-  constructor(filename, scene, name) {
+  constructor(filename, scene) {
     this.loadedOk = null;
 
     // Establish bidirectional references between scene and graph.
     this.scene = scene;
-    scene.addGraph(this, name);
+    this.sceneIndex = scene.addGraph(this);
+    this.name = "Graph" + this.sceneIndex;
 
     this.nodes = [];
     this.idRoot = null; // The id of the root element.
@@ -219,6 +221,18 @@ class MySceneGraph {
       // Parse nodes block
       if ((error = this.parseNodes(nodes[index])) != null) return error;
     }
+
+    // <gameoptions>
+    if ((index = nodeNames.indexOf("gameoptions")) == -1)
+      return "tag <gameoptions> missing";
+    else {
+      if (index != GAMEOPTS_INDEX)
+        this.onXMLMinorError("tag <gameoptions> out of order");
+
+      // Parse gameoptions block
+      if ((error = this.parseGameoptions(nodes[index])) != null) return error;
+    }
+
     this.log("all parsed");
   }
 
@@ -230,19 +244,18 @@ class MySceneGraph {
     var children = initialsNode.children;
     var nodeNames = [];
 
-    for (var i = 0; i < children.length; i++)
+    for (let i = 0; i < children.length; i++)
       nodeNames.push(children[i].nodeName);
 
-    var rootIndex = nodeNames.indexOf("root");
-    var referenceIndex = nodeNames.indexOf("reference");
+    let rootIndex = nodeNames.indexOf("root");
+    let referenceIndex = nodeNames.indexOf("reference");
 
     // Get root of the scene.
     if (rootIndex == -1) return "No root id defined for scene.";
 
-    var rootNode = children[rootIndex];
-    var id = this.reader.getString(rootNode, "id");
+    let rootNode = children[rootIndex];
+    let id = this.reader.getString(rootNode, "id");
     if (id == null) return "No root id defined for scene.";
-
     this.idRoot = id;
 
     // Get axis length
@@ -251,8 +264,8 @@ class MySceneGraph {
         "no axis_length defined for scene; assuming 'length = 1'"
       );
 
-    var refNode = children[referenceIndex];
-    var axis_length = this.reader.getFloat(refNode, "length");
+    let refNode = children[referenceIndex];
+    let axis_length = this.reader.getFloat(refNode, "length");
     if (axis_length == null)
       this.onXMLMinorError(
         "no axis_length defined for scene; assuming 'length = 1'"
@@ -260,8 +273,22 @@ class MySceneGraph {
 
     this.referenceLength = axis_length || 1;
 
-    this.log("Parsed initials");
+    // Get scene graph name
+    let nameIndex = nodeNames.indexOf("name");
+    if (nameIndex != -1) {
+      let name = this.reader.getString(children[nameIndex], "name");
+      if (name == null)
+        this.onXMLMinorError(
+          "Couldn't parse scene graph's name. Using default: " + this.name
+        );
+      else this.name = name;
+    } else {
+      this.onXMLMinorError(
+        "No name defined for this scene graph. Using default: " + this.name
+      );
+    }
 
+    this.log("Parsed initials");
     return null;
   }
 
@@ -942,12 +969,11 @@ class MySceneGraph {
    * @param afs - texture amplification in s axis
    * @param aft - texture amplification in t axis
    * @returns obj, on successful obj instanciation,
-   *          null, on success with no obj instanciation
-   *          undefined, on failure
+   *          null, on failure
    */
   parseLeaf(leafNode, afs = 1.0, aft = 1.0) {
-    let attributeNames = [];
-    let attributeTypes = [];
+    let attributeNames;
+    let attributeTypes;
     let objType = this.reader.getString(leafNode, "type");
     switch (objType) {
       case "rectangle":
@@ -999,14 +1025,6 @@ class MySceneGraph {
       case "cube":
         attributeNames = ["side"];
         attributeTypes = ["float"];
-        break;
-      case "gameboard":
-        attributeNames = ["x", "y", "z"];
-        attributeTypes = ["float", "float", "float"];
-        break;
-      case "scoreboard":
-        attributeNames = ["x", "y", "z"];
-        attributeTypes = ["float", "float", "float"];
         break;
       default:
         return "unknown leaf type: " + objType + ".";
@@ -1070,7 +1088,7 @@ class MySceneGraph {
         break;
       case "spriteanim":
         if (this.spritesheets[global[0]] == null) {
-          obj = undefined;
+          obj = null;
         } else {
           obj = new MySpriteAnimation(
             this.scene,
@@ -1130,16 +1148,8 @@ class MySceneGraph {
       case "cube":
         obj = new MyCube(this.scene, ...global, afs, aft);
         break;
-      case "gameboard":
-        this.boardPos = global;
-        obj = null;
-        break;
-      case "scoreboard":
-        this.scorePos = global;
-        obj = null;
-        break;
       default:
-        obj = undefined;
+        obj = null;
         break;
     }
 
@@ -1376,12 +1386,11 @@ class MySceneGraph {
             var leafObj = this.parseLeaf(grandgrandChildren[j], afs, aft);
             if (typeof leafObj === "string" || leafObj instanceof String)
               return leafObj;
-            else if (leafObj === undefined)
+            else if (!leafObj)
               this.onXMLMinorError(
                 "Failed instanciating leaf of: " + nodeID + "."
               );
-            // ignore game options
-            else if (leafObj != null) nodeObj.addDescendantLeaf(leafObj);
+            else nodeObj.addDescendantLeaf(leafObj);
           } else {
             this.onXMLMinorError("unknown descendant type: " + descType + ".");
           }
@@ -1466,6 +1475,64 @@ class MySceneGraph {
     }
 
     // TODO check for unused nodes
+  }
+
+  parseGameoptions(gameoptsNode) {
+    let children = gameoptsNode.children;
+    for (let i = 0; i < children.length; ++i) {
+      // this.reader.getString(children[i], "y");
+      let attributeNames;
+      let attributeTypes;
+
+      let nodeName = children[i]["nodeName"];
+      switch (nodeName) {
+        case "gameboard":
+          attributeNames = ["x", "y", "z"];
+          attributeTypes = ["float", "float", "float"];
+          break;
+        case "scoreboard":
+          attributeNames = ["x", "y", "z"];
+          attributeTypes = ["float", "float", "float"];
+          break;
+        default:
+          // TODO warning
+          continue;
+      }
+
+      let success = true;
+      let global = [];
+      for (let j = 0; j < attributeNames.length; ++j) {
+        let type = attributeTypes[j];
+        let name = attributeNames[j];
+        let attr;
+        if (type == "float") {
+          attr = this.parseFloat(
+            children[i],
+            name,
+            name + " in gameoption " + nodeName
+          );
+
+          if (typeof attr === "string" || attr instanceof String) {
+            console.warn(attr + "Skipping this option.");
+            success = false;
+            break;
+          }
+        }
+        global.push(attr);
+      }
+      if (!success) continue;
+
+      switch (nodeName) {
+        case "gameboard":
+          this.boardPos = global;
+          break;
+        case "scoreboard":
+          this.scorePos = global;
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   /**

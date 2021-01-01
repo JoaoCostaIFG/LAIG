@@ -12,6 +12,20 @@ class MyScoreBoard {
     this.buttons.push(newButton);
   }
 
+  saveScoreStr() {
+    this.scoreStr =
+      "B:" +
+      this.score[0].toLocaleString("en-GB", {
+        minimumIntegerDigits: 2,
+        maximumFractionDigits: 0,
+      }) +
+      " - W:" +
+      this.score[1].toLocaleString("en-GB", {
+        minimumIntegerDigits: 2,
+        maximumFractionDigits: 0,
+      });
+  }
+
   parseScore(data) {
     if (data.target.response == "Bad Request") {
       console.log("Invalid move");
@@ -19,15 +33,7 @@ class MyScoreBoard {
     }
 
     this.score = data.target.response.split("-");
-    this.scoreStr =
-      "B:" +
-      this.score[0].toLocaleString("en-GB", {
-        minimumIntegerDigits: 2,
-      }) +
-      " - W:" +
-      this.score[1].toLocaleString("en-GB", {
-        minimumIntegerDigits: 2,
-      });
+    this.saveScoreStr();
   }
 
   resetTimer() {
@@ -38,16 +44,8 @@ class MyScoreBoard {
 
   reset(maxTime, boardSize) {
     let numPlayerPieces = (boardSize * boardSize) / 2;
-    this.score = [numPlayerPieces, numPlayerPieces];
-    this.scoreStr =
-      "B:" +
-      numPlayerPieces.toLocaleString("en-GB", {
-        minimumIntegerDigits: 2,
-      }) +
-      " - W:" +
-      numPlayerPieces.toLocaleString("en-GB", {
-        minimumIntegerDigits: 2,
-      });
+    this.score = [Math.floor(numPlayerPieces), Math.ceil(numPlayerPieces)];
+    this.saveScoreStr();
 
     this.maxTime = maxTime;
     this.resetTimer();
