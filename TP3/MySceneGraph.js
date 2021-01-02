@@ -38,8 +38,6 @@ class MySceneGraph {
     this.axisCoords["y"] = [0, 1, 0];
     this.axisCoords["z"] = [0, 0, 1];
 
-    this.showNormals = false;
-
     // File reading
     this.reader = new CGFXMLreader();
 
@@ -1723,10 +1721,10 @@ class MySceneGraph {
   /**
    * Toggles objects' normals
    */
-  toggleObjectNormals() {
+  toggleObjectNormals(isEnabled) {
     for (var key in this.nodes) {
       var node = this.nodes[key];
-      if (this.showNormals) node.enableNormalViz();
+      if (isEnabled) node.enableNormalViz();
       else node.disableNormalViz();
     }
   }

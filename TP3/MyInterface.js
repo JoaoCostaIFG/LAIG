@@ -75,9 +75,9 @@ class MyInterface extends CGFinterface {
     let debugDir = this.gui.addFolder("Debug");
     // toggle to show object normals
     debugDir
-      .add(this.scene.graph, "showNormals")
+      .add(this.scene.gameOrchestrator, "showNormals")
       .name("Show normals")
-      .onChange(this.scene.graph.toggleObjectNormals.bind(this.scene.graph));
+      .onChange(this.scene.gameOrchestrator.updateNormalViz.bind(this.scene.gameOrchestrator));
     // toggle to show lights as objects
     debugDir.add(this.scene, "areLightsVisible").name("Show lights");
   }

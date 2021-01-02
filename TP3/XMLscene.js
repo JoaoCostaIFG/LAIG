@@ -36,7 +36,7 @@ class XMLscene extends CGFscene {
 
     this.graph = this.graphs[this.selectedGraph];
     this.graph.resetAnims();
-    this.gameOrchestrator.theme = this.graph;
+    this.gameOrchestrator.updateTheme(this.graph);
 
     this.axis = new CGFaxis(this, this.graph.referenceLength);
     this.gl.clearColor(...this.graph.background);

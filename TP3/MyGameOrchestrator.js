@@ -14,6 +14,9 @@ class MyGameOrchestrator {
     scene.gameOrchestrator = this;
     this.state = GameState.NOTSTARTED;
 
+    // debug option for showing game objects and scene objects normals
+    this.showNormals = false;
+
     this.gameSequence = new MyGameSequence();
     this.animator = new MyAnimator(this, this.gameSequence);
     this.theme = scene.graphs[0];
@@ -41,6 +44,11 @@ class MyGameOrchestrator {
     this.selectedPlayerOpsInd = 0; // used by the UI button
     // AI
     this.aiMoveReq = null; // current AI movement request (if any)
+  }
+
+  updateTheme(theme) {
+    this.theme = theme;
+    this.updateNormalViz();
   }
 
   /* || BUTTONS */
@@ -95,6 +103,7 @@ class MyGameOrchestrator {
 
     // create board according to game options
     this.gameboard = new MyGameBoard(this.scene, this.boardSize);
+    this.updateNormalViz(); // for debugging purposes
 
     // initial valid moves
     this.prolog.requestValidMoves(
@@ -418,6 +427,20 @@ class MyGameOrchestrator {
   }
 
   /* || OTHER */
+  updateNormalViz() {
+    this.theme.toggleObjectNormals(this.showNormals);
+
+    // gameboard
+    if (this.gameboard) {
+      if (this.showNormals) this.gameboard.enableNormalViz();
+      else this.gameboard.disableNormalViz();
+    }
+
+    // scoreboard
+    if (this.showNormals) this.scoreBoard.enableNormalViz();
+    else this.scoreBoard.disableNormalViz();
+  }
+
   updateScoreboardInfo() {
     // update score
     this.prolog.requestScore(

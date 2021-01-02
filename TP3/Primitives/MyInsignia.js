@@ -12,16 +12,28 @@ class MyInsignia extends CGFobject {
     // Top
     this.scene.pushMatrix();
 
-    this.scene.translate(MyPiece.size/10.0, MyPiece.size/2.0, MyPiece.size/10.0);
-    this.scene.scale(MyPiece.size/1.25, MyPiece.size / 6.0, MyPiece.size/1.25);
+    this.scene.translate(
+      MyPiece.size / 10.0,
+      MyPiece.size / 2.0,
+      MyPiece.size / 10.0
+    );
+    this.scene.scale(
+      MyPiece.size / 1.25,
+      MyPiece.size / 6.0,
+      MyPiece.size / 1.25
+    );
     this.cube.display();
-    
+
     this.scene.popMatrix();
 
     // Circle
     this.scene.pushMatrix();
 
-    this.scene.translate(MyPiece.size/2.0, MyPiece.size/1.65, MyPiece.size/2.0);
+    this.scene.translate(
+      MyPiece.size / 2.0,
+      MyPiece.size / 1.65,
+      MyPiece.size / 2.0
+    );
     this.scene.rotate(Math.PI / 2.0, 1, 0, 0);
     this.cylinder.display();
 
@@ -30,10 +42,26 @@ class MyInsignia extends CGFobject {
     // Torus
     this.scene.pushMatrix();
 
-    this.scene.translate(MyPiece.size/2.0, MyPiece.size/1.75, MyPiece.size/2.0);
+    this.scene.translate(
+      MyPiece.size / 2.0,
+      MyPiece.size / 1.75,
+      MyPiece.size / 2.0
+    );
     this.scene.rotate(Math.PI / 2.0, 1, 0, 0);
     this.torus.display();
 
     this.scene.popMatrix();
+  }
+
+  enableNormalViz() {
+    this.cube.enableNormalViz();
+    this.cylinder.enableNormalViz();
+    this.torus.enableNormalViz();
+  }
+
+  disableNormalViz() {
+    this.cube.disableNormalViz();
+    this.cylinder.disableNormalViz();
+    this.torus.disableNormalViz();
   }
 }

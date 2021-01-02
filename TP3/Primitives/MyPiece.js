@@ -20,10 +20,8 @@ class MyPiece extends CGFobject {
     this.tile = tile ? tile : null;
     this.animation = null;
 
-    if (this.color == Color.BLACK)
-      this.insignia = new MyBlackInsignia(scene);
-    else
-      this.insignia = new MyWhiteInsignia(scene);
+    if (this.color == Color.BLACK) this.insignia = new MyBlackInsignia(scene);
+    else this.insignia = new MyWhiteInsignia(scene);
   }
 
   setAnimation(animation) {
@@ -70,5 +68,12 @@ class MyPiece extends CGFobject {
     this.scene.popTexture();
     this.scene.popMaterial();
     if (this.animation) this.scene.popTransformation();
+  }
+  enableNormalViz() {
+    this.insignia.enableNormalViz();
+  }
+
+  disableNormalViz() {
+    this.insignia.disableNormalViz();
   }
 }

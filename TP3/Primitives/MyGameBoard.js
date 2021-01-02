@@ -209,4 +209,13 @@ class MyGameBoard {
     ret += "]";
     return ret;
   }
+
+  enableNormalViz() {
+    for (let i = 0; i < this.tiles.length; ++i) this.tiles[i].enableNormalViz();
+  }
+
+  disableNormalViz() {
+    for (let i = 0; i < this.tiles.length; ++i)
+      this.tiles[i].disableNormalViz();
+  }
 }

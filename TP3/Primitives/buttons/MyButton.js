@@ -63,4 +63,14 @@ class MyButton extends CGFobject {
 
     if (this.clickAnimation) this.scene.popTransformation();
   }
+
+  enableNormalViz() {
+    this.txt.enableNormalViz();
+    this.body.enableNormalViz();
+  }
+
+  disableNormalViz() {
+    this.txt.disableNormalViz();
+    this.body.disableNormalViz();
+  }
 }
