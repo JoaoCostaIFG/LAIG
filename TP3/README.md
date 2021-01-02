@@ -10,6 +10,7 @@
 ---
 
 ## Project information
+
 - Scene1 - Space:
   - A skybox depicting space with stars.
   - A table with floating chairs.
@@ -32,13 +33,13 @@
 - All animations have a reset method (useful for scene changes).
 - A game move is animated in three phases using ["easings"](https://easings.net/) funtions.
 - The game difficulty is configurable. This changes the amount of time available
- to the player on each turn (running out of time loses the game).
+  to the player on each turn (running out of time loses the game).
 - The game mode is configurable. The available modes are: player vs. player, computer vs. player,
- player vs. computer, and computer vs. computer.
+  player vs. computer, and computer vs. computer.
 - Every game move can be undone (even in the middle of an animation).
 - The game movie (replay of all the game moves) can be started/stopped anytime during or after gameplay.
-- The game movie animates all the moves since the start of the current game sequencially. 
-Stopping the game movie goes back to the gameplay (if the game hasn't ended yet). 
+- The game movie animates all the moves since the start of the current game sequencially.
+  Stopping the game movie goes back to the gameplay (if the game hasn't ended yet).
 - A new game can be started anytime with changed options (game restarts aren't saved in the history).
 - New Primitives:
   - MyCube (a simple cube with configurable size).
@@ -51,7 +52,7 @@ Stopping the game movie goes back to the gameplay (if the game hasn't ended yet)
   - Scenes can have a name inside the initials block.
   - There is a new block called gameoptions.
   - Tags for defining the gameboard and the scoreboard positions
-   in the scene (inside the gameoptions).
+    in the scene (inside the gameoptions).
   - New cube primitive.
 - Extras:
   - Extra interface controls for better debugging: show/hide vertexes' normals

@@ -74,18 +74,23 @@ class MyScoreBoard {
   }
 
   saveToHistory(isTimeout) {
-    let histEntry;
+    let histEntry = "B:" + this.score[0] + "-W:" + this.score[1];
     if (isTimeout && this.lastPlayer == 0)
-      histEntry = "B:" + this.score[0] + "-W:" + this.score[1] + " White";
+      // player 0 timed out => lost
+      histEntry += " White";
     else if (isTimeout && this.lastPlayer == 1)
-      histEntry = "B:" + this.score[0] + "-W:" + this.score[1] + " Black";
+      // player 1 timed out => lost
+      histEntry += " Black";
     else if (this.score[0] > this.score[1])
-      histEntry = "B:" + this.score[0] + "-W:" + this.score[1] + " Black";
+      // player 0 has highest score => won
+      histEntry += " Black";
     else if (this.score[0] < this.score[1])
-      histEntry = "B:" + this.score[0] + "-W:" + this.score[1] + " White";
+      // player 1 has highest score => won
+      histEntry += " White";
     else if (this.lastPlayer == 0)
-      histEntry = "B:" + this.score[0] + "-W:" + this.score[1] + " White";
-    else histEntry = "B:" + this.score[0] + "-W:" + this.score[1] + " Black";
+      // players' scores are tied but is black turn => lost
+      histEntry += " White";
+    else histEntry += " Black"; // players' scores are tied but is white turn => lost
 
     this.history.push(histEntry);
   }
