@@ -92,4 +92,12 @@ class MyTile {
   toString() {
     return "[" + this.coord[0] + "," + this.coord[1] + "]";
   }
+
+  enableNormalViz() {
+    if (this.piece) this.piece.enableNormalViz();
+  }
+
+  disableNormalViz() {
+    if (this.piece) this.piece.disableNormalViz();
+  }
 }

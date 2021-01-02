@@ -216,4 +216,14 @@ class MyScoreBoard {
     this.scene.clearPickRegistration();
     this.scene.popMatrix();
   }
+
+  enableNormalViz() {
+    for (let i = 0; i < this.buttons.length; ++i)
+      this.buttons[i].enableNormalViz();
+  }
+
+  disableNormalViz() {
+    for (let i = 0; i < this.buttons.length; ++i)
+      this.buttons[i].disableNormalViz();
+  }
 }

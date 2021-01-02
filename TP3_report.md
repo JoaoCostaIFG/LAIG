@@ -9,6 +9,17 @@
 
 ## Necessary actions to have the complete program running
 
+- Start and HTTP server in the directory that contains the **lib** and
+  **TP3** directories, e.g.: `python -m http.server 8080`.
+- Start a sicstus prolog instance and consult the file `server.pl` inside
+  the **prolog** directory (inside the **TP3** directory).
+- Call the `server.` predicate inside the sicstus prolog instance.
+
+The steps above would result in the HTTP server open in 0.0.0.0:8080
+and the prolog server open in 0.0.0.0:8081. The game can be accessed
+in a browser supporting WebGL at the address
+[**http://0.0.0.0:8080/TP3/**](http://0.0.0.0:8080/TP3/).
+
 ## Short summary of the game main rules
 
 **Emulsion** is a board game for two players.  
