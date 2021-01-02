@@ -706,7 +706,7 @@
     </node>
   </nodes>
   <gameoptions>
-      <gameboard x="0" y="0" z="0"/>
+      <gameboard x="0" y="-44" z="0"/>
       <scoreboard x="0" y="35" z="-97.9"/>
   </gameoptions>
 </lsf>
