@@ -395,7 +395,11 @@ class MyGameOrchestrator {
 
   /* called when we get a PLAYER move */
   onValidMove(move, data) {
-    if (data.target.response == "Bad Request") {
+    console.warn(data.target.response);
+    if (
+      data.target.response == "Bad Request" ||
+      data.target.response == "Invalid Move"
+    ) {
       console.log("Invalid move");
       this.togglePossibleMoveIndicators(true);
       return;
