@@ -30,7 +30,7 @@
 - Camera reset button.
 - Toggles for each scene lights.
 - Scenes are loaded at the beggining of the program and reset on change.
-- All animations have a reset method (useful for scene changes).
+- All animations have a reset method (used for scene changes).
 - A game move is animated in three phases using ["easings"](https://easings.net/) funtions.
 - The game difficulty is configurable. This changes the amount of time available
   to the player on each turn (running out of time loses the game).
