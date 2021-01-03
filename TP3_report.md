@@ -9,7 +9,7 @@
 
 ## Necessary actions to have the complete program running
 
-- Start and HTTP server in the directory that contains the **lib** and
+- Start an HTTP server in the directory that contains the **lib** and
   **TP3** directories, e.g.: `python -m http.server 8080`.
 - Start a sicstus prolog instance and consult the file `server.pl` inside
   the **prolog** directory (inside the **TP3** directory).
