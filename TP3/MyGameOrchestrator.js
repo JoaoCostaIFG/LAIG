@@ -358,6 +358,8 @@ class MyGameOrchestrator {
       return;
     }
 
+    console.log("here:");
+    console.log(data.target.response);
     this.validMoves = JSON.parse(data.target.response);
     if (this.validMoves.length == 0) this.gameEnded();
     else this.togglePossibleMoveIndicators(true); // active

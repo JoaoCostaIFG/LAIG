@@ -102,7 +102,7 @@ print_header_line(_).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Require your Prolog Files here
-:-include('emulsion.pl').
+:-include('./PLOG/Proj1/src/emulsion.pl').
 
 % our inputs
 parse_input(ai_move(GameState,Player,Difficulty), Move) :-
