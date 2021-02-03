@@ -55,6 +55,7 @@ handle_service(StreamPair) :-
   format(OutStream, 'Access-Control-Allow-Origin: *~n', []),
   format(OutStream, 'Content-Type: text/plain~n~n', []),
   format(OutStream, '~p', [Reply]),
+  flush_output(OutStream),
   close(StreamPair).
 	% (Request = quit), !.
 
