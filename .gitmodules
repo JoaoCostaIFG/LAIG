@@ -1,3 +1,3 @@
-[submodule "TP3/prolog/PLOG"]
-	path = TP3/prolog/PLOG
-	url = git@gitlab.com:JoaoCostaIFG/PLOG.git
+[submodule "TP3/prolog/plog"]
+	path = TP3/prolog/plog
+	url = https://gitlab.com/JoaoCostaIFG/plog.git

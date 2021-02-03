@@ -101,7 +101,7 @@ handle_request(_, 'Bad Request', '400 Bad Request').
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Require your Prolog Files here
-:-include('./PLOG/Proj1-swi_version/emulsion.pl').
+:-include('./plog/Proj1-swi_version/emulsion.pl').
 
 % our inputs
 parse_input(ai_move(GameState,Player,Difficulty), Move) :-
