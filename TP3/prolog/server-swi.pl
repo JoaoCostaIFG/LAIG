@@ -3,36 +3,30 @@
 :-use_module(library(codesio)).
 :-use_module(library(readutil)).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%                                        Server                                                   %%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% To run, enter 'server.' on sicstus command line after consulting this file.
-% You can test requests to this server by going to http://localhost:8081/<request>.
-% Go to http://localhost:8081/quit to close server.
-
-% Made by Luis Reis (ei12085@fe.up.pt) for LAIG course at FEUP.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                   Server                   %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 port(8081).
 addr('0.0.0.0').
 
 % Server Entry Point
 server :-
-	port(Port), addr(Addr),
-	write('Opened Server'), nl, nl,
+  port(Port), addr(Addr),
+  write('Opened Server'), nl, nl,
   tcp_socket(Socket),
   tcp_bind(Socket, Addr:Port),
   tcp_listen(Socket, 5),
   tcp_open_socket(Socket, AcceptFd, _),
   % server loop
-	server_loop(AcceptFd),
-	tcp_close_socket(Socket),
-	write('Closed Server'), nl.
+  server_loop(AcceptFd),
+  tcp_close_socket(Socket),
+  write('Closed Server'), nl.
 
 % Server Loop 
 % Uncomment writes for more information on incomming connections
 server_loop(AcceptFd) :-
-	repeat,
+  repeat,
     tcp_accept(AcceptFd, Socket, Peer),
     thread_create(process_client(Socket, Peer), _ ,
                   [ detached(true)
@@ -51,21 +45,19 @@ handle_service(StreamPair) :-
   read_request(InStream, Request),
   % handle request and write response
   handle_request(Request, Reply, Status),
-  format(OutStream, 'HTTP/1.0 ~p~n', [Status]),
-  format(OutStream, 'Access-Control-Allow-Origin: *~n', []),
-  format(OutStream, 'Content-Type: text/plain~n~n', []),
-  format(OutStream, '~p', [Reply]),
-  flush_output(OutStream),
-  close(StreamPair).
-	% (Request = quit), !.
+  format(OutStream, 'HTTP/1.1 ~w~n', [Status]),
+  format(OutStream, 'Content-Type: text/plain~n', []),
+  format(OutStream, 'Access-Control-Allow-Origin: *~n~n', []),
+  format(OutStream, '~w', [Reply]),
+  flush_output(OutStream).
 
 read_request(InStream, Request) :-
   read_line_to_codes(InStream, LineCodes),
-	print_header_line(LineCodes), % for debug
+  print_header_line(LineCodes), % for debug
   % parse request
-	atom_codes('GET /', Get),
-	append(Get, RL, LineCodes),
-	read_request_aux(RL, RL2),
+  atom_codes('GET /', Get),
+  append(Get, RL, LineCodes),
+  read_request_aux(RL, RL2),
   catch(
     read_from_codes(RL2, Request),
     error(syntax_error(_),_),
@@ -83,22 +75,21 @@ print_header_line(LineCodes) :-
     _,
     fail), !.
 print_header_line(_).
-	
+
 % Handles parsed HTTP requests
 % Returns 200 OK on successful aplication of parse_input on request
 % Returns 400 Bad Request on syntax error (received from parser) or on failure of parse_input
 handle_request(Request, MyReply, '200 OK') :-
-  parse_input(Request, MyReply), !.
-  % catch(
-    % parse_input(Request, MyReply),
-    % error(_, _),
-    % fail), !.
+  catch(
+    parse_input(Request, MyReply),
+    error(_, _),
+    fail), !.
 handle_request(syntax_error, 'Syntax Error', '400 Bad Request') :- !.
 handle_request(_, 'Bad Request', '400 Bad Request').
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%                             Commands                              %%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                Commands                %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Require your Prolog Files here
 :-include('./plog/Proj1-swi_version/emulsion.pl').

@@ -48,6 +48,8 @@
 
 ---
 
-### [TP3 - ...](TP3)
+### [TP3 - Emulsion](TP3)
 
-- (items briefly describing main strong points)
+The project is described inside the TP3 directory. There are 2 versions of the
+prolog server (and source code): swi-prolog and sicstus prolog. The swi-prolog
+version is preferable.
